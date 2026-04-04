@@ -1,10 +1,22 @@
+# Backups og kladd
 aurora-expo-backup-v2.html
+
+# Regnearker og kontordokumenter
 *.xlsx
 *.xls
-.~lock.*
-.DS_Store
 *.docx
 *.pdf
+
+# LibreOffice låsfiler
+.~lock.*
+
+# macOS metadata
+.DS_Store
+
+# Markdown-notater (unntatt README)
 *.md
+!README.md
+
+# Prosjektnotater
 rapport-kartlegging.md
 config-review-notat.md
