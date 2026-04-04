@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURORA – OT Nettverksarkitektur</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b25;
+    --bg3: #1e2535;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #e8eaf0;
+    --muted: #7a8299;
+    --teal: #1d9e75;
+    --teal-light: #5dcaa5;
+    --blue: #378add;
+    --blue-light: #85b7eb;
+    --amber: #ef9f27;
+    --amber-light: #fac775;
+    --purple: #7f77dd;
+    --purple-light: #afa9ec;
+    --coral: #d85a30;
+    --coral-light: #f0997b;
+    --red: #e24b4a;
+    --green: #639922;
+    --green-light: #97c459;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-left h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .header-left p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 0.5px solid;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .badge-iec { color: var(--blue-light); border-color: var(--blue); background: rgba(55,138,221,0.1); }
+  .badge-hvl { color: var(--teal-light); border-color: var(--teal); background: rgba(29,158,117,0.1); }
+  .badge-abb { color: var(--amber-light); border-color: var(--amber); background: rgba(239,159,39,0.1); }
+
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    font-family: inherit;
+    font-size: 11px;
+    padding: 7px 14px;
+    border-radius: 5px;
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .ctrl-btn:hover { background: var(--bg3); color: var(--text); }
+  .ctrl-btn.active-normal { background: rgba(29,158,117,0.15); color: var(--teal-light); border-color: var(--teal); }
+  .ctrl-btn.active-attack { background: rgba(226,75,74,0.15); color: #f09595; border-color: var(--red); }
+  .ctrl-btn.active-opc { background: rgba(239,159,39,0.15); color: var(--amber-light); border-color: var(--amber); }
+
+  .diagram-wrapper {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 16px;
+  }
+
+  svg { display: block; width: 100%; max-width: 900px; margin: 0 auto; }
+
+  /* Zone backgrounds */
+  .zone-field { fill: rgba(29,158,117,0.06); stroke: rgba(29,158,117,0.2); }
+  .zone-ap    { fill: rgba(55,138,221,0.06); stroke: rgba(55,138,221,0.2); }
+  .zone-ews   { fill: rgba(127,119,221,0.06); stroke: rgba(127,119,221,0.2); }
+  .zone-server{ fill: rgba(216,90,48,0.06); stroke: rgba(216,90,48,0.2); }
+  .zone-idmz  { fill: rgba(55,138,221,0.08); stroke: rgba(55,138,221,0.25); }
+  .zone-noronna{ fill: rgba(239,159,39,0.05); stroke: rgba(239,159,39,0.3); stroke-dasharray: 5 3; }
+
+  /* Node boxes */
+  .n-teal   { fill: rgba(29,158,117,0.18); stroke: var(--teal); }
+  .n-blue   { fill: rgba(55,138,221,0.18); stroke: var(--blue); }
+  .n-amber  { fill: rgba(239,159,39,0.2); stroke: var(--amber); }
+  .n-purple { fill: rgba(127,119,221,0.18); stroke: var(--purple); }
+  .n-coral  { fill: rgba(216,90,48,0.18); stroke: var(--coral); }
+
+  .node-group { cursor: pointer; }
+  .node-group:hover rect { filter: brightness(1.3); }
+
+  .lbl-main { font-family: inherit; font-size: 11px; font-weight: 600; fill: var(--text); letter-spacing: 0.03em; }
+  .lbl-sub  { font-family: inherit; font-size: 9.5px; fill: var(--muted); letter-spacing: 0.04em; }
+  .lbl-zone { font-family: inherit; font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; }
+  .lbl-purdue { font-family: inherit; font-size: 9px; fill: var(--muted); letter-spacing: 0.05em; }
+
+  /* Firewall */
+  .fw-rect { fill: rgba(55,138,221,0.08); stroke: var(--blue); stroke-width: 1; }
+  .fw-lbl { font-family: inherit; font-size: 9px; fill: var(--blue-light); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Animated flow lines */
+  @keyframes dashflow {
+    from { stroke-dashoffset: 40; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes dashflow-rev {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 40; }
+  }
+  @keyframes blink {
+    0%,100% { opacity: 0; }
+    40%,60%  { opacity: 1; }
+  }
+  @keyframes fw-glow {
+    0%,100% { stroke-opacity: 0.4; }
+    50%     { stroke-opacity: 1; }
+  }
+
+  .flow { stroke-dasharray: 8 4; animation: dashflow 1.2s linear infinite; }
+  .flow-slow { stroke-dasharray: 8 4; animation: dashflow 2s linear infinite; }
+  .flow-d1 { animation-delay: 0.4s; }
+  .flow-d2 { animation-delay: 0.8s; }
+  .flow-d3 { animation-delay: 1.2s; }
+  .fw-anim { animation: fw-glow 2.5s ease-in-out infinite; }
+
+  .blocked-line { stroke-dasharray: 6 4; opacity: 0.5; }
+  .blocked-icon { animation: blink 2s ease-in-out infinite; }
+
+  /* Tooltip */
+  #tooltip {
+    position: fixed;
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--text);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    max-width: 220px;
+    line-height: 1.5;
+    z-index: 100;
+  }
+  #tooltip.show { opacity: 1; }
+
+  .info-bar {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .legend-line {
+    width: 28px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .legend-dashed {
+    width: 28px;
+    height: 0;
+    border-top: 2px dashed;
+    border-radius: 1px;
+  }
+
+  footer {
+    margin-top: 16px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .header-left h1 { font-size: 14px; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="tooltip"></div>
+
+<header>
+  <div class="header-left">
+    <h1>AURORA — OT Nettverksarkitektur</h1>
+    <p>BO26EB-20 · HVL / ABB Kokstad · Bacheloroppgave 2026</p>
+    <div class="badges">
+      <span class="badge badge-iec">IEC 62443</span>
+      <span class="badge badge-hvl">Purdue-modellen</span>
+      <span class="badge badge-abb">ABB AURORA</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <button class="ctrl-btn active-normal" id="btn-normal" onclick="setMode('normal')">▶ Normal dataflyt</button>
+  <button class="ctrl-btn" id="btn-attack" onclick="setMode('attack')">✕ Blokkerte angrep</button>
+  <button class="ctrl-btn" id="btn-opc" onclick="setMode('opc')">⬡ OPC UA detalj</button>
+</div>
+
+<div class="diagram-wrapper">
+<svg viewBox="0 0 860 660" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#1d9e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#378add" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#ef9f27" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#7f77dd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#e24b4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ===== PURDUE LEVEL LABELS ===== -->
+<text class="lbl-purdue" x="14" y="130" text-anchor="middle" transform="rotate(-90,14,130)">Nivå 0–1</text>
+<text class="lbl-purdue" x="14" y="265" text-anchor="middle" transform="rotate(-90,14,265)">Nivå 2</text>
+<text class="lbl-purdue" x="14" y="400" text-anchor="middle" transform="rotate(-90,14,400)">Nivå 3</text>
+<text class="lbl-purdue" x="14" y="504" text-anchor="middle" transform="rotate(-90,14,504)">IDMZ</text>
+<text class="lbl-purdue" x="14" y="608" text-anchor="middle" transform="rotate(-90,14,608)">Eks. site</text>
+
+<!-- ===== ZONE BACKGROUNDS ===== -->
+<!-- FIELD -->
+<rect class="zone-field" x="30" y="60" width="490" height="110" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="40" y="76" fill="#1d9e75">FIELD — VLAN 10 — SL-T 1</text>
+
+<!-- AP-INFRA -->
+<rect class="zone-ap" x="534" y="60" width="296" height="110" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="544" y="76" fill="#378add">AP-INFRA — VLAN 20 — SL-T 1</text>
+
+<!-- EWS -->
+<rect class="zone-ews" x="30" y="185" width="800" height="104" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="40" y="201" fill="#7f77dd">EWS — VLAN 50 — SL-T 2</text>
+
+<!-- SERVER -->
+<rect class="zone-server" x="30" y="303" width="800" height="118" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="40" y="319" fill="#d85a30">OT-SERVER — VLAN 40 — SL-T 2</text>
+
+<!-- IDMZ -->
+<rect class="zone-idmz" x="30" y="435" width="800" height="90" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="40" y="451" fill="#85b7eb">IDMZ — VLAN 60 — SL-T 3</text>
+
+<!-- NORONNA -->
+<rect class="zone-noronna" x="30" y="539" width="800" height="106" rx="8" stroke-width="0.5"/>
+<text class="lbl-zone" x="40" y="555" fill="#ef9f27">NORØNNA-GW — VLAN 70 — Ekstern site — Security-level 20</text>
+
+<!-- ===== CISCO ASA FIREWALL (vertical bar) ===== -->
+<rect class="fw-rect fw-anim" x="370" y="60" width="44" height="595" rx="6" stroke-width="0.8"/>
+<text class="fw-lbl" x="392" y="358" text-anchor="middle" transform="rotate(-90,392,358)">Cisco ASA 5506-X · ACL per sone · VLAN subinterfaces</text>
+
+<!-- ===== FIELD ZONE — SENSORS ===== -->
+<g class="node-group" id="sensor1" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+  <rect class="n-teal" x="44" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="99" y="107" text-anchor="middle">IIoT-sensor 1</text>
+  <text class="lbl-sub"  x="99" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+</g>
+<g class="node-group" id="sensor2" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+  <rect class="n-teal" x="168" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="223" y="107" text-anchor="middle">IIoT-sensor 2</text>
+  <text class="lbl-sub"  x="223" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+</g>
+<g class="node-group" id="sensor3" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+  <rect class="n-teal" x="292" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="347" y="107" text-anchor="middle">IIoT-sensor 3</text>
+  <text class="lbl-sub"  x="347" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+</g>
+
+<!-- AP -->
+<g class="node-group" id="ap" data-tip="Trådløst aksesspunkt · WPA3-Enterprise · 802.1X · 802.11w&#10;VLAN 20 (AP-INFRA). Håndterer trådløs tilkobling for IIoT-sensorer.">
+  <rect class="n-blue" x="556" y="84" width="120" height="56" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="616" y="107" text-anchor="middle">Aksesspunkt</text>
+  <text class="lbl-sub"  x="616" y="122" text-anchor="middle">WPA3-Ent · VLAN 20</text>
+</g>
+<g class="node-group" id="ap2" data-tip="Trådløst aksesspunkt · WPA3-Enterprise · 802.1X · 802.11w&#10;VLAN 20 (AP-INFRA). Håndterer trådløs tilkobling for IIoT-sensorer.">
+  <rect class="n-blue" x="690" y="84" width="120" height="56" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="750" y="107" text-anchor="middle">Aksesspunkt</text>
+  <text class="lbl-sub"  x="750" y="122" text-anchor="middle">WPA3-Ent · VLAN 20</text>
+</g>
+
+<!-- ===== EWS ZONE ===== -->
+<g class="node-group" id="ews" data-tip="Engineering Workstation · 10.0.50.10 · VLAN 50 · SL-T 2&#10;Operatørtilgang via Jump Host. RDP/SSH til SERVER-sonen via ASA ACL.">
+  <rect class="n-purple" x="44" y="205" width="130" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="109" y="229" text-anchor="middle">EWS</text>
+  <text class="lbl-sub"  x="109" y="246" text-anchor="middle">10.0.50.10</text>
+</g>
+
+<!-- ===== SERVER ZONE ===== -->
+<g class="node-group" id="dc" data-tip="DC / RADIUS / NPS · 10.0.40.10 · VLAN 40&#10;Domenekontroller, 802.1X autentisering for switch og ASA. WPA3-Enterprise backend.">
+  <rect class="n-coral" x="44" y="323" width="110" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="99" y="347" text-anchor="middle">DC / RADIUS</text>
+  <text class="lbl-sub"  x="99" y="364" text-anchor="middle">10.0.40.10</text>
+</g>
+<g class="node-group" id="wsus" data-tip="WSUS · 10.0.40.30 · VLAN 40&#10;Windows Update-tjeneste for interne VM-er. Port 8530/8531.">
+  <rect class="n-coral" x="168" y="323" width="100" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="218" y="347" text-anchor="middle">WSUS</text>
+  <text class="lbl-sub"  x="218" y="364" text-anchor="middle">10.0.40.30</text>
+</g>
+<g class="node-group" id="historian" data-tip="Historian / MQTT-broker · 10.0.40.40 · VLAN 40&#10;Mottar MQTT fra FIELD, lagrer OT-data. Sender videre til IDMZ-broker via HTTPS.">
+  <rect class="n-coral" x="282" y="323" width="110" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="337" y="347" text-anchor="middle">Historian</text>
+  <text class="lbl-sub"  x="337" y="364" text-anchor="middle">10.0.40.40</text>
+</g>
+<g class="node-group" id="app01" data-tip="app01 — 3p-hvl-app01 · 10.0.40.50 · VLAN 40&#10;OPC Connect Server (simulerer ABB 800xA) + uawrapper v1.9&#10;Eksponerer 100/1000 tags via OPC UA TCP/4840.&#10;Tag-filtering = applikasjonslags whitelisting.">
+  <rect class="n-amber" x="440" y="323" width="140" height="58" rx="5" stroke-width="1"/>
+  <text class="lbl-main" x="510" y="343" text-anchor="middle">app01 / uawrapper</text>
+  <text class="lbl-sub"  x="510" y="358" text-anchor="middle">OPC UA :4840</text>
+  <text class="lbl-sub"  x="510" y="372" text-anchor="middle">10.0.40.50</text>
+</g>
+<g class="node-group" id="mgmt" data-tip="MGMT-server · 10.0.40.20 · VLAN 40&#10;Administrasjonsserver for interne tjenester.">
+  <rect class="n-coral" x="600" y="323" width="100" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="650" y="347" text-anchor="middle">MGMT</text>
+  <text class="lbl-sub"  x="650" y="364" text-anchor="middle">10.0.40.20</text>
+</g>
+
+<!-- ===== IDMZ ZONE ===== -->
+<g class="node-group" id="jumphost" data-tip="Jump Host · 10.0.60.2 · VLAN 60 · IDMZ&#10;Eneste remote access-punkt via RDP. Kobler videre til OT-sonen med lokale credentials.&#10;Bidrar til SL-2 for destinasjonssone.">
+  <rect class="n-blue" x="44" y="455" width="116" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="102" y="479" text-anchor="middle">Jump Host</text>
+  <text class="lbl-sub"  x="102" y="496" text-anchor="middle">10.0.60.2 · RDP</text>
+</g>
+<g class="node-group" id="databroker" data-tip="Data-broker / Cloud-proxy · 10.0.60.10 · VLAN 60 · IDMZ&#10;Mottar MQTT/HTTPS fra Historian. Videresender til IT/sky.&#10;HTTPS ut kun til 10.0.100.0/24 (ikke 'any').">
+  <rect class="n-blue" x="440" y="455" width="140" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="510" y="479" text-anchor="middle">Data-broker</text>
+  <text class="lbl-sub"  x="510" y="496" text-anchor="middle">10.0.60.10 · HTTPS</text>
+</g>
+
+<!-- ===== NORONNA ZONE ===== -->
+<g class="node-group" id="app02" data-tip="app02 — 3p-hvl-app02 · 10.0.70.11 · VLAN 70&#10;Cogent DataHub OPC UA-klient. Simulerer NORØNNA offshore-site.&#10;Kobler til uawrapper på app01 port 4840.&#10;Kun TCP 4840 tillatt gjennom ASA ACL (NORONNA_GW_IN).">
+  <rect class="n-amber" x="440" y="562" width="148" height="58" rx="5" stroke-width="1"/>
+  <text class="lbl-main" x="514" y="582" text-anchor="middle">app02 / OPC UA</text>
+  <text class="lbl-sub"  x="514" y="597" text-anchor="middle">Cogent DataHub</text>
+  <text class="lbl-sub"  x="514" y="612" text-anchor="middle">10.0.70.11</text>
+</g>
+
+<!-- ===== OOB MGMT (side) ===== -->
+<g class="node-group" id="oob" data-tip="OOB-MGMT · VLAN 99 · Security-level 90&#10;Fysisk isolert management-nett. ASA G1/3 dedikert port.&#10;OOB-workstation, iDRAC (10.0.99.2), ESXi (10.0.99.3), SG250 (10.0.99.10).">
+  <rect class="n-purple" x="710" y="455" width="116" height="58" rx="5" stroke-width="0.5"/>
+  <text class="lbl-main" x="768" y="479" text-anchor="middle">OOB-MGMT</text>
+  <text class="lbl-sub"  x="768" y="496" text-anchor="middle">VLAN 99 · SL 90</text>
+</g>
+
+<!-- ===== NORMAL FLOW LINES ===== -->
+<g id="flow-normal">
+  <!-- Sensors → ASA (MQTT/FIELD) -->
+  <line class="flow" x1="99" y1="140" x2="99" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
+  <line class="flow flow-d1" x1="223" y1="140" x2="223" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
+  <line class="flow flow-d2" x1="347" y1="140" x2="347" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
+
+  <!-- AP → ASA → Historian (MQTT) -->
+  <path class="flow flow-d1" fill="none" d="M616 140 L616 200 L510 200 L510 323" stroke="#1d9e75" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+
+  <!-- EWS → Historian (administrasjon) -->
+  <path class="flow-slow flow-d2" fill="none" d="M174 263 L218 263 L218 323" stroke="#7f77dd" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+
+  <!-- Historian → Data-broker (IDMZ) -->
+  <path class="flow-slow flow-d3" fill="none" d="M337 381 L337 420 L510 420 L510 455" stroke="#378add" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- app02 (NORONNA) → ASA → app01 (OPC UA 4840) -->
+  <line class="flow flow-d2" x1="514" y1="562" x2="514" y2="381" stroke="#ef9f27" stroke-width="2" marker-end="url(#arr-amber)"/>
+
+  <!-- Tag filter annotation -->
+  <text class="lbl-sub" x="596" y="490" fill="#ef9f27">TCP/4840 only</text>
+  <text class="lbl-sub" x="596" y="504" fill="#ef9f27">100 / 1000 tags</text>
+  <line x1="588" y1="497" x2="580" y2="510" stroke="#ef9f27" stroke-width="0.5"/>
+</g>
+
+<!-- ===== BLOCKED ATTACK LINES ===== -->
+<g id="flow-attack" style="display:none">
+  <!-- NORONNA → EWS direct (blocked) -->
+  <line class="blocked-line" x1="514" y1="562" x2="109" y2="263" stroke="#e24b4a" stroke-width="1.8" marker-end="url(#arr-red)"/>
+  <g class="blocked-icon">
+    <rect x="268" y="388" width="126" height="36" rx="4" fill="rgba(226,75,74,0.15)" stroke="#e24b4a" stroke-width="0.5"/>
+    <text font-family="'IBM Plex Mono',monospace" font-size="10" x="331" y="401" text-anchor="middle" fill="#e24b4a">✕ BLOKKERT</text>
+    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="331" y="416" text-anchor="middle" fill="#e24b4a">ASA NORONNA_GW_IN</text>
+  </g>
+
+  <!-- FIELD → SERVER direct (blocked) -->
+  <line class="blocked-line" x1="99" y1="140" x2="99" y2="323" stroke="#e24b4a" stroke-width="1.8" marker-end="url(#arr-red)"/>
+  <g class="blocked-icon" style="animation-delay:0.8s">
+    <rect x="106" y="218" width="118" height="36" rx="4" fill="rgba(226,75,74,0.15)" stroke="#e24b4a" stroke-width="0.5"/>
+    <text font-family="'IBM Plex Mono',monospace" font-size="10" x="165" y="231" text-anchor="middle" fill="#e24b4a">✕ BLOKKERT</text>
+    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="165" y="247" text-anchor="middle" fill="#e24b4a">Kun MQTT/1883 → .40.40</text>
+  </g>
+
+  <!-- NORONNA → OOB-MGMT (blocked) -->
+  <path class="blocked-line" fill="none" d="M440 591 L200 591 L200 484 L44 484" stroke="#e24b4a" stroke-width="1.8" marker-end="url(#arr-red)"/>
+  <g class="blocked-icon" style="animation-delay:1.4s">
+    <rect x="110" y="528" width="118" height="36" rx="4" fill="rgba(226,75,74,0.15)" stroke="#e24b4a" stroke-width="0.5"/>
+    <text font-family="'IBM Plex Mono',monospace" font-size="10" x="169" y="541" text-anchor="middle" fill="#e24b4a">✕ BLOKKERT</text>
+    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="169" y="557" text-anchor="middle" fill="#e24b4a">Ingen rute til OOB-MGMT</text>
+  </g>
+
+  <!-- EWS → NORONNA direct (blocked) -->
+  <line class="blocked-line" x1="109" y1="263" x2="440" y2="591" stroke="#e24b4a" stroke-width="1.5" marker-end="url(#arr-red)" stroke-dasharray="4 6"/>
+  <g class="blocked-icon" style="animation-delay:2s">
+    <rect x="234" y="448" width="118" height="24" rx="4" fill="rgba(226,75,74,0.15)" stroke="#e24b4a" stroke-width="0.5"/>
+    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="293" y="464" text-anchor="middle" fill="#e24b4a">✕ EWS → NORØNNA: blokkert</text>
+  </g>
+</g>
+
+<!-- ===== OPC UA DETAIL ===== -->
+<g id="flow-opc" style="display:none">
+  <!-- Highlight box around OPC UA flow -->
+  <rect x="424" y="308" width="420" height="328" rx="8" fill="rgba(239,159,39,0.04)" stroke="#ef9f27" stroke-width="0.8" stroke-dasharray="5 3"/>
+  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="434" y="325" fill="#ef9f27" letter-spacing="0.06em">OPC UA DATAFLYT — AURORA ↔ NORØNNA SIMULERING</text>
+
+  <!-- OPC DA internal (app01 internal) -->
+  <rect x="600" y="323" width="0" height="0" fill="none"/>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="596" y="335" fill="#ef9f27">OPC DA intern</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="596" y="347" fill="#ef9f27">800xA simulert</text>
+  <line x1="594" y1="352" x2="580" y2="352" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
+  <line x1="580" y1="352" x2="580" y2="365" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
+
+  <!-- Flow: app02 → TCP4840 → app01 -->
+  <line class="flow" x1="514" y1="562" x2="514" y2="381" stroke="#ef9f27" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+
+  <!-- Port annotation -->
+  <rect x="520" y="455" width="110" height="50" rx="4" fill="rgba(239,159,39,0.1)" stroke="#ef9f27" stroke-width="0.5"/>
+  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="575" y="474" text-anchor="middle" fill="#ef9f27" font-weight="600">TCP / 4840</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="575" y="490" text-anchor="middle" fill="#ef9f27">ASA NORONNA_GW_IN</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="575" y="502" text-anchor="middle" fill="#ef9f27">permit host .70.11 → .40.50</text>
+
+  <!-- Tag whitelist box -->
+  <rect x="440" y="570" width="148" height="0" fill="none"/>
+  <rect x="630" y="555" width="200" height="70" rx="4" fill="rgba(239,159,39,0.08)" stroke="#ef9f27" stroke-width="0.5"/>
+  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="640" y="573" fill="#ef9f27" font-weight="600">Tag-filtering (SR 7.7)</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="589" fill="#ef9f27">uawrapper whitelist:</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="602" fill="#ef9f27">100 av 1000 OPC DA tags</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="615" fill="#ef9f27">= Least Functionality</text>
+  <line x1="630" y1="590" x2="588" y2="590" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
+</g>
+
+</svg>
+
+<div class="info-bar">
+  <div class="legend-item">
+    <div class="legend-dashed" style="border-color:#1d9e75"></div>
+    <span>MQTT / sensordata</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dashed" style="border-color:#ef9f27"></div>
+    <span>OPC UA (TCP/4840)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dashed" style="border-color:#378add"></div>
+    <span>HTTPS / admin</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dashed" style="border-color:#7f77dd"></div>
+    <span>EWS-administrasjon</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dashed" style="border-color:#e24b4a"></div>
+    <span>Blokkert trafikk</span>
+  </div>
+  <div class="legend-item" style="margin-left:auto">
+    <span style="color:var(--muted)">Hover over noder for detaljer</span>
+  </div>
+</div>
+</div>
+
+<footer>BO26EB-20 · Jørgen Austnes, Axel Sigmar Lien, Christopher Yarranton Rossebø · HVL / ABB Kokstad 2026</footer>
+
+<script>
+const tooltip = document.getElementById('tooltip');
+
+document.querySelectorAll('.node-group').forEach(node => {
+  const tip = node.getAttribute('data-tip');
+  if (!tip) return;
+
+  node.addEventListener('mouseenter', e => {
+    tooltip.innerHTML = tip.replace(/&#10;/g, '<br>').replace(/\n/g, '<br>');
+    tooltip.classList.add('show');
+  });
+  node.addEventListener('mousemove', e => {
+    const x = e.clientX + 14;
+    const y = e.clientY - 10;
+    const w = tooltip.offsetWidth;
+    tooltip.style.left = (x + w > window.innerWidth ? e.clientX - w - 14 : x) + 'px';
+    tooltip.style.top = y + 'px';
+  });
+  node.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('show');
+  });
+});
+
+function setMode(mode) {
+  document.getElementById('flow-normal').style.display = mode === 'normal' ? '' : 'none';
+  document.getElementById('flow-attack').style.display = mode === 'attack' ? '' : 'none';
+  document.getElementById('flow-opc').style.display    = mode === 'opc'    ? '' : 'none';
+
+  const classes = { normal: 'active-normal', attack: 'active-attack', opc: 'active-opc' };
+  ['btn-normal','btn-attack','btn-opc'].forEach(id => {
+    document.getElementById(id).className = 'ctrl-btn';
+  });
+  document.getElementById('btn-' + mode).classList.add(classes[mode]);
+}
+</script>
+</body>
+</html>

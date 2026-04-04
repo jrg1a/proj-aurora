@@ -1,0 +1,10 @@
+aurora-expo-backup-v2.html
+*.xlsx
+*.xls
+.~lock.*
+.DS_Store
+*.docx
+*.pdf
+*.md
+rapport-kartlegging.md
+config-review-notat.md
