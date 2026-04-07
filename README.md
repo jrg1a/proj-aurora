@@ -12,7 +12,7 @@
 
 *Bacheloroppgave · Elektroingeniør – Cyberfysisk Nettverksteknologi · HVL 2026*
 
-[🌐 Se EXPO-nettsiden](https://jorgen.github.io/project-aurora) · [📊 Arkitekturdiagram](aurora-nettverksarkitektur.html) · [🔄 Dataflytdiagram](dataflow-diagram.html)
+[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [📊 Arkitekturdiagram](aurora-nettverksarkitektur.html) · [🔄 Dataflytdiagram](dataflow-diagram.html)
 
 </div>
 
@@ -35,53 +35,52 @@ Prosjektet er utført i samarbeid med **ABB**, som trenger offline-testing av si
 
 ## 🗺️ Nettverksarkitektur
 
-Arkitekturen er bygget rundt **8 VLANer** fordelt på 5 sikkerhetssoner, separert av en **Cisco ASA 5506-X** brannmur.
+Arkitekturen er bygget rundt **8 VLANer** fordelt på 5 sikkerhetssoner, separert av en **Cisco ASA 5506-X** brannmur med VLAN-subinterfaces.
 
 ```mermaid
 graph TB
-    subgraph INTERNET["🌐 Internett / WAN"]
-        NORONNA["🏗️ NORØNNA<br/>(Offshore Site)<br/>VLAN 100"]
+    subgraph WAN["🌐 WAN (VLAN 100)"]
+        NORONNA["🏗️ NORØNNA (Offshore Site)"]
     end
 
-    subgraph ASA["🔥 Cisco ASA 5506-X<br/>Brannmur + VLAN-ruting"]
-        FW["ACL-regler<br/>8 VLANer"]
-    end
+    ASA["🔥 Cisco ASA 5506-X\nBrannmur · ACL · VLAN-ruting"]
 
     subgraph IDMZ["🟡 IDMZ — Industrial DMZ (VLAN 40/50)"]
-        JH["💻 Jump Host<br/>RDP/SSH-gateway"]
-        DB["📡 Data-broker<br/>OPC UA-proxy"]
-        HIST["🗄️ Historian<br/>Prosessdata"]
+        JH["💻 Jump Host\nRDP/SSH inn-punkt"]
+        DB["📡 Data-broker\nOPC UA → WAN"]
+        HIST["🗄️ Historian"]
     end
 
     subgraph IT["🔵 IT-sone (VLAN 60/70)"]
-        EWS["🖥️ EWS<br/>Engineering Workstation"]
-        DC["🔐 DC/RADIUS<br/>Active Directory"]
-        WSUS["⬇️ WSUS<br/>Patch-server"]
+        EWS["🖥️ EWS\nEngineering Workstation"]
+        DC["🔐 DC / RADIUS\nActive Directory"]
+        WSUS["⬇️ WSUS\nPatch-server"]
     end
 
-    subgraph OT["🔴 OT/Field-sone (VLAN 10/20)"]
-        PLC["⚙️ PLC / RTU<br/>Sensorer og aktuatorer"]
-        AP["📶 Access Points<br/>802.1X"]
-        APP01["🔄 app01<br/>UaWrapper + OPC DA"]
-        APP02["🔄 app02<br/>Cogent DataHub"]
+    subgraph OT["🔴 OT / Field-sone (VLAN 10/20)"]
+        SENSORS["⚙️ Sensorer og aktuatorer\n802.1X Access Points"]
+        APP01["🔄 app01 — UaWrapper\nOPC DA → OPC UA"]
+        APP02["🔄 app02 — Cogent DataHub\nOPC DA-server"]
     end
 
     subgraph MGMT["⚫ OOB-MGMT (VLAN 99)"]
-        CONSOLE["🖥️ Console-server<br/>Out-of-band tilgang"]
+        CONSOLE["🖥️ Console-server\nOut-of-band admin"]
     end
 
-    NORONNA <-->|"OPC UA<br/>SignAndEncrypt<br/>TCP 4840"| ASA
-    ASA <--> IDMZ
-    IDMZ <-->|"Kontrollert<br/>tilgang"| IT
-    IT <-->|"Begrenset<br/>tilgang"| OT
+    NORONNA <-->|"OPC UA\nSignAndEncrypt\nTCP 4840"| ASA
+    ASA <-->|"Kontrollert"| IDMZ
+    ASA <-->|"Begrenset"| IT
+    ASA <-->|"Streng ACL"| OT
+    APP01 -->|"OPC UA"| DB
+    JH -.->|"RDP/SSH\ngjennom IDMZ"| EWS
     ASA -.->|"Kun admin"| MGMT
 
-    style INTERNET fill:#1a1a2e,color:#fff,stroke:#00d4ff
+    style WAN fill:#0d1a2e,color:#fff,stroke:#00d4ff
     style ASA fill:#2d1b00,color:#fff,stroke:#ff6b00
     style IDMZ fill:#2d2d00,color:#fff,stroke:#ffd700
     style IT fill:#001a33,color:#fff,stroke:#0080ff
     style OT fill:#1a0000,color:#fff,stroke:#ff4444
-    style MGMT fill:#0d0d0d,color:#fff,stroke:#666
+    style MGMT fill:#111,color:#aaa,stroke:#555
 ```
 
 ---
@@ -141,11 +140,12 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 | Side/seksjon | Beskrivelse |
 |---|---|
 | 🎯 **Hero** | Animert nettverksvisualisering |
-| ⚠️ **Trusselbildet** | 9 virkelige OT-angrep, sektorstatistikk |
-| 💥 **Angrepssimulering** | Canvas-basert animasjon: med/uten AURORA |
+| ⚠️ **Trusselbildet** | 9 virkelige OT-angrep, sektorstatistikk, angrepssimulering |
 | 🗺️ **Arkitekturdiagram** | Interaktiv SVG med 3 visningsmoduser |
-| 🔐 **MITRE ATT&CK** | Kill chain, teknikkkort, tiltakstabell |
+| 🔐 **MITRE ATT&CK** | ICS kill chain, teknikkkort, tiltakstabell |
 | 📊 **Dataflytdiagram** | Sone-til-sone trafikk med protokoller/porter |
+| 🔥 **Brannfakler** | Provoserende påstander om OT-sikkerhet (flippkort) |
+| 🧠 **Quiz** | 14 tankevkkende spørsmål om OT-sikkerhet |
 | 👥 **Team** | Gruppemedlemmer og roller |
 
 ---
@@ -176,12 +176,15 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 ## 📁 Repo-innhold
 
 ```
-📂 project-aurora/
-├── 📄 index.html                    # Showcase-nettside (GitHub Pages)
-├── 📄 aurora-expo.html              # Showcase-nettside (kopi)
-├── 📄 aurora-nettverksarkitektur.html  # Interaktivt arkitekturdiagram
-├── 📄 dataflow-diagram.html         # Dataflytdiagram med protokoller/porter
-└── 📄 README.md                     # Denne filen
+📂 proj-aurora/
+├── 📄 index.html                       # Showcase-nettside (GitHub Pages entry point)
+├── 📄 aurora-expo.html                 # Showcase-nettside
+├── 📄 aurora-nettverksarkitektur.html  # Interaktivt arkitekturdiagram (SVG)
+├── 📄 dataflow-diagram.html            # Dataflytdiagram med protokoller/porter
+├── 📄 brannfakler.html                 # Provoserende OT-sikkerhetspåstander
+├── 📄 quiz.html                        # Interaktiv OT-sikkerhetsquiz (14 spørsmål)
+├── 📄 LICENSE                          # MIT-lisens
+└── 📄 README.md                        # Denne filen
 ```
 
 ---
@@ -191,8 +194,8 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 Nettsiden er ren HTML/CSS/JS — ingen bygg-steg nødvendig:
 
 ```bash
-git clone https://github.com/DITT-BRUKERNAVN/project-aurora.git
-cd project-aurora
+git clone https://github.com/jrg1a/proj-aurora.git
+cd proj-aurora
 
 # Åpne direkte i nettleser
 open index.html          # macOS
