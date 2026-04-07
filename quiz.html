@@ -476,7 +476,91 @@ html, body {
   .question-text { font-size: 1.3rem; }
   .option { padding: 14px 16px; font-size: 0.92rem; }
 }
+
+/* ── Light mode ── */
+html.light {
+  --bg-deep: #f4f6fa;
+  --bg-mid: #eaedf2;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f3f8;
+  --border: rgba(0,0,0,0.09);
+  --text-primary: #0d1117;
+  --text-secondary: #444c56;
+  --text-muted: #9ba4af;
+  --accent-teal: #0b9e78;
+  --accent-blue: #0969da;
+  --accent-purple: #6e40c9;
+  --accent-amber: #b35c00;
+  --accent-red: #cf3124;
+  --accent-green: #1a7f37;
+  --gradient-quiz: linear-gradient(135deg, #0b9e78 0%, #0969da 50%, #6e40c9 100%);
+}
+html.light body { background: var(--bg-deep); }
+html.light .bg-grid {
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(11,158,120,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(110,64,201,0.06) 0%, transparent 50%),
+    var(--bg-deep);
+}
+html.light .bg-grid::before {
+  background-image:
+    linear-gradient(rgba(9,105,218,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9,105,218,0.05) 1px, transparent 1px);
+}
+html.light .navbar {
+  background: rgba(244,246,250,0.9);
+  border-bottom-color: rgba(0,0,0,0.09);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+html.light .nav-back { border-color: rgba(0,0,0,0.12); }
+html.light .start-label {
+  background: rgba(11,158,120,0.08);
+  border-color: rgba(11,158,120,0.25);
+}
+html.light .start-btn { color: #fff; }
+html.light .start-meta div { color: var(--text-muted); }
+html.light .start-meta strong { color: var(--text-primary); }
+html.light .progress-bar { background: var(--bg-mid); border-color: rgba(0,0,0,0.09); }
+html.light .q-tag {
+  background: rgba(11,158,120,0.08);
+  border-color: rgba(11,158,120,0.25);
+}
+html.light .option {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.1);
+  color: var(--text-primary);
+}
+html.light .option:hover:not(.disabled) {
+  background: rgba(11,158,120,0.04);
+}
+html.light .option.correct { background: rgba(26,127,55,0.06); }
+html.light .option.wrong { background: rgba(207,49,36,0.06); }
+html.light .option.dimmed { opacity: 0.35; }
+html.light .explanation {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.09);
+  border-left-color: var(--accent-blue);
+}
+html.light .exp-source { border-top-color: rgba(0,0,0,0.09); }
+html.light .result-of { color: var(--text-muted); }
+html.light .result-desc { color: var(--text-secondary); }
+html.light .result-actions button,
+html.light .result-actions a {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.12);
+  color: var(--text-primary);
+}
+html.light .result-breakdown { border-top-color: rgba(0,0,0,0.09); }
+html.light .dot { background: var(--bg-mid); border-color: rgba(0,0,0,0.12); }
 </style>
+<!-- Apply saved theme before first paint to avoid flash -->
+<script>
+  try {
+    if (localStorage.getItem('aurora-theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+  } catch(e) {}
+</script>
 </head>
 <body>
 

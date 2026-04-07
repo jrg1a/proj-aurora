@@ -416,7 +416,74 @@ html, body {
   .torch-grid { padding: 0 20px 60px; gap: 16px; }
   .torch { height: 260px; }
 }
+
+/* ── Light mode ── */
+html.light {
+  --bg-deep: #faf7f3;
+  --bg-mid: #f2ece3;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fef8f2;
+  --border: rgba(0,0,0,0.09);
+  --text-primary: #1a0e00;
+  --text-secondary: #5a4530;
+  --text-muted: #9a8a70;
+  --accent-fire: #d95000;
+  --accent-fire-bright: #b85e00;
+  --accent-red: #c0202e;
+  --accent-amber: #996600;
+  --accent-teal: #0b7a5e;
+  --accent-blue: #0969da;
+  --accent-purple: #6e40c9;
+  --gradient-fire: linear-gradient(135deg, #c0202e 0%, #d95000 50%, #996600 100%);
+}
+html.light body { background: var(--bg-deep); }
+html.light .ember-bg {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(217,80,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 0%, rgba(110,64,201,0.04) 0%, transparent 50%),
+    var(--bg-deep);
+}
+html.light .navbar {
+  background: rgba(250,247,243,0.9);
+  border-bottom-color: rgba(0,0,0,0.09);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+html.light .nav-back { border-color: rgba(0,0,0,0.12); }
+html.light .torch-front {
+  background: linear-gradient(180deg, #ffffff 0%, #fef6ee 100%);
+  border-color: rgba(0,0,0,0.09);
+}
+html.light .torch:hover .torch-front {
+  box-shadow: 0 0 0 1px var(--accent-fire),
+              0 12px 32px rgba(217,80,0,0.14),
+              0 0 60px rgba(217,80,0,0.08);
+}
+html.light .torch-front::before {
+  background: radial-gradient(ellipse, rgba(217,80,0,0.06) 0%, transparent 60%);
+}
+html.light .torch-back {
+  background: linear-gradient(180deg, #fef6ee 0%, #f2ece3 100%);
+  border-color: var(--accent-fire);
+}
+html.light .filter-btn {
+  background: #ffffff;
+  color: var(--text-secondary);
+  border-color: rgba(0,0,0,0.12);
+}
+html.light .hero-label {
+  background: rgba(217,80,0,0.08);
+  border-color: rgba(217,80,0,0.25);
+}
+html.light .footer { border-top-color: var(--border); }
 </style>
+<!-- Apply saved theme before first paint to avoid flash -->
+<script>
+  try {
+    if (localStorage.getItem('aurora-theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+  } catch(e) {}
+</script>
 </head>
 <body>
 
