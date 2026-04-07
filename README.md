@@ -219,8 +219,6 @@ xdg-open index.html      # Linux
 | **Axel Sigmar Lien** | Elektroingeniør · Cyberfysisk Nettverksteknologi |
 | **Christopher Yarranton Rossebø** | Elektroingeniør · Cyberfysisk Nettverksteknologi |
 
-**Veileder:** Guang Yang (HVL)
-**Industripartner:** Erik Serck-Hanssen (ABB)
 
 ---
 
