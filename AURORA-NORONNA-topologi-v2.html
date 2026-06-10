@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Project AURORA — Studentlab Topologi</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a1a; }
+
+  h1 { text-align: center; font-size: 22px; margin-bottom: 4px; color: #1e2761; letter-spacing: 0.3px; }
+  .subtitle { text-align: center; font-size: 12px; color: #777; margin-bottom: 22px; }
+
+  .card {
+    background: #fff; border-radius: 12px; padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px;
+    max-width: 1300px; margin-left: auto; margin-right: auto;
+  }
+
+  .card-title {
+    font-size: 13px; font-weight: 700; color: #fff; padding: 5px 12px;
+    border-radius: 5px; display: inline-block; margin-bottom: 14px;
+  }
+
+  .ref-grid { display: grid; grid-template-columns: 1fr 90px 1fr; gap: 0; align-items: center; }
+  .ref-site { padding: 10px 14px; }
+  .ref-site-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .ref-fw { text-align: center; background: #c0392b; color: #fff; border-radius: 8px; padding: 10px 6px; font-size: 10px; font-weight: 700; }
+  .ref-fw small { display: block; font-weight: 400; font-size: 9px; margin-top: 2px; opacity: 0.85; }
+  .ref-arrow { font-size: 22px; color: #c0392b; display: block; text-align: center; margin: 4px 0; }
+  .ref-node { background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; padding: 7px 10px; margin-bottom: 6px; font-size: 10px; }
+  .ref-node strong { font-size: 11px; display: block; margin-bottom: 2px; }
+
+  .tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 9px; margin: 1px 2px 1px 0; font-weight: 600; }
+  .tag-ua { background: #d4d8fd; color: #2a2a8a; }
+  .tag-da { background: #fde8d4; color: #8a3a0a; }
+  .tag-hub { background: #d4f0d4; color: #1a6a1a; }
+  .tag-sw { background: #e8e8e8; color: #444; }
+
+  .topo-grid { display: grid; grid-template-columns: 1fr 110px 1fr; gap: 0; align-items: stretch; min-height: 580px; }
+
+  .site-panel { border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .aurora-panel { background: linear-gradient(160deg, #e8f0fe, #ddeaf8); border: 2px solid #3a6ea8; }
+  .noronna-panel { background: linear-gradient(160deg, #fff2e8, #f8e8d8); border: 2px solid #a86a3a; }
+
+  .site-badge { font-size: 15px; font-weight: 800; color: #fff; padding: 5px 14px; border-radius: 6px; display: inline-block; margin-bottom: 2px; }
+  .aurora-badge { background: #1e4f8a; }
+  .noronna-badge { background: #8a4e1e; }
+  .site-sub { font-size: 10px; color: #777; margin-bottom: 4px; }
+
+  .zone { border-radius: 8px; padding: 11px 12px; }
+  .zone-hdr { font-size: 11px; font-weight: 700; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .vlan-badge { font-size: 9px; background: rgba(0,0,0,0.1); padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+
+  .z-server { background: rgba(30,80,160,0.1); border: 1px solid rgba(30,80,160,0.25); }
+  .z-ews    { background: rgba(30,140,80,0.1); border: 1px solid rgba(30,140,80,0.25); }
+  .z-idmz   { background: rgba(160,100,30,0.1); border: 1px solid rgba(160,100,30,0.25); }
+  .z-oob    { background: rgba(110,30,160,0.1); border: 1px solid rgba(110,30,160,0.25); }
+  .z-noronna{ background: rgba(180,110,30,0.12); border: 1px solid rgba(180,110,30,0.3); }
+  .z-noronna-srv { background: rgba(160,90,20,0.08); border: 1px dashed rgba(160,90,20,0.3); }
+  .z-field  { background: rgba(30,160,110,0.08); border: 1px dashed rgba(30,160,110,0.3); opacity: 0.75; }
+
+  .vm { background: #fff; border: 1px solid #d0d0d0; border-radius: 7px; padding: 9px 11px; margin-bottom: 7px; font-size: 11px; }
+  .vm:last-child { margin-bottom: 0; }
+  .vm-name { font-weight: 700; font-size: 12px; color: #1a1a60; }
+  .vm-ip { font-size: 10px; color: #999; font-family: Consolas, monospace; margin-left: 6px; }
+  .vm-os { font-size: 9px; color: #aaa; }
+  .vm-tags { margin-top: 5px; }
+  .vm-equiv { font-size: 9px; color: #aaa; border-top: 1px dashed #e8e8e8; margin-top: 6px; padding-top: 5px; font-style: italic; }
+  .vm-key-aurora { border-color: #3a6ea8; border-width: 2px; }
+  .vm-key-noronna { border-color: #a86a3a; border-width: 2px; }
+
+  .hw { background: #2c3e50; color: #e0e8f0; border-radius: 7px; padding: 9px 12px; font-size: 11px; margin-bottom: 7px; }
+  .hw .vm-name { color: #7ec8e8; }
+  .hw .vm-ip { color: #aaa; }
+
+  .fw-col { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 5px; gap: 6px; }
+  .fw-box { background: linear-gradient(180deg, #c0392b, #96281b); color: #fff; border-radius: 9px; padding: 14px 10px; text-align: center; font-size: 11px; font-weight: 700; width: 96px; box-shadow: 0 3px 10px rgba(192,57,43,0.35); }
+  .fw-box .fw-model { font-size: 9px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+  .fw-box .fw-equiv { font-size: 9px; font-weight: 400; opacity: 0.9; margin-top: 6px; background: rgba(255,255,255,0.15); border-radius: 4px; padding: 3px 5px; }
+  .fw-arrow { font-size: 22px; color: #c0392b; line-height: 1; }
+  .fw-proto { background: #fff3e0; border: 1px solid #f0b040; border-radius: 5px; padding: 4px 7px; font-size: 9px; font-weight: 700; color: #8a5000; text-align: center; line-height: 1.4; }
+  .fw-ports { font-size: 9px; color: #666; text-align: center; line-height: 1.6; }
+  .fw-ports code { background: #f0f0f0; padding: 1px 4px; border-radius: 2px; font-family: Consolas, monospace; font-size: 9px; }
+
+  .infra-bar { max-width: 1300px; margin: 0 auto 16px; background: #1a2535; color: #7ec8e8; border-radius: 8px; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .infra-bar .vs { font-size: 9px; background: rgba(126,200,232,0.15); padding: 2px 7px; border-radius: 3px; margin-left: 8px; color: #aad4ea; }
+
+  .sw-bar { max-width: 1300px; margin: 12px auto 16px; background: #2c3e50; color: #e0e8f0; border-radius: 8px; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .p { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 3px; margin: 0 2px; font-family: Consolas, monospace; }
+  .p-trunk { background: rgba(52,152,219,0.35); color: #aee; }
+  .p-oob   { background: rgba(155,89,182,0.35); color: #dae; }
+  .p-off   { background: rgba(255,255,255,0.08); color: #888; }
+
+  .it-bar { max-width: 1300px; margin: 0 auto; background: rgba(160,30,30,0.08); border: 1px solid rgba(160,30,30,0.2); border-radius: 7px; padding: 8px 16px; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
+
+  .sec-hdr { font-size: 15px; font-weight: 700; color: #1e2761; margin-bottom: 12px; }
+
+  .flow-list { display: flex; flex-direction: column; gap: 8px; }
+  .flow-item { display: flex; align-items: flex-start; font-size: 11px; gap: 10px; background: #f8f9ff; border-radius: 7px; padding: 9px 12px; border: 1px solid #e0e4f0; }
+  .flow-num { background: #1e2761; color: #fff; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .flow-num.opt { background: #aaa; }
+
+  table.map { width: 100%; border-collapse: collapse; font-size: 11px; }
+  table.map th { background: #1e2761; color: #fff; padding: 7px 10px; text-align: left; font-size: 11px; }
+  table.map td { padding: 6px 10px; border-bottom: 1px solid #eeeeee; }
+  table.map tr:nth-child(even) td { background: #f8f8f8; }
+  .c-a { color: #1e4f8a; font-weight: 600; }
+  .c-n { color: #8a4e1e; font-weight: 600; }
+  .c-s { color: #888; font-style: italic; }
+
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  pre.cfg { background: #1a2535; color: #7ec8e8; padding: 12px 14px; border-radius: 8px; font-size: 10px; line-height: 1.55; overflow-x: auto; margin: 0; }
+  pre.cfg .cmt { color: #5a8a6a; }
+  .cfg-label { font-size: 12px; font-weight: 700; color: #c0392b; margin-bottom: 6px; }
+
+  .note { background: #fffde7; border-left: 3px solid #f9a825; padding: 9px 13px; border-radius: 0 6px 6px 0; font-size: 11px; margin-top: 10px; line-height: 1.5; }
+  .note strong { color: #e65100; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; background: #f8f8f8; border-radius: 8px; border: 1px solid #e8e8e8; margin-top: 14px; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 10px; }
+  .leg-c { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.12); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<h1>Project AURORA — Studentlab Nettverkstopologi</h1>
+<p class="subtitle">Forenklet dual-site OPC UA-simulering &nbsp;|&nbsp; 1 VM per site &nbsp;|&nbsp; ABB Kokstad Testlab &nbsp;|&nbsp; Bacheloroppgave 2026</p>
+
+<!-- SITE REFERENCE -->
+<div class="card">
+  <span class="card-title" style="background:#6c7a89;">Referanse: Ekte site-topologi (AURORA &#8596; NORØNNA)</span>
+  <div class="ref-grid">
+    <div class="ref-site">
+      <div class="ref-site-title" style="color:#1e4f8a;">AURORA &#8212; Landanlegg</div>
+      <div class="ref-node">
+        <strong>87JS999A &#8212; ao-sys1</strong>
+        <span class="tag tag-da">ABB 800xA</span>
+        <span class="tag tag-ua">OPC UA Server</span>
+        <span class="tag tag-sw">Engineering tool</span>
+      </div>
+      <div class="ref-node">
+        <strong>87JS999B &#8212; ao-sys2 (redundant)</strong>
+        <span class="tag tag-da">ABB 800xA</span>
+        <span class="tag tag-ua">OPC UA Server</span>
+        <span class="tag tag-sw">Engineering tool</span>
+      </div>
+      <div style="font-size:10px;color:#aaa;margin-top:4px;">Client/server network</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="ref-fw">SAS FW A<small>87JQ011A</small></div>
+      <span class="ref-arrow">&#8596;</span>
+      <div class="ref-fw">SAS FW B<small>87JQ011B</small></div>
+      <div style="font-size:9px;color:#c0392b;font-weight:700;margin-top:6px;">OPC UA<br>conduit</div>
+    </div>
+    <div class="ref-site">
+      <div class="ref-site-title" style="color:#8a4e1e;">NORØNNA &#8212; Offshore</div>
+      <div class="ref-node">
+        <strong>OPC Gateway opc 1</strong>
+        <span class="tag tag-hub">Cogent DataHub</span>
+        <span class="tag tag-ua">OPC UA Client</span>
+        <div style="font-size:9px;color:#888;margin-top:2px;">ReadWrite dataset &#8592; ao-sys1</div>
+      </div>
+      <div class="ref-node">
+        <strong>OPC Gateway opc 2</strong>
+        <span class="tag tag-hub">Cogent DataHub</span>
+        <span class="tag tag-ua">OPC UA Client</span>
+        <div style="font-size:9px;color:#888;margin-top:2px;">ReadWrite dataset &#8592; ao-sys2</div>
+      </div>
+      <div class="ref-node" style="opacity:0.7;">
+        <strong>ABB IMS Server 87JS000</strong>
+        <span class="tag tag-ua">Aggregating UA Server</span>
+        <div style="font-size:9px;color:#888;margin-top:2px;">&#8594; Leak Detection / 3rd party</div>
+      </div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:12px;">
+    <strong>Forenkling i studentlabben:</strong> Site har <em>to</em> redundante paths (ao-sys1 &#8594; opc1, ao-sys2 &#8594; opc2).
+    I studentlabben simulerer vi <strong>&#233;n path med &#233;n VM per site</strong> &#8212;
+    3p-hvl-app01 (AURORA) &#8594; 3p-hvl-app02 (NORØNNA).
+    Full redundans kan legges til ved behov med ekstra VM-er.
+  </div>
+</div>
+
+<!-- PHYSICAL INFRA -->
+<div class="infra-bar">
+  <div>
+    <strong>Dell R440 &#8212; VMware ESXi</strong>
+    <span class="vs">vSwitch0 &#8212; AURORA (VLAN 40, 45, 50, 60, 99)</span>
+    <span class="vs">vSwitch1 &#8212; NORØNNA (VLAN 70)</span>
+  </div>
+  <div style="font-size:9px;color:#6a8aaa;">iDRAC: 10.0.99.2 &nbsp;|&nbsp; ESXi: 10.0.99.3</div>
+</div>
+
+<!-- MAIN TOPOLOGY -->
+<div class="card" style="padding:20px;">
+  <span class="card-title" style="background:#1e2761;">Studentlab &#8212; Dual-site topologi (1 VM per site)</span>
+  <p style="font-size:10px;color:#888;margin-bottom:16px;">
+    Cisco ASA 5506-X spiller rollen som SAS FW mellom AURORA og NORØNNA &nbsp;|&nbsp; kun OPC UA TCP/46040 + 46041 krysser brannmuren (to eksplisitte sesjonsretninger)
+  </p>
+
+  <div class="topo-grid">
+
+    <!-- AURORA -->
+    <div class="site-panel aurora-panel">
+      <div>
+        <span class="site-badge aurora-badge">AURORA &#8212; Landanlegg</span>
+        <div class="site-sub">ASA G1/2 trunk &#8594; Cisco SG250 &#8594; ESXi vSwitch0</div>
+      </div>
+
+      <div class="zone z-server" style="background:rgba(240,180,41,0.1);border:1px solid rgba(240,180,41,0.3);">
+        <div class="zone-hdr">
+          <span>OPC-UA-Zone &#8212; Transitt</span>
+          <span class="vlan-badge">VLAN 45 &#8212; 10.0.45.0/24</span>
+        </div>
+
+        <div class="vm vm-key-aurora">
+          <div>
+            <span class="vm-name">3p-hvl-app01</span>
+            <span class="vm-ip">10.0.45.10</span>
+            <span class="vm-os">&nbsp;&#8212; Windows Server 2022</span>
+          </div>
+          <div class="vm-tags" style="margin-top:5px;">
+            <span class="tag tag-da">ABB OPC Connect Server</span>
+            <span class="tag tag-da">Matrikon OPC Explorer</span>
+            <span class="tag tag-ua">UaWrapper v1.9 &#8212; OPC UA :46040</span>
+          </div>
+          <div style="font-size:10px;color:#333;margin-top:6px;background:#eef4ff;padding:5px 7px;border-radius:4px;">
+            OPC DA (simulerer ABB 800xA DCS via lokal DCOM) &#9658; <strong>UaWrapper v1.9 &#8212; OPC UA-server p&#229; opc.tcp://10.0.45.10:46040</strong>
+          </div>
+          <div class="vm-equiv">&#8596; Site: AURORA-app1 (87JS999A ao-sys1) &#8212; ABB 800xA</div>
+        </div>
+      </div>
+
+      <div class="zone z-server">
+        <div class="zone-hdr">
+          <span>OT SERVER-sone</span>
+          <span class="vlan-badge">VLAN 40 &#8212; 10.0.40.0/24</span>
+        </div>
+
+        <div class="hw">
+          <div><span class="vm-name">DC / RADIUS / NPS</span><span class="vm-ip">10.0.40.10</span></div>
+          <div class="vm-tags" style="margin-top:4px;"><span class="tag tag-sw">AD DS</span><span class="tag tag-sw">DNS</span><span class="tag tag-sw">RADIUS/NPS</span></div>
+        </div>
+        <div class="hw">
+          <div><span class="vm-name">AD-MGMT</span><span class="vm-ip">10.0.40.20</span></div>
+          <div class="vm-tags" style="margin-top:4px;"><span class="tag tag-sw">RSAT</span><span class="tag tag-sw">Admin tools</span></div>
+        </div>
+        <div class="hw">
+          <div><span class="vm-name">WSUS</span><span class="vm-ip">10.0.40.30</span></div>
+          <div class="vm-tags" style="margin-top:4px;"><span class="tag tag-sw">Windows Update</span></div>
+        </div>
+      </div>
+
+      <div class="zone z-ews">
+        <div class="zone-hdr">
+          <span>EWS &#8212; Engineering</span>
+          <span class="vlan-badge">VLAN 50 &#8212; 10.0.50.0/24</span>
+        </div>
+        <div class="vm">
+          <div><span class="vm-name">EWS</span><span class="vm-ip">10.0.50.10</span></div>
+          <div class="vm-tags" style="margin-top:4px;">
+            <span class="tag tag-sw">Engineering</span>
+            <span class="tag tag-ua">UaExpert (test)</span>
+            <span class="tag tag-sw">Domain-joined</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="zone z-idmz">
+        <div class="zone-hdr">
+          <span>IDMZ &#8212; DMZ</span>
+          <span class="vlan-badge">VLAN 60 &#8212; 10.0.60.0/24</span>
+        </div>
+        <div class="vm">
+          <div><span class="vm-name">Jump Host</span><span class="vm-ip">10.0.60.2</span></div>
+          <div class="vm-tags" style="margin-top:4px;"><span class="tag tag-sw">RDP-inngang</span><span class="tag tag-sw">Fjernaksess</span></div>
+        </div>
+      </div>
+
+      <div class="zone z-field">
+        <div class="zone-hdr">
+          <span style="color:#aaa;">FIELD <em style="font-weight:400;">(avventer avklaring)</em></span>
+          <span class="vlan-badge" style="background:rgba(0,0,0,0.06);">VLAN 10 &#8212; 10.0.10.0/24</span>
+        </div>
+        <div style="font-size:10px;color:#bbb;padding:2px;">IIoT-sensorer &#8212; planlagt design, ikke fysisk implementert (jf. T-20)</div>
+      </div>
+
+      <div class="zone z-oob">
+        <div class="zone-hdr">
+          <span>OOB-MGMT</span>
+          <span class="vlan-badge">VLAN 99 &#8212; 10.0.99.0/24</span>
+        </div>
+        <div style="font-size:10px;color:#555;padding:2px;">
+          MGMT-WS (10.0.99.99) &#8594; ASA (10.0.99.1), Switch (10.0.99.10), iDRAC (10.0.99.2), ESXi (10.0.99.3)
+        </div>
+      </div>
+    </div>
+
+    <!-- FIREWALL -->
+    <div class="fw-col">
+      <div class="fw-proto">NORØNNA initierer<br>OPC UA<br>&#8594; TCP/46040</div>
+      <div class="fw-arrow">&#8595;</div>
+      <div class="fw-box">
+        &#128293; ASA FW
+        <div class="fw-model">Cisco ASA 5506-X</div>
+        <div class="fw-equiv">&#8776; SAS FW A/B<br>87JQ011A/011B</div>
+      </div>
+      <div class="fw-arrow">&#8595;</div>
+      <div class="fw-proto">AURORA initierer<br>retur-retning<br>&#8594; TCP/46041</div>
+      <div class="fw-ports" style="margin-top:10px;">
+        <strong>Porter:</strong><br>
+        <code>G1/2</code> AURORA<br>
+        <code>G1/4</code> NORØNNA<br>
+        <code>G1/1</code> IT-WAN<br>
+        <code>G1/3</code> OOB-MGMT
+      </div>
+    </div>
+
+    <!-- NORØNNA -->
+    <div class="site-panel noronna-panel">
+      <div>
+        <span class="site-badge noronna-badge">NORØNNA &#8212; Offshore</span>
+        <div class="site-sub">ASA G1/4 &#8594; ESXi vSwitch1</div>
+      </div>
+
+      <div class="zone z-noronna">
+        <div class="zone-hdr">
+          <span>OPC Gateway-sone</span>
+          <span class="vlan-badge">VLAN 70 &#8212; 10.0.70.0/24</span>
+        </div>
+
+        <div class="vm vm-key-noronna">
+          <div>
+            <span class="vm-name">3p-hvl-app02</span>
+            <span class="vm-ip">10.0.70.11</span>
+            <span class="vm-os">&nbsp;&#8212; Windows Server 2022</span>
+          </div>
+          <div class="vm-tags" style="margin-top:5px;">
+            <span class="tag tag-hub">Cogent DataHub</span>
+            <span class="tag tag-ua">OPC UA Client</span>
+            <span class="tag tag-sw">UaExpert</span>
+          </div>
+          <div style="font-size:10px;color:#333;margin-top:6px;background:#fff5ee;padding:5px 7px;border-radius:4px;">
+            Kobler seg til <strong>app01 (10.0.45.10):46040</strong> og leser whitelistede tags; mottar AURORA-initiert sesjon p&#229; :46041
+          </div>
+          <div class="vm-equiv">&#8596; Site: NORØNNA OPC Gateway opc 1 &#8212; Cogent DataHub Server</div>
+        </div>
+      </div>
+
+      <div class="zone z-noronna-srv">
+        <div class="zone-hdr">
+          <span style="color:#bbb;">Offshore Server <em style="font-weight:400;">(valgfri utvidelse)</em></span>
+          <span class="vlan-badge" style="background:rgba(0,0,0,0.06);">VLAN 71 &#8212; 10.0.71.0/24</span>
+        </div>
+        <div class="vm" style="opacity:0.6;">
+          <div><span class="vm-name">IMS Server</span><span class="vm-ip">10.0.71.10</span></div>
+          <div class="vm-tags" style="margin-top:4px;"><span class="tag tag-ua">Aggregating UA Server</span></div>
+          <div style="font-size:10px;color:#aaa;margin-top:3px;">Samler fra Cogent DataHub &#8594; 3rd party klienter</div>
+          <div class="vm-equiv">&#8596; Site: ABB IMS Server 87JS000</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Fremtidig redundans:</strong><br>
+        N&#229;r 2-VM-oppsettet fungerer kan dere legge til:<br>
+        &#8226; <strong>3p-hvl-app03</strong> (VLAN 45) &#8212; AURORA ao-sys2 med OPC UA Server<br>
+        &#8226; <strong>3p-hvl-app04</strong> (VLAN 70) &#8212; NORØNNA opc2 med Cogent DataHub<br>
+        Dette gir full redundans som p&#229; ekte site.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SWITCH -->
+<div class="sw-bar">
+  <div><strong>Cisco SG250-26</strong> <span style="font-size:9px;color:#6a8aaa;">MGMT: 10.0.99.10</span></div>
+  <div>
+    <span class="p p-trunk">G1 Trunk&#8594;ASA</span>
+    <span class="p p-trunk">G2 Trunk&#8594;ESXi</span>
+    <span class="p p-oob">G3 OOB</span>
+    <span class="p p-oob">G4 OOB</span>
+    <span class="p p-oob">G5 iDRAC</span>
+    <span class="p p-oob">G6 ESXi OOB</span>
+    <span class="p p-off">G7&#8211;G26 unused</span>
+  </div>
+</div>
+
+<div class="it-bar" style="margin-bottom:20px;">
+  <div><strong>IT/WAN &#8212; Enterprise</strong> &nbsp;|&nbsp; VLAN 100 &#8212; 10.0.100.0/24 &nbsp;|&nbsp; ASA G1/1</div>
+  <div style="font-size:10px;color:#888;">ABB bedriftsnettverk &#8594; Jump Host i IDMZ</div>
+</div>
+
+<!-- DATAFLYT -->
+<div class="card" style="margin-bottom:20px;">
+  <div class="sec-hdr">Dataflyt &#8212; OPC UA gjennom brannmur (steg for steg)</div>
+  <div class="flow-list">
+    <div class="flow-item">
+      <div class="flow-num">1</div>
+      <div><strong>OPC DA-simulering (internt i 3p-hvl-app01)</strong><br>
+      ABB OPC Connect Server + Matrikon genererer tags og datapunkter som simulerer ABB 800xA DCS-strukturen. DCOM-trafikken er lokal p&#229; VM-en og krysser aldri brannmuren.</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">2</div>
+      <div><strong>OPC DA &#8594; OPC UA med UaWrapper v1.9 p&#229; app01</strong><br>
+      UaWrapper v1.9 leser OPC DA-data via lokal DCOM og eksponerer dem som <strong>OPC UA-server p&#229; opc.tcp://10.0.45.10:46040</strong>. Tag-whitelisting i konfigurasjonsfilen (OPCDAClientConfig.xlsx) sikrer at kun ca. 100 av 1000 tags fra 800xA eksponeres videre (SR 7.7).</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">3</div>
+      <div><strong>OPC UA gjennom ASA-brannmur &#8212; to eksplisitte sesjonsretninger</strong><br>
+      N&#229;r NORØNNA leser tags fra AURORA, initierer NORØNNA-siden (10.0.70.11) TCP-tilkoblingen mot AURORAs OPC UA-endepunkt p&#229; port 46040.
+      N&#229;r AURORA leser tags fra NORØNNA, initierer AURORA en egen sesjon mot NORØNNAs endepunkt p&#229; port 46041.
+      NORONNA_GW_IN tillater kun TCP/46040 fra 10.0.70.11 til 10.0.45.10, og OPC_UA_ZONE_IN kun TCP/46041 fra 10.0.45.10 til 10.0.70.11. Returtrafikk tillates statefully.</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">4</div>
+      <div><strong>Mottak og verifikasjon p&#229; app02</strong><br>
+      UaExpert p&#229; app02 kobler til UaWrapper-endepunktet (opc.tcp://10.0.45.10:46040) og abonnerer p&#229; de whitelistede taggene &#8212; tilsvarende verifikasjonssteget i ABBs testprosedyre (3AJG03xx-0001). Verdier simulert i Matrikon p&#229; AURORA-siden gjenfinnes i UaExpert p&#229; NORØNNA-siden.</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num opt">5</div>
+      <div style="color:#888;"><strong>(Valgfritt) IMS Server aggregerer (VLAN 71)</strong><br>
+      Aggregating UA Server samler fra Cogent DataHub og eksponerer samlet OPC UA-feed til evt. 3rd party klienter. Tilsvarer ABB IMS Server 87JS000 p&#229; site.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAPPING TABLE -->
+<div class="card" style="margin-bottom:20px;">
+  <div class="sec-hdr">Student &#8596; Site &#8212; Komponentmapping</div>
+  <table class="map">
+    <thead>
+      <tr>
+        <th>Studentlab (VM / utstyr)</th>
+        <th>IP-adresse</th>
+        <th>Site-ekvivalent</th>
+        <th>Funksjon</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="c-a"><strong>3p-hvl-app01</strong></td>
+        <td>10.0.45.10</td>
+        <td>AURORA-app1<br><small style="color:#888;">87JS999A ao-sys1</small></td>
+        <td>ABB 800xA DCS simulert (OPC Connect Server + Matrikon) &#8594; UaWrapper v1.9 eksponerer OPC UA-server p&#229; port 46040 med tag-whitelisting</td>
+      </tr>
+      <tr>
+        <td class="c-n"><strong>3p-hvl-app02</strong></td>
+        <td>10.0.70.11</td>
+        <td>NORØNNA OPC Gateway opc 1<br><small style="color:#888;">Cogent DataHub Server</small></td>
+        <td>Cogent DataHub + UaExpert &#8212; initierer OPC UA mot app01:46040 og leser whitelistede tags; mottar AURORA-initiert sesjon p&#229; :46041</td>
+      </tr>
+      <tr>
+        <td><strong>ASA 5506-X</strong></td>
+        <td>G1/2 AURORA &amp; G1/4 NORØNNA</td>
+        <td>SAS FW A/B<br><small style="color:#888;">87JQ011A / 87JQ011B</small></td>
+        <td>Brannmur mellom AURORA og NORØNNA &#8212; kontrollerer OPC UA TCP/46040 og TCP/46041 via NORONNA_GW_IN / OPC_UA_ZONE_IN</td>
+      </tr>
+      <tr>
+        <td><strong>AD-MGMT</strong></td>
+        <td>10.0.40.20</td>
+        <td>Admin workstation</td>
+        <td>Administrativ VM med RSAT og verktøy for AD/domeneforvaltning</td>
+      </tr>
+      <tr>
+        <td><strong>WSUS</strong></td>
+        <td>10.0.40.30</td>
+        <td>Patch management</td>
+        <td>Windows Update Services &mdash; distribuerer oppdateringer til interne VM-er</td>
+      </tr>
+      <tr>
+        <td class="c-s"><em>3p-hvl-app03 (fremtidig)</em></td>
+        <td><em>10.0.45.11</em></td>
+        <td class="c-s"><em>AURORA-app2 (87JS999B ao-sys2)</em></td>
+        <td class="c-s"><em>Redundant AURORA &#8212; ao-sys2 med OPC UA Server (path 2)</em></td>
+      </tr>
+      <tr>
+        <td class="c-s"><em>3p-hvl-app04 (fremtidig)</em></td>
+        <td><em>10.0.70.12</em></td>
+        <td class="c-s"><em>NORØNNA OPC Gateway opc 2</em></td>
+        <td class="c-s"><em>Redundant Cogent DataHub &#8212; mottar fra ao-sys2 (path 2)</em></td>
+      </tr>
+      <tr>
+        <td><strong>DC / RADIUS / NPS</strong></td>
+        <td>10.0.40.10</td>
+        <td>Intern AD-infrastruktur</td>
+        <td>Domenetjenester, DNS, AAA-autentisering</td>
+      </tr>
+      <tr>
+        <td><strong>Jump Host</strong></td>
+        <td>10.0.60.2</td>
+        <td>Fjernaksess-gateway</td>
+        <td>RDP-inngang fra IT/WAN til IDMZ</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ASA CONFIG -->
+<div class="card" style="margin-bottom:20px;">
+  <div class="sec-hdr">ASA-konfigurasjon &#8212; sluttløsning (Vedlegg 2)</div>
+  <div class="config-grid">
+    <div>
+      <div class="cfg-label">Nytt interface &#8212; NORØNNA (G1/4)</div>
+      <pre class="cfg"><span class="cmt">! Aktiver G1/4 for NORØNNA-trafikk</span>
+interface GigabitEthernet1/4
+ description "NORONNA mot ESXi"
+ no shutdown
+!
+interface GigabitEthernet1/4.70
+ vlan 70
+ nameif NORONNA-GW
+ security-level 20
+ ip address 10.0.70.1 255.255.255.0
+!
+mtu NORONNA-GW 1500</pre>
+    </div>
+    <div>
+      <div class="cfg-label">ACL-regler &#8212; OPC UA conduit</div>
+      <pre class="cfg"><span class="cmt">! NORØNNA-initiert sesjon (leser AURORA-tags):
+! NORONNA-GW &#8594; OPC-UA-Zone (VLAN 45)</span>
+access-list NORONNA_GW_IN extended permit tcp \
+  host 10.0.70.11 host 10.0.45.10 eq 46040
+access-list NORONNA_GW_IN extended deny ip \
+  any any log
+
+<span class="cmt">! AURORA-initiert sesjon (leser NORØNNA-tags):
+! OPC-UA-Zone &#8594; NORONNA-GW (VLAN 70)</span>
+access-list OPC_UA_ZONE_IN extended permit tcp \
+  host 10.0.45.10 host 10.0.70.11 eq 46041
+
+access-group NORONNA_GW_IN in interface NORONNA-GW
+
+<span class="cmt">! ASA er stateful &#8212; retur-trafikk slippes
+! automatisk. Midlertidige test- og ICMP-regler
+! er fjernet i sluttkonfigurasjonen.</span></pre>
+    </div>
+  </div>
+  <div class="note">
+    <strong>Sesjonsinitiering vs. dataretning:</strong> Den bidireksjonelle OPC UA-dataflyten best&#229;r av to eksplisitt definerte sesjonsretninger &#8212; ikke en generell &#229;pning mellom sonene. NORØNNA initierer mot AURORA p&#229; TCP/46040, AURORA initierer mot NORØNNA p&#229; TCP/46041. Tagverdiene returneres som svartrafikk i etablerte TCP-sesjoner (stateful inspection).
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend" style="max-width:1300px;margin:0 auto 20px;">
+  <div class="leg"><div class="leg-c" style="background:#ddeaf8;border-color:#3a6ea8;"></div> AURORA (landanlegg)</div>
+  <div class="leg"><div class="leg-c" style="background:#f8e8d8;border-color:#a86a3a;"></div> NORØNNA (offshore)</div>
+  <div class="leg"><div class="leg-c" style="background:#c0392b;"></div> Brannmur (ASA / SAS FW)</div>
+  <div class="leg"><div class="leg-c" style="background:#2c3e50;"></div> Fysisk nettverksutstyr</div>
+  <div class="leg"><div class="leg-c" style="background:#fde8d4;border-color:#8a3a0a;"></div> OPC DA (lokal, intern VM)</div>
+  <div class="leg"><div class="leg-c" style="background:#d4d8fd;border-color:#2a2a8a;"></div> OPC UA (gjennom brannmur)</div>
+  <div class="leg"><div class="leg-c" style="background:#d4f0d4;border-color:#1a6a1a;"></div> Cogent DataHub</div>
+  <div class="leg"><div class="leg-c" style="background:#e8e8e8;border-color:#aaa;"></div><em>Stiplet = valgfri / fremtidig</em></div>
+</div>
+
+</body>
+</html>

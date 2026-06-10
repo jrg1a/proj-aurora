@@ -117,6 +117,7 @@
   .zone-ap    { fill: rgba(55,138,221,0.06); stroke: rgba(55,138,221,0.2); }
   .zone-ews   { fill: rgba(127,119,221,0.06); stroke: rgba(127,119,221,0.2); }
   .zone-server{ fill: rgba(216,90,48,0.06); stroke: rgba(216,90,48,0.2); }
+  .zone-opcua { fill: rgba(239,159,39,0.07); stroke: rgba(239,159,39,0.35); stroke-dasharray: 4 2; }
   .zone-idmz  { fill: rgba(55,138,221,0.08); stroke: rgba(55,138,221,0.25); }
   .zone-noronna{ fill: rgba(239,159,39,0.05); stroke: rgba(239,159,39,0.3); stroke-dasharray: 5 3; }
 
@@ -285,15 +286,19 @@
 
 <!-- AP-INFRA -->
 <rect class="zone-ap" x="534" y="60" width="296" height="110" rx="8" stroke-width="0.5"/>
-<text class="lbl-zone" x="544" y="76" fill="#378add">AP-INFRA — VLAN 20 — SL-T 1</text>
+<text class="lbl-zone" x="544" y="76" fill="#378add">AP-INFRA — VLAN 20 — SL-T 2</text>
 
 <!-- EWS -->
 <rect class="zone-ews" x="30" y="185" width="800" height="104" rx="8" stroke-width="0.5"/>
 <text class="lbl-zone" x="40" y="201" fill="#7f77dd">EWS — VLAN 50 — SL-T 2</text>
 
-<!-- SERVER -->
-<rect class="zone-server" x="30" y="303" width="800" height="118" rx="8" stroke-width="0.5"/>
+<!-- SERVER (left of ASA) -->
+<rect class="zone-server" x="30" y="303" width="336" height="118" rx="8" stroke-width="0.5"/>
 <text class="lbl-zone" x="40" y="319" fill="#d85a30">OT-SERVER — VLAN 40 — SL-T 2</text>
+
+<!-- OPC-UA-ZONE (right of ASA, dedikert transitt-sone) -->
+<rect class="zone-opcua" x="418" y="303" width="412" height="118" rx="8" stroke-width="0.6"/>
+<text class="lbl-zone" x="428" y="319" fill="#ef9f27">OPC-UA-ZONE — VLAN 45 — SL-T 3 — Transitt</text>
 
 <!-- IDMZ -->
 <rect class="zone-idmz" x="30" y="435" width="800" height="90" rx="8" stroke-width="0.5"/>
@@ -308,32 +313,32 @@
 <text class="fw-lbl" x="392" y="358" text-anchor="middle" transform="rotate(-90,392,358)">Cisco ASA 5506-X · ACL per sone · VLAN subinterfaces</text>
 
 <!-- ===== FIELD ZONE — SENSORS ===== -->
-<g class="node-group" id="sensor1" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+<g class="node-group" id="sensor1" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
   <rect class="n-teal" x="44" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="99" y="107" text-anchor="middle">IIoT-sensor 1</text>
-  <text class="lbl-sub"  x="99" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+  <text class="lbl-sub"  x="99" y="122" text-anchor="middle">Planlagt · 10.0.10.x</text>
 </g>
-<g class="node-group" id="sensor2" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+<g class="node-group" id="sensor2" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
   <rect class="n-teal" x="168" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="223" y="107" text-anchor="middle">IIoT-sensor 2</text>
-  <text class="lbl-sub"  x="223" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+  <text class="lbl-sub"  x="223" y="122" text-anchor="middle">Planlagt · 10.0.10.x</text>
 </g>
-<g class="node-group" id="sensor3" data-tip="IIoT-sensor · MQTT TCP/1883 · VLAN 10 · SL-T 1&#10;Sender sensordata trådløst til aksesspunkt.">
+<g class="node-group" id="sensor3" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
   <rect class="n-teal" x="292" y="84" width="110" height="56" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="347" y="107" text-anchor="middle">IIoT-sensor 3</text>
-  <text class="lbl-sub"  x="347" y="122" text-anchor="middle">MQTT · 10.0.10.x</text>
+  <text class="lbl-sub"  x="347" y="122" text-anchor="middle">Planlagt · 10.0.10.x</text>
 </g>
 
 <!-- AP -->
-<g class="node-group" id="ap" data-tip="Trådløst aksesspunkt · WPA3-Enterprise · 802.1X · 802.11w&#10;VLAN 20 (AP-INFRA). Håndterer trådløs tilkobling for IIoT-sensorer.">
+<g class="node-group" id="ap" data-tip="Trådløst aksesspunkt (planlagt) · 10.0.20.10 · VLAN 20 (AP-INFRA)&#10;Designkrav: sterk autentisering og segmentering. Ikke fysisk installert i prosjektperioden.">
   <rect class="n-blue" x="556" y="84" width="120" height="56" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="616" y="107" text-anchor="middle">Aksesspunkt</text>
-  <text class="lbl-sub"  x="616" y="122" text-anchor="middle">WPA3-Ent · VLAN 20</text>
+  <text class="lbl-sub"  x="616" y="122" text-anchor="middle">Planlagt · VLAN 20</text>
 </g>
-<g class="node-group" id="ap2" data-tip="Trådløst aksesspunkt · WPA3-Enterprise · 802.1X · 802.11w&#10;VLAN 20 (AP-INFRA). Håndterer trådløs tilkobling for IIoT-sensorer.">
+<g class="node-group" id="ap2" data-tip="Trådløst aksesspunkt (planlagt) · 10.0.20.10 · VLAN 20 (AP-INFRA)&#10;Designkrav: sterk autentisering og segmentering. Ikke fysisk installert i prosjektperioden.">
   <rect class="n-blue" x="690" y="84" width="120" height="56" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="750" y="107" text-anchor="middle">Aksesspunkt</text>
-  <text class="lbl-sub"  x="750" y="122" text-anchor="middle">WPA3-Ent · VLAN 20</text>
+  <text class="lbl-sub"  x="750" y="122" text-anchor="middle">Planlagt · VLAN 20</text>
 </g>
 
 <!-- ===== EWS ZONE ===== -->
@@ -344,7 +349,7 @@
 </g>
 
 <!-- ===== SERVER ZONE ===== -->
-<g class="node-group" id="dc" data-tip="DC / RADIUS / NPS · 10.0.40.10 · VLAN 40&#10;Domenekontroller, 802.1X autentisering for switch og ASA. WPA3-Enterprise backend.">
+<g class="node-group" id="dc" data-tip="DC / RADIUS / NPS · 10.0.40.10 · VLAN 40&#10;Domenekontroller: AD DS, DNS og NPS/RADIUS. Sentralisert AAA-autentisering mot ASA verifisert (T-13).">
   <rect class="n-coral" x="44" y="323" width="110" height="58" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="99" y="347" text-anchor="middle">DC / RADIUS</text>
   <text class="lbl-sub"  x="99" y="364" text-anchor="middle">10.0.40.10</text>
@@ -354,21 +359,16 @@
   <text class="lbl-main" x="218" y="347" text-anchor="middle">WSUS</text>
   <text class="lbl-sub"  x="218" y="364" text-anchor="middle">10.0.40.30</text>
 </g>
-<g class="node-group" id="historian" data-tip="Historian / MQTT-broker · 10.0.40.40 · VLAN 40&#10;Mottar MQTT fra FIELD, lagrer OT-data. Sender videre til IDMZ-broker via HTTPS.">
+<g class="node-group" id="historian" data-tip="Lokal Historian · 10.0.40.40 · VLAN 40&#10;Sensordata-historikk. Planlagt mottaker for FIELD-dataflyt; videreføring til IDMZ via kontrollert conduit.">
   <rect class="n-coral" x="282" y="323" width="110" height="58" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="337" y="347" text-anchor="middle">Historian</text>
   <text class="lbl-sub"  x="337" y="364" text-anchor="middle">10.0.40.40</text>
 </g>
-<g class="node-group" id="app01" data-tip="app01 — 3p-hvl-app01 · 10.0.40.50 · VLAN 40&#10;OPC Connect Server (simulerer ABB 800xA) + uawrapper v1.9&#10;Eksponerer 100/1000 tags via OPC UA TCP/4840.&#10;Tag-filtering = applikasjonslags whitelisting.">
-  <rect class="n-amber" x="440" y="323" width="140" height="58" rx="5" stroke-width="1"/>
-  <text class="lbl-main" x="510" y="343" text-anchor="middle">app01 / uawrapper</text>
-  <text class="lbl-sub"  x="510" y="358" text-anchor="middle">OPC UA :4840</text>
-  <text class="lbl-sub"  x="510" y="372" text-anchor="middle">10.0.40.50</text>
-</g>
-<g class="node-group" id="mgmt" data-tip="MGMT-server · 10.0.40.20 · VLAN 40&#10;Administrasjonsserver for interne tjenester.">
-  <rect class="n-coral" x="600" y="323" width="100" height="58" rx="5" stroke-width="0.5"/>
-  <text class="lbl-main" x="650" y="347" text-anchor="middle">MGMT</text>
-  <text class="lbl-sub"  x="650" y="364" text-anchor="middle">10.0.40.20</text>
+<g class="node-group" id="app01" data-tip="app01 — 3p-hvl-app01 · 10.0.45.10 · VLAN 45 (OPC-UA-Zone) · SL-T 3&#10;OPC Connect Server simulerer ABB 800xA (lokal DCOM). UaWrapper v1.9 eksponerer ca. 100 av 1000 OPC DA-tags som OPC UA-server på opc.tcp://10.0.45.10:46040.&#10;Dedikert transitt-sone: app01 er flyttet ut av OT-SERVER slik at OPC UA-conduit har egen sone med egne ACLer.">
+  <rect class="n-amber" x="500" y="335" width="160" height="62" rx="5" stroke-width="1"/>
+  <text class="lbl-main" x="580" y="356" text-anchor="middle">app01</text>
+  <text class="lbl-sub"  x="580" y="371" text-anchor="middle">UaWrapper · :46040</text>
+  <text class="lbl-sub"  x="580" y="386" text-anchor="middle">10.0.45.10 · VLAN 45</text>
 </g>
 
 <!-- ===== IDMZ ZONE ===== -->
@@ -377,14 +377,14 @@
   <text class="lbl-main" x="102" y="479" text-anchor="middle">Jump Host</text>
   <text class="lbl-sub"  x="102" y="496" text-anchor="middle">10.0.60.2 · RDP</text>
 </g>
-<g class="node-group" id="databroker" data-tip="Data-broker / Cloud-proxy · 10.0.60.10 · VLAN 60 · IDMZ&#10;Mottar MQTT/HTTPS fra Historian. Videresender til IT/sky.&#10;HTTPS ut kun til 10.0.100.0/24 (ikke 'any').">
+<g class="node-group" id="databroker" data-tip="IDMZ-Historian / data-broker · 10.0.60.10 · VLAN 60 · IDMZ&#10;Fungerer som data-broker mellom OT og IT. Kontrollert videreføring av data fra OT-SERVER til IDMZ.">
   <rect class="n-blue" x="440" y="455" width="140" height="58" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="510" y="479" text-anchor="middle">Data-broker</text>
   <text class="lbl-sub"  x="510" y="496" text-anchor="middle">10.0.60.10 · HTTPS</text>
 </g>
 
 <!-- ===== NORONNA ZONE ===== -->
-<g class="node-group" id="app02" data-tip="app02 — 3p-hvl-app02 · 10.0.70.11 · VLAN 70&#10;Cogent DataHub OPC UA-klient. Simulerer NORØNNA offshore-site.&#10;Kobler til uawrapper på app01 port 4840.&#10;Kun TCP 4840 tillatt gjennom ASA ACL (NORONNA_GW_IN).">
+<g class="node-group" id="app02" data-tip="app02 — 3p-hvl-app02 · 10.0.70.11 · VLAN 70&#10;Cogent DataHub + UaExpert. Simulerer NORØNNA offshore-site.&#10;Initierer OPC UA mot UaWrapper på app01 (10.0.45.10) TCP/46040; AURORA initierer retur-retning mot app02 på TCP/46041.&#10;Kun disse to sesjonsretningene tillates gjennom ASA (NORONNA_GW_IN / OPC_UA_ZONE_IN).">
   <rect class="n-amber" x="440" y="562" width="148" height="58" rx="5" stroke-width="1"/>
   <text class="lbl-main" x="514" y="582" text-anchor="middle">app02 / OPC UA</text>
   <text class="lbl-sub"  x="514" y="597" text-anchor="middle">Cogent DataHub</text>
@@ -392,20 +392,20 @@
 </g>
 
 <!-- ===== OOB MGMT (side) ===== -->
-<g class="node-group" id="oob" data-tip="OOB-MGMT · VLAN 99 · Security-level 90&#10;Fysisk isolert management-nett. ASA G1/3 dedikert port.&#10;OOB-workstation, iDRAC (10.0.99.2), ESXi (10.0.99.3), SG250 (10.0.99.10).">
+<g class="node-group" id="oob" data-tip="OOB-MGMT · VLAN 99 · ASA SL 85&#10;Separat management-plane. ASA G1/3 dedikert port.&#10;OOB-Workstation (10.0.99.99, Kiwi Syslog), iDRAC (10.0.99.2), ESXi (10.0.99.3), SG250 (10.0.99.10).">
   <rect class="n-purple" x="710" y="455" width="116" height="58" rx="5" stroke-width="0.5"/>
   <text class="lbl-main" x="768" y="479" text-anchor="middle">OOB-MGMT</text>
-  <text class="lbl-sub"  x="768" y="496" text-anchor="middle">VLAN 99 · SL 90</text>
+  <text class="lbl-sub"  x="768" y="496" text-anchor="middle">VLAN 99 · SL 85</text>
 </g>
 
 <!-- ===== NORMAL FLOW LINES ===== -->
 <g id="flow-normal">
-  <!-- Sensors → ASA (MQTT/FIELD) -->
+  <!-- Sensors → ASA (planlagt IIoT-dataflyt) -->
   <line class="flow" x1="99" y1="140" x2="99" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
   <line class="flow flow-d1" x1="223" y1="140" x2="223" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
   <line class="flow flow-d2" x1="347" y1="140" x2="347" y2="205" stroke="#1d9e75" stroke-width="1.8" marker-end="url(#arr-teal)"/>
 
-  <!-- AP → ASA → Historian (MQTT) -->
+  <!-- AP → ASA → Historian (planlagt IIoT-dataflyt) -->
   <path class="flow flow-d1" fill="none" d="M616 140 L616 200 L510 200 L510 323" stroke="#1d9e75" stroke-width="1.5" marker-end="url(#arr-teal)"/>
 
   <!-- EWS → Historian (administrasjon) -->
@@ -414,13 +414,13 @@
   <!-- Historian → Data-broker (IDMZ) -->
   <path class="flow-slow flow-d3" fill="none" d="M337 381 L337 420 L510 420 L510 455" stroke="#378add" stroke-width="1.5" marker-end="url(#arr-blue)"/>
 
-  <!-- app02 (NORONNA) → ASA → app01 (OPC UA 4840) -->
-  <line class="flow flow-d2" x1="514" y1="562" x2="514" y2="381" stroke="#ef9f27" stroke-width="2" marker-end="url(#arr-amber)"/>
+  <!-- app02 (NORONNA) → ASA → app01 (OPC UA 46040/46041) into OPC-UA-Zone -->
+  <line class="flow flow-d2" x1="514" y1="562" x2="580" y2="397" stroke="#ef9f27" stroke-width="2" marker-end="url(#arr-amber)"/>
 
   <!-- Tag filter annotation -->
-  <text class="lbl-sub" x="596" y="490" fill="#ef9f27">TCP/4840 only</text>
-  <text class="lbl-sub" x="596" y="504" fill="#ef9f27">100 / 1000 tags</text>
-  <line x1="588" y1="497" x2="580" y2="510" stroke="#ef9f27" stroke-width="0.5"/>
+  <text class="lbl-sub" x="596" y="490" fill="#ef9f27">TCP/46040 + 46041</text>
+  <text class="lbl-sub" x="596" y="504" fill="#ef9f27">ca. 100 / 1000 tags</text>
+  <line x1="588" y1="497" x2="560" y2="510" stroke="#ef9f27" stroke-width="0.5"/>
 </g>
 
 <!-- ===== BLOCKED ATTACK LINES ===== -->
@@ -438,7 +438,7 @@
   <g class="blocked-icon" style="animation-delay:0.8s">
     <rect x="106" y="218" width="118" height="36" rx="4" fill="rgba(226,75,74,0.15)" stroke="#e24b4a" stroke-width="0.5"/>
     <text font-family="'IBM Plex Mono',monospace" font-size="10" x="165" y="231" text-anchor="middle" fill="#e24b4a">✕ BLOKKERT</text>
-    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="165" y="247" text-anchor="middle" fill="#e24b4a">Kun MQTT/1883 → .40.40</text>
+    <text font-family="'IBM Plex Mono',monospace" font-size="9" x="165" y="247" text-anchor="middle" fill="#e24b4a">FIELD-conduit kun planlagt</text>
   </g>
 
   <!-- NORONNA → OOB-MGMT (blocked) -->
@@ -463,28 +463,24 @@
   <rect x="424" y="308" width="420" height="328" rx="8" fill="rgba(239,159,39,0.04)" stroke="#ef9f27" stroke-width="0.8" stroke-dasharray="5 3"/>
   <text font-family="'IBM Plex Mono',monospace" font-size="10" x="434" y="325" fill="#ef9f27" letter-spacing="0.06em">OPC UA DATAFLYT — AURORA ↔ NORØNNA SIMULERING</text>
 
-  <!-- OPC DA internal (app01 internal) -->
-  <rect x="600" y="323" width="0" height="0" fill="none"/>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="596" y="335" fill="#ef9f27">OPC DA intern</text>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="596" y="347" fill="#ef9f27">800xA simulert</text>
-  <line x1="594" y1="352" x2="580" y2="352" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
-  <line x1="580" y1="352" x2="580" y2="365" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
+  <!-- OPC-UA-Zone annotation -->
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="434" y="411" fill="#ef9f27">VLAN 45 · 10.0.45.0/24 · dedikert transitt-sone</text>
 
-  <!-- Flow: app02 → TCP4840 → app01 -->
-  <line class="flow" x1="514" y1="562" x2="514" y2="381" stroke="#ef9f27" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+  <!-- Flow: app02 → TCP/46040 → app01 (into OPC-UA-Zone) -->
+  <line class="flow" x1="514" y1="562" x2="580" y2="397" stroke="#ef9f27" stroke-width="2.5" marker-end="url(#arr-amber)"/>
 
   <!-- Port annotation -->
-  <rect x="520" y="455" width="110" height="50" rx="4" fill="rgba(239,159,39,0.1)" stroke="#ef9f27" stroke-width="0.5"/>
-  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="575" y="474" text-anchor="middle" fill="#ef9f27" font-weight="600">TCP / 4840</text>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="575" y="490" text-anchor="middle" fill="#ef9f27">ASA NORONNA_GW_IN</text>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="575" y="502" text-anchor="middle" fill="#ef9f27">permit host .70.11 → .40.50</text>
+  <rect x="285" y="460" width="210" height="66" rx="4" fill="rgba(239,159,39,0.1)" stroke="#ef9f27" stroke-width="0.5"/>
+  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="390" y="479" text-anchor="middle" fill="#ef9f27" font-weight="600">OPC UA · TCP/46040 + 46041</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="390" y="495" text-anchor="middle" fill="#ef9f27">GW_IN: .70.11 → .45.10 :46040</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="390" y="508" text-anchor="middle" fill="#ef9f27">ZONE_IN: .45.10 → .70.11 :46041</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="390" y="520" text-anchor="middle" fill="#ef9f27">To retninger · alt annet blokkert</text>
 
   <!-- Tag whitelist box -->
-  <rect x="440" y="570" width="148" height="0" fill="none"/>
   <rect x="630" y="555" width="200" height="70" rx="4" fill="rgba(239,159,39,0.08)" stroke="#ef9f27" stroke-width="0.5"/>
-  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="640" y="573" fill="#ef9f27" font-weight="600">Tag-filtering (SR 7.7)</text>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="589" fill="#ef9f27">uawrapper whitelist:</text>
-  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="602" fill="#ef9f27">100 av 1000 OPC DA tags</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="10" x="640" y="573" fill="#ef9f27" font-weight="600">Tag-whitelisting (SR 7.7)</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="589" fill="#ef9f27">Applikasjonslag på app01:</text>
+  <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="602" fill="#ef9f27">ca. 100 av 1000 OPC DA-tags</text>
   <text font-family="'IBM Plex Mono',monospace" font-size="9" x="640" y="615" fill="#ef9f27">= Least Functionality</text>
   <line x1="630" y1="590" x2="588" y2="590" stroke="#ef9f27" stroke-width="0.5" stroke-dasharray="2 2"/>
 </g>
@@ -494,11 +490,11 @@
 <div class="info-bar">
   <div class="legend-item">
     <div class="legend-dashed" style="border-color:#1d9e75"></div>
-    <span>MQTT / sensordata</span>
+    <span>Planlagt IIoT-dataflyt (design)</span>
   </div>
   <div class="legend-item">
     <div class="legend-dashed" style="border-color:#ef9f27"></div>
-    <span>OPC UA (TCP/4840)</span>
+    <span>OPC UA (TCP/46040 + 46041)</span>
   </div>
   <div class="legend-item">
     <div class="legend-dashed" style="border-color:#378add"></div>
