@@ -426,20 +426,6 @@ html.light .icon-sun { display: inline; }
    ARCHITECTURE DIAGRAM
    ═══════════════════════════════════════ */
 .arch-section { padding: 80px 0; }
-.arch-wrapper {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-top: 40px;
-  position: relative;
-}
-.arch-wrapper iframe {
-  width: 100%;
-  height: 750px;
-  border: none;
-  display: block;
-}
 .arch-overlay-label {
   position: absolute;
   top: 16px;
@@ -449,12 +435,141 @@ html.light .icon-sun { display: inline; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent-teal);
-  background: rgba(7,9,15,0.8);
+  background: var(--bg-glass);
   padding: 6px 12px;
   border-radius: 6px;
-  border: 1px solid rgba(29,233,182,0.2);
+  border: 1px solid var(--border-hover);
   backdrop-filter: blur(8px);
   z-index: 2;
+}
+
+/* ═══════════════════════════════════════
+   INLINE ARCHITECTURE DIAGRAM (theme-aware)
+   ═══════════════════════════════════════ */
+.arch-inline {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 40px;
+  position: relative;
+  padding: 56px 24px 24px;
+  transition: background var(--transition), border-color var(--transition);
+}
+.arch-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.arch-ctrl-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-hover);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.arch-ctrl-btn:hover { background: var(--bg-card-hover); color: var(--text); }
+.arch-ctrl-btn.active-normal { background: var(--accent-teal-dim); color: var(--accent-teal); border-color: var(--accent-teal); }
+.arch-ctrl-btn.active-attack { background: var(--accent-coral-dim); color: var(--accent-coral); border-color: var(--accent-coral); }
+.arch-ctrl-btn.active-opc    { background: var(--accent-amber-dim); color: var(--accent-amber); border-color: var(--accent-amber); }
+
+.arch-svg { display: block; width: 100%; max-width: 920px; margin: 0 auto; }
+
+.arch-zone { stroke-width: 0.8; }
+.arch-zone-field   { fill: var(--accent-teal-dim);   stroke: var(--accent-teal);   stroke-opacity: 0.45; }
+.arch-zone-ap      { fill: var(--accent-blue-dim);   stroke: var(--accent-blue);   stroke-opacity: 0.45; }
+.arch-zone-ews     { fill: var(--accent-purple-dim); stroke: var(--accent-purple); stroke-opacity: 0.45; }
+.arch-zone-server  { fill: var(--accent-coral-dim);  stroke: var(--accent-coral);  stroke-opacity: 0.45; }
+.arch-zone-opcua   { fill: var(--accent-amber-dim);  stroke: var(--accent-amber);  stroke-opacity: 0.65; stroke-dasharray: 4 2; }
+.arch-zone-idmz    { fill: var(--accent-blue-dim);   stroke: var(--accent-blue);   stroke-opacity: 0.55; }
+.arch-zone-noronna { fill: var(--accent-amber-dim);  stroke: var(--accent-amber);  stroke-opacity: 0.55; stroke-dasharray: 5 3; }
+
+.arch-node-group { cursor: pointer; }
+.arch-node-group:hover .arch-node { filter: brightness(1.25); }
+.arch-node { stroke-width: 1; }
+.arch-n-teal   { fill: var(--accent-teal-dim);   stroke: var(--accent-teal); }
+.arch-n-blue   { fill: var(--accent-blue-dim);   stroke: var(--accent-blue); }
+.arch-n-amber  { fill: var(--accent-amber-dim);  stroke: var(--accent-amber); }
+.arch-n-purple { fill: var(--accent-purple-dim); stroke: var(--accent-purple); }
+.arch-n-coral  { fill: var(--accent-coral-dim);  stroke: var(--accent-coral); }
+
+.arch-lbl-main   { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; fill: var(--text); letter-spacing: 0.03em; }
+.arch-lbl-sub    { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; fill: var(--text-secondary); letter-spacing: 0.04em; }
+.arch-lbl-zone   { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.arch-lbl-purdue { font-family: 'IBM Plex Mono', monospace; font-size: 9px; fill: var(--text-muted); letter-spacing: 0.05em; }
+
+.arch-fw-rect { fill: var(--accent-blue-dim); stroke: var(--accent-blue); stroke-width: 1; }
+.arch-fw-lbl  { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; fill: var(--accent-blue); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+
+@keyframes arch-dashflow { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
+@keyframes arch-fw-glow  { 0%,100% { stroke-opacity: 0.45; } 50% { stroke-opacity: 1; } }
+@keyframes arch-blink    { 0%,100% { opacity: 0; } 40%,60% { opacity: 1; } }
+.arch-flow      { stroke-dasharray: 8 4; animation: arch-dashflow 1.2s linear infinite; }
+.arch-flow-slow { stroke-dasharray: 8 4; animation: arch-dashflow 2s   linear infinite; }
+.arch-flow-d1 { animation-delay: 0.3s; }
+.arch-flow-d2 { animation-delay: 0.7s; }
+.arch-flow-d3 { animation-delay: 1.1s; }
+.arch-fw-anim { animation: arch-fw-glow 2.5s ease-in-out infinite; }
+.arch-blocked { stroke-dasharray: 6 4; opacity: 0.6; }
+.arch-blocked-icon { animation: arch-blink 2s ease-in-out infinite; }
+.arch-blocked-lbl  { font-family: 'IBM Plex Mono', monospace; font-size: 9px; fill: var(--accent-coral); }
+.arch-blocked-hd   { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; fill: var(--accent-coral); }
+.arch-opc-lbl      { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; fill: var(--accent-amber); letter-spacing: 0.05em; }
+.arch-opc-hd       { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; fill: var(--accent-amber); letter-spacing: 0.08em; }
+
+.arch-tooltip {
+  position: fixed;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--text);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  max-width: 280px;
+  line-height: 1.55;
+  z-index: 200;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  font-family: 'IBM Plex Mono', monospace;
+}
+html.light .arch-tooltip { box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+.arch-tooltip.show { opacity: 1; }
+
+.arch-legend {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.arch-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+}
+.arch-legend-swatch {
+  width: 28px;
+  height: 0;
+  border-top: 2px dashed currentColor;
+}
+
+@media (max-width: 700px) {
+  .arch-inline { padding: 48px 12px 16px; }
+  .arch-ctrl-btn { padding: 7px 10px; font-size: 10px; }
 }
 
 /* ═══════════════════════════════════════
@@ -1399,19 +1514,470 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
 /* ═══════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   EMBEDDED DUAL-SITE TOPOLOGY
+   ═══════════════════════════════════════ */
+.topo-section { padding: 80px 0; }
+.topo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 24px;
+  transition: background var(--transition), border-color var(--transition);
+}
+.topo-card + .topo-card { margin-top: 20px; }
+.topo-card-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topo-card-title::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--accent-teal);
+}
+.topo-card-title.t-aurora::before  { background: var(--accent-blue); }
+.topo-card-title.t-noronna::before { background: var(--accent-amber); }
+.topo-card-title.t-flow::before    { background: var(--accent-purple); }
+.topo-card-title.t-map::before     { background: var(--accent-coral); }
+
+/* Physical infra & switch bars */
+.topo-bar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.topo-bar strong { color: var(--text); font-weight: 600; }
+.topo-bar .topo-bar-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  background: var(--accent-blue-dim);
+  color: var(--accent-blue);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+.topo-bar.bar-it {
+  background: var(--accent-coral-dim);
+  border-color: var(--accent-coral);
+  color: var(--text-secondary);
+}
+
+/* Main dual-site grid */
+.topo-grid {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin-top: 8px;
+}
+.topo-site {
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--border-hover);
+  background: var(--bg-secondary);
+}
+.topo-site.site-aurora  { border-color: var(--accent-blue);  background: linear-gradient(160deg, var(--accent-blue-dim), var(--bg-secondary)); }
+.topo-site.site-noronna { border-color: var(--accent-amber); background: linear-gradient(160deg, var(--accent-amber-dim), var(--bg-secondary)); }
+
+.topo-site-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.topo-site-badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  color: #fff;
+  width: fit-content;
+}
+.topo-site-badge.ba { background: var(--accent-blue); }
+.topo-site-badge.bn { background: var(--accent-amber); color: #1a1a1a; }
+.topo-site-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.topo-zone {
+  border-radius: 8px;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+.topo-zone-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.topo-vlan-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border);
+}
+.tz-server  { border-color: rgba(244,112,103,0.3);  }
+.tz-server  .topo-zone-hdr { color: var(--accent-coral); }
+.tz-opcua   { border-color: rgba(240,180,41,0.3);  background: var(--accent-amber-dim); }
+.tz-opcua   .topo-zone-hdr { color: var(--accent-amber); }
+.tz-ews     { border-color: rgba(188,140,255,0.3); }
+.tz-ews     .topo-zone-hdr { color: var(--accent-purple); }
+.tz-idmz    { border-color: rgba(88,166,255,0.3);  }
+.tz-idmz    .topo-zone-hdr { color: var(--accent-blue); }
+.tz-oob     { border-color: rgba(188,140,255,0.2); border-style: dashed; }
+.tz-oob     .topo-zone-hdr { color: var(--accent-purple); }
+.tz-field   { border-color: rgba(29,233,182,0.2);  border-style: dashed; opacity: 0.75; }
+.tz-field   .topo-zone-hdr { color: var(--accent-teal); }
+.tz-ap      { border-color: rgba(88,166,255,0.25); border-style: dashed; }
+.tz-ap      .topo-zone-hdr { color: var(--accent-blue); }
+.tz-noronna { border-color: rgba(240,180,41,0.35); }
+.tz-noronna .topo-zone-hdr { color: var(--accent-amber); }
+
+.topo-vm {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 11px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: var(--text);
+  transition: background var(--transition), border-color var(--transition);
+}
+.topo-vm:last-child { margin-bottom: 0; }
+.topo-vm:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+.topo-vm-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text);
+}
+.topo-vm-ip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+.topo-vm-os {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+.topo-vm-key-aurora  { border-left: 3px solid var(--accent-blue); }
+.topo-vm-key-noronna { border-left: 3px solid var(--accent-amber); }
+.topo-vm-note {
+  font-size: 10px;
+  margin-top: 6px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+.topo-vm-equiv {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  border-top: 1px dashed var(--border);
+  margin-top: 6px;
+  padding-top: 5px;
+  font-style: italic;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.topo-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  margin: 2px 2px 0 0;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.03em;
+  border: 1px solid transparent;
+}
+.topo-tag.t-ua  { background: var(--accent-amber-dim);  color: var(--accent-amber);  border-color: rgba(240,180,41,0.3); }
+.topo-tag.t-da  { background: var(--accent-coral-dim);  color: var(--accent-coral);  border-color: rgba(244,112,103,0.3); }
+.topo-tag.t-hub { background: var(--accent-teal-dim);   color: var(--accent-teal);   border-color: rgba(29,233,182,0.3); }
+.topo-tag.t-sw  { background: var(--bg-secondary);      color: var(--text-secondary); border-color: var(--border-hover); }
+.topo-tag.t-net { background: var(--accent-blue-dim);   color: var(--accent-blue);   border-color: rgba(88,166,255,0.3); }
+
+/* Firewall column */
+.topo-fw-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 18px 6px;
+  gap: 8px;
+}
+.topo-fw-box {
+  background: linear-gradient(180deg, var(--accent-coral), #b6291e);
+  color: #fff;
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  width: 104px;
+  box-shadow: 0 4px 16px var(--accent-coral-dim);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topo-fw-box .fw-model {
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+}
+.topo-fw-box .fw-equiv {
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.95;
+  margin-top: 7px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 4px;
+  padding: 3px 5px;
+  letter-spacing: 0.03em;
+}
+.topo-fw-arrow {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--accent-coral);
+  animation: topo-pulse 2s ease-in-out infinite;
+}
+@keyframes topo-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+.topo-fw-proto {
+  background: var(--accent-amber-dim);
+  border: 1px solid var(--accent-amber);
+  border-radius: 5px;
+  padding: 5px 7px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--accent-amber);
+  text-align: center;
+  line-height: 1.45;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.03em;
+}
+.topo-fw-ports {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.7;
+  font-family: 'IBM Plex Mono', monospace;
+  margin-top: 6px;
+}
+.topo-fw-ports code {
+  background: var(--bg-secondary);
+  color: var(--text);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  border: 1px solid var(--border);
+}
+
+/* Dataflow list */
+.topo-flow-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.topo-flow-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.topo-flow-item strong { color: var(--text); font-weight: 600; }
+.topo-flow-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-purple-dim);
+  color: var(--accent-purple);
+  border: 1px solid var(--accent-purple);
+  display: grid;
+  place-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.topo-flow-num.opt {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border-hover);
+}
+
+/* Mapping table */
+.topo-map {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: var(--text);
+}
+.topo-map th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 10px 12px;
+  text-align: left;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.topo-map td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  vertical-align: top;
+}
+.topo-map tr:last-child td { border-bottom: none; }
+.topo-map td small { color: var(--text-muted); font-size: 10px; display: block; margin-top: 2px; }
+.topo-map .c-a { color: var(--accent-blue); font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
+.topo-map .c-n { color: var(--accent-amber); font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
+.topo-map .c-s { color: var(--text-muted); font-style: italic; }
+.topo-map .c-ip { font-family: 'IBM Plex Mono', monospace; color: var(--text-secondary); font-size: 11px; }
+
+/* Note/callout */
+.topo-note {
+  background: var(--accent-amber-dim);
+  border-left: 3px solid var(--accent-amber);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 14px;
+}
+.topo-note strong { color: var(--accent-amber); }
+
+/* Config blocks */
+.topo-config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.topo-cfg-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-coral);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+pre.topo-cfg {
+  background: var(--bg-secondary);
+  color: var(--text);
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 0;
+}
+pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
+
+/* Legend */
+.topo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+.topo-leg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--text-secondary);
+}
+.topo-leg-c {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border-hover);
+  flex-shrink: 0;
+}
+
+/* Responsive — collapse dual-site grid */
+@media (max-width: 900px) {
+  .topo-grid { grid-template-columns: 1fr; }
+  .topo-fw-col { flex-direction: row; justify-content: center; padding: 8px; flex-wrap: wrap; }
+  .topo-fw-arrow { transform: rotate(-90deg); }
+  .topo-config-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 900px) {
   .about-grid, .security-grid { grid-template-columns: 1fr; }
   .concepts-grid { grid-template-columns: 1fr 1fr; }
   .team-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .mobile-toggle { display: block; }
-  .arch-wrapper iframe { height: 500px; }
 }
 @media (max-width: 600px) {
   .concepts-grid { grid-template-columns: 1fr; }
   .section { padding: 64px 0; }
   .hero { min-height: 90vh; }
   .purdue-lvl-detail { display: none; }
+  .topo-map { font-size: 11px; }
+  .topo-map td, .topo-map th { padding: 8px; }
 }
 </style>
 </head>
@@ -1427,10 +1993,13 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
     <ul class="nav-links">
       <li><a href="#om">Om prosjektet</a></li>
       <li><a href="#arkitektur">Arkitektur</a></li>
+      <li><a href="#topologi">Topologi</a></li>
       <li><a href="#konsepter">Konsepter</a></li>
       <li><a href="#sikkerhet">Sikkerhet</a></li>
       <li><a href="#hvorfor">Hvorfor?</a></li>
       <li><a href="#mitre">MITRE</a></li>
+      <li><a href="#resultater">Resultater</a></li>
+      <li><a href="#konklusjon">Konklusjon</a></li>
       <li><a href="brannfakler.html" style="color:var(--accent-amber);">🔥 Brannfakler</a></li>
       <li><a href="quiz.html" style="color:var(--accent-teal);">🧠 Quiz</a></li>
       <li><a href="#team">Team</a></li>
@@ -1495,7 +2064,7 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
   <div class="container">
     <div class="stats-grid">
       <div>
-        <div class="stat-num">8</div>
+        <div class="stat-num">9</div>
         <div class="stat-label">Nettverkssoner (VLANs)</div>
       </div>
       <div>
@@ -1503,12 +2072,12 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <div class="stat-label">Simulerte industrielle sites</div>
       </div>
       <div>
-        <div class="stat-num">7</div>
+        <div class="stat-num">9</div>
         <div class="stat-label">ACL-regelsett (brannmur)</div>
       </div>
       <div>
-        <div class="stat-num">4840</div>
-        <div class="stat-label">OPC UA port (kryss-site)</div>
+        <div class="stat-num">19</div>
+        <div class="stat-label">Beståtte tester (av 23 definerte)</div>
       </div>
     </div>
   </div>
@@ -1530,18 +2099,19 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <div class="about-card-icon" style="background:var(--accent-teal-dim);color:var(--accent-teal);">&#9783;</div>
         <h3>Problemstillingen</h3>
         <p>
-          Hvordan designe en sikker nettverksarkitektur for industrielle kontrollsystemer
-          som oppfyller IEC 62443, samtidig som den støtter OPC UA-datautveksling mellom
-          to uavhengige sites med ulik tillitsgrad?
+          Hvordan kan en segmentert og dokumenterbar OT-nettverksarkitektur, forankret i
+          IEC 62443, utformes og verifiseres i et simulert industrimiljø — slik at både trådløs
+          IIoT-datainnsamling og kontrollert OPC UA-datautveksling mellom separate anlegg
+          støttes uten å svekke soneinndeling, minste privilegium og kontrollert dataflyt?
         </p>
       </div>
       <div class="about-card">
         <div class="about-card-icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">&#9878;</div>
         <h3>ABB-samarbeidet</h3>
         <p>
-          ABB trenger offline-testing av en UaWrapper-programvare som skal brukes hos
-          en CO2-fangst-kunde. Siden 800xA ikke kan flyttes fysisk, simulerer vi det
-          med OPC Connect Server og Matrikon i labben.
+          Testlabben ble brukt til å teste, verifisere og feilsøke ABBs UaWrapper v1.9
+          med tilhørende OPC DA/UA-programvarekjede. 800xA simuleres med OPC Connect Server
+          og Matrikon — og erfaringene gikk inn som teknisk underlag i ABBs videre arbeid.
         </p>
       </div>
       <div class="about-card">
@@ -1549,8 +2119,9 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <h3>To sites, en brannmur</h3>
         <p>
           AURORA (onshore) og NORØNNA (offshore) er to simulerte industrianlegg.
-          Cisco ASA 5506-X fungerer som brannmur mellom dem, med strenge ACL-regler
-          som kun tillater OPC UA (TCP 4840) i spesifikk retning.
+          Cisco ASA 5506-X fungerer som brannmur mellom dem. ACL-ene tillater kun to
+          eksplisitte OPC UA-sesjonsretninger: TCP/46040 (NORØNNA &rarr; AURORA) og
+          TCP/46041 (AURORA &rarr; NORØNNA).
         </p>
       </div>
       <div class="about-card">
@@ -1558,8 +2129,8 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <h3>Sikkerhetsfokus</h3>
         <p>
           Hele arkitekturen er bygget med defense-in-depth: VLAN-segmentering,
-          brannmur-ACL per sone, OPC UA SignAndEncrypt med sertifikat-autentisering,
-          tag-filtrering, og jump host som eneste fjernaksess-punkt.
+          brannmur-ACL per sone, sertifikatbasert OPC UA-tillit (trust list) med støtte
+          for Sign &amp; Encrypt, tag-whitelisting, og jump host som eneste fjernaksess-punkt.
         </p>
       </div>
     </div>
@@ -1941,11 +2512,11 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
       <div class="mm-row">
         <div class="mm-cell"><span class="tech-tid" style="font-size:.7rem;">T0866</span> Exploitation of Remote Services</div>
         <div class="mm-cell">VLAN-segmentering + ASA ACL blokkerer all trafikk mellom soner unntatt eksplisitt tillatte porter</div>
-        <div class="mm-cell" style="color:var(--accent-teal);">Cisco ASA &middot; 8 VLANs</div>
+        <div class="mm-cell" style="color:var(--accent-teal);">Cisco ASA &middot; 9 VLANs</div>
       </div>
       <div class="mm-row">
         <div class="mm-cell"><span class="tech-tid" style="font-size:.7rem;">T0859</span> Valid Accounts</div>
-        <div class="mm-cell">AD/RADIUS-autentisering, 802.1X for nettverkstilgang, separate admin-kontoer per sone</div>
+        <div class="mm-cell">Sentralisert AAA mot ASA via AD/NPS-RADIUS (verifisert i T-13), BREAK-GLASS-rutine og separate admin-kontoer per sone</div>
         <div class="mm-cell" style="color:var(--accent-amber);">DC &middot; RADIUS &middot; AD</div>
       </div>
       <div class="mm-row">
@@ -1955,12 +2526,12 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
       </div>
       <div class="mm-row">
         <div class="mm-cell"><span class="tech-tid" style="font-size:.7rem;">T0855</span> Unauthorized Commands</div>
-        <div class="mm-cell">OPC UA SignAndEncrypt + tag-filtrering i UaWrapper begrenser hvilke datapunkter som eksponeres</div>
+        <div class="mm-cell">Sertifikatbasert OPC UA-tillit (trust list) + tag-whitelisting i UaWrapper begrenser hvilke datapunkter som eksponeres</div>
         <div class="mm-cell" style="color:var(--accent-red);">UaWrapper &middot; OPC UA</div>
       </div>
       <div class="mm-row">
         <div class="mm-cell"><span class="tech-tid" style="font-size:.7rem;">T0831</span> Manipulation of Control</div>
-        <div class="mm-cell">UaWrapper gir kun lesetilgang; skriveoperasjoner blokkeres. ASA hindrer direkte PLC-tilgang</div>
+        <div class="mm-cell">Tags utenfor whitelisten kan verken leses eller skrives, uavhengig av nettverkslaget. ASA hindrer direkte tilgang til underliggende systemer</div>
         <div class="mm-cell" style="color:var(--accent-red);">UaWrapper &middot; ASA ACL</div>
       </div>
       <div class="mm-row">
@@ -1979,7 +2550,7 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
   </div>
 </section>
 
-<!-- ═══════════ ARCHITECTURE DIAGRAM ═══════════ -->
+<!-- ═══════════ ARCHITECTURE DIAGRAM (inline, themed) ═══════════ -->
 <section class="arch-section" id="arkitektur">
   <div class="container">
     <div class="section-label">Nettverksarkitektur</div>
@@ -1987,10 +2558,722 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
     <p class="section-desc">
       Diagrammet viser hele nettverksarkitekturen med alle soner, noder og dataflyter.
       Bruk knappene for å veksle mellom normal dataflyt, blokkerte angrep, og OPC UA-detaljer.
+      Hover over noder for detaljer.
     </p>
-    <div class="arch-wrapper">
+    <div class="arch-inline">
       <div class="arch-overlay-label">Interaktivt &middot; Hover for detaljer</div>
-      <iframe id="arch-iframe" srcdoc="" title="AURORA Nettverksarkitektur"></iframe>
+      <div class="arch-controls">
+        <button class="arch-ctrl-btn active-normal" id="arch-btn-normal" type="button">&#9654; Normal dataflyt</button>
+        <button class="arch-ctrl-btn" id="arch-btn-attack" type="button">&#10007; Blokkerte angrep</button>
+        <button class="arch-ctrl-btn" id="arch-btn-opc" type="button">&#11041; OPC UA-detalj</button>
+      </div>
+
+      <svg class="arch-svg" viewBox="0 0 860 660" xmlns="http://www.w3.org/2000/svg" aria-label="AURORA nettverksarkitektur">
+        <defs>
+          <marker id="arch-arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arch-arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arch-arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arch-arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arch-arr-coral" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-coral)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- Purdue level labels -->
+        <text class="arch-lbl-purdue" x="14" y="130" text-anchor="middle" transform="rotate(-90,14,130)">Nivå 0–1</text>
+        <text class="arch-lbl-purdue" x="14" y="265" text-anchor="middle" transform="rotate(-90,14,265)">Nivå 2</text>
+        <text class="arch-lbl-purdue" x="14" y="362" text-anchor="middle" transform="rotate(-90,14,362)">Nivå 3</text>
+        <text class="arch-lbl-purdue" x="14" y="480" text-anchor="middle" transform="rotate(-90,14,480)">IDMZ</text>
+        <text class="arch-lbl-purdue" x="14" y="592" text-anchor="middle" transform="rotate(-90,14,592)">Eks. site</text>
+
+        <!-- FIELD -->
+        <rect class="arch-zone arch-zone-field" x="30" y="60" width="490" height="110" rx="8"/>
+        <text class="arch-lbl-zone" x="40" y="76" fill="var(--accent-teal)">FIELD — VLAN 10 — SL-T 1</text>
+
+        <!-- AP-INFRA -->
+        <rect class="arch-zone arch-zone-ap" x="534" y="60" width="296" height="110" rx="8"/>
+        <text class="arch-lbl-zone" x="544" y="76" fill="var(--accent-blue)">AP-INFRA — VLAN 20 — SL-T 2</text>
+
+        <!-- EWS -->
+        <rect class="arch-zone arch-zone-ews" x="30" y="185" width="800" height="104" rx="8"/>
+        <text class="arch-lbl-zone" x="40" y="201" fill="var(--accent-purple)">EWS — VLAN 50 — SL-T 2</text>
+
+        <!-- OT-SERVER (left of ASA) -->
+        <rect class="arch-zone arch-zone-server" x="30" y="303" width="336" height="118" rx="8"/>
+        <text class="arch-lbl-zone" x="40" y="319" fill="var(--accent-coral)">OT-SERVER — VLAN 40 — SL-T 2</text>
+
+        <!-- OPC-UA-ZONE (right of ASA, dedikert transitt-sone) -->
+        <rect class="arch-zone arch-zone-opcua" x="418" y="303" width="412" height="118" rx="8"/>
+        <text class="arch-lbl-zone" x="428" y="319" fill="var(--accent-amber)">OPC-UA-ZONE — VLAN 45 — SL-T 3 — Transitt</text>
+
+        <!-- IDMZ -->
+        <rect class="arch-zone arch-zone-idmz" x="30" y="435" width="800" height="90" rx="8"/>
+        <text class="arch-lbl-zone" x="40" y="451" fill="var(--accent-blue)">IDMZ — VLAN 60 — SL-T 3</text>
+
+        <!-- NORONNA -->
+        <rect class="arch-zone arch-zone-noronna" x="30" y="539" width="800" height="106" rx="8"/>
+        <text class="arch-lbl-zone" x="40" y="555" fill="var(--accent-amber)">NORØNNA-GW — VLAN 70 — Ekstern site — ASA SL 20</text>
+
+        <!-- Cisco ASA firewall bar -->
+        <rect class="arch-fw-rect arch-fw-anim" x="370" y="60" width="44" height="595" rx="6"/>
+        <text class="arch-fw-lbl" x="392" y="358" text-anchor="middle" transform="rotate(-90,392,358)">Cisco ASA 5506-X · ACL per sone · VLAN subinterfaces</text>
+
+        <!-- FIELD sensors -->
+        <g class="arch-node-group" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
+          <rect class="arch-node arch-n-teal" x="44" y="84" width="110" height="56" rx="5"/>
+          <text class="arch-lbl-main" x="99" y="108" text-anchor="middle">IIoT-sensor 1</text>
+          <text class="arch-lbl-sub"  x="99" y="123" text-anchor="middle">Planlagt · 10.0.10.x</text>
+        </g>
+        <g class="arch-node-group" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
+          <rect class="arch-node arch-n-teal" x="168" y="84" width="110" height="56" rx="5"/>
+          <text class="arch-lbl-main" x="223" y="108" text-anchor="middle">IIoT-sensor 2</text>
+          <text class="arch-lbl-sub"  x="223" y="123" text-anchor="middle">Planlagt · 10.0.10.x</text>
+        </g>
+        <g class="arch-node-group" data-tip="IIoT-sensor (planlagt design) · VLAN 10 · SL-T 1&#10;Trådløs sensortrafikk via AP-INFRA — arkitektonisk designet, ikke fysisk implementert (jf. T-20/T-22).">
+          <rect class="arch-node arch-n-teal" x="292" y="84" width="110" height="56" rx="5"/>
+          <text class="arch-lbl-main" x="347" y="108" text-anchor="middle">IIoT-sensor 3</text>
+          <text class="arch-lbl-sub"  x="347" y="123" text-anchor="middle">Planlagt · 10.0.10.x</text>
+        </g>
+
+        <!-- AP-INFRA -->
+        <g class="arch-node-group" data-tip="Trådløst aksesspunkt (planlagt) · 10.0.20.10 · VLAN 20 (AP-INFRA)&#10;Designkrav: sterk autentisering og segmentering. Ikke fysisk installert i prosjektperioden.">
+          <rect class="arch-node arch-n-blue" x="556" y="84" width="120" height="56" rx="5"/>
+          <text class="arch-lbl-main" x="616" y="108" text-anchor="middle">Aksesspunkt</text>
+          <text class="arch-lbl-sub"  x="616" y="123" text-anchor="middle">Planlagt · VLAN 20</text>
+        </g>
+        <g class="arch-node-group" data-tip="Trådløst aksesspunkt (planlagt) · 10.0.20.10 · VLAN 20 (AP-INFRA)&#10;Designkrav: sterk autentisering og segmentering. Ikke fysisk installert i prosjektperioden.">
+          <rect class="arch-node arch-n-blue" x="690" y="84" width="120" height="56" rx="5"/>
+          <text class="arch-lbl-main" x="750" y="108" text-anchor="middle">Aksesspunkt</text>
+          <text class="arch-lbl-sub"  x="750" y="123" text-anchor="middle">Planlagt · VLAN 20</text>
+        </g>
+
+        <!-- EWS -->
+        <g class="arch-node-group" data-tip="Engineering Workstation · 10.0.50.10 · VLAN 50 · SL-T 2&#10;Operatørtilgang via Jump Host. RDP/SSH til OT-SERVER-sonen via ASA ACL.">
+          <rect class="arch-node arch-n-purple" x="44" y="205" width="130" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="109" y="230" text-anchor="middle">EWS</text>
+          <text class="arch-lbl-sub"  x="109" y="247" text-anchor="middle">10.0.50.10</text>
+        </g>
+
+        <!-- OT-SERVER nodes (left of ASA) -->
+        <g class="arch-node-group" data-tip="DC / RADIUS / NPS · 10.0.40.10 · VLAN 40&#10;Domenekontroller: AD DS, DNS og NPS/RADIUS. Sentralisert AAA-autentisering mot ASA verifisert (T-13).">
+          <rect class="arch-node arch-n-coral" x="44" y="323" width="98" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="93" y="347" text-anchor="middle">DC / RADIUS</text>
+          <text class="arch-lbl-sub"  x="93" y="364" text-anchor="middle">10.0.40.10</text>
+        </g>
+        <g class="arch-node-group" data-tip="WSUS · 10.0.40.30 · VLAN 40&#10;Windows Update-tjeneste for interne VM-er. Port 8530/8531.">
+          <rect class="arch-node arch-n-coral" x="152" y="323" width="96" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="200" y="347" text-anchor="middle">WSUS</text>
+          <text class="arch-lbl-sub"  x="200" y="364" text-anchor="middle">10.0.40.30</text>
+        </g>
+        <g class="arch-node-group" data-tip="Lokal Historian · 10.0.40.40 · VLAN 40&#10;Sensordata-historikk. Planlagt mottaker for FIELD-dataflyt; videreføring til IDMZ via kontrollert conduit.">
+          <rect class="arch-node arch-n-coral" x="258" y="323" width="104" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="310" y="347" text-anchor="middle">Historian</text>
+          <text class="arch-lbl-sub"  x="310" y="364" text-anchor="middle">10.0.40.40</text>
+        </g>
+
+        <!-- OPC-UA-Zone (right of ASA) -->
+        <g class="arch-node-group" data-tip="app01 — 3p-hvl-app01 · 10.0.45.10 · VLAN 45 (OPC-UA-Zone) · SL-T 3&#10;OPC Connect Server simulerer ABB 800xA (lokal DCOM). UaWrapper v1.9 eksponerer ca. 100 av 1000 OPC DA-tags som OPC UA-server på opc.tcp://10.0.45.10:46040.&#10;Dedikert transitt-sone: app01 er flyttet ut av OT-SERVER slik at OPC UA-conduit har egen sone med egne ACLer.">
+          <rect class="arch-node arch-n-amber" x="500" y="335" width="160" height="62" rx="5" stroke-width="1.5"/>
+          <text class="arch-lbl-main" x="580" y="357" text-anchor="middle">app01</text>
+          <text class="arch-lbl-sub"  x="580" y="373" text-anchor="middle">UaWrapper · :46040</text>
+          <text class="arch-lbl-sub"  x="580" y="388" text-anchor="middle">10.0.45.10 · VLAN 45</text>
+        </g>
+
+        <!-- IDMZ -->
+        <g class="arch-node-group" data-tip="Jump Host · 10.0.60.2 · VLAN 60 · IDMZ&#10;Eneste remote-access-punkt via RDP. Kobler videre til OT-sonen med lokale credentials.">
+          <rect class="arch-node arch-n-blue" x="44" y="455" width="116" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="102" y="479" text-anchor="middle">Jump Host</text>
+          <text class="arch-lbl-sub"  x="102" y="496" text-anchor="middle">10.0.60.2 · RDP</text>
+        </g>
+        <g class="arch-node-group" data-tip="IDMZ-Historian / data-broker · 10.0.60.10 · VLAN 60 · IDMZ&#10;Fungerer som data-broker mellom OT og IT. Kontrollert videreføring av data fra OT-SERVER til IDMZ.">
+          <rect class="arch-node arch-n-blue" x="440" y="455" width="140" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="510" y="479" text-anchor="middle">Data-broker</text>
+          <text class="arch-lbl-sub"  x="510" y="496" text-anchor="middle">10.0.60.10 · HTTPS</text>
+        </g>
+        <g class="arch-node-group" data-tip="OOB-MGMT · VLAN 99 · ASA SL 85&#10;Fysisk isolert management-nett. Ingen routet vei, ren L2-isolasjon.&#10;OOB-WS, iDRAC (10.0.99.2), ESXi (10.0.99.3), SG250 (10.0.99.10).">
+          <rect class="arch-node arch-n-purple" x="710" y="455" width="116" height="58" rx="5"/>
+          <text class="arch-lbl-main" x="768" y="479" text-anchor="middle">OOB-MGMT</text>
+          <text class="arch-lbl-sub"  x="768" y="496" text-anchor="middle">VLAN 99 · SL 85</text>
+        </g>
+
+        <!-- NORONNA -->
+        <g class="arch-node-group" data-tip="app02 — 3p-hvl-app02 · 10.0.70.11 · VLAN 70&#10;Cogent DataHub + UaExpert. Simulerer NORØNNA offshore-site.&#10;Initierer OPC UA mot app01 (10.0.45.10) TCP/46040; AURORA initierer retur-retning mot app02 på TCP/46041.&#10;Kun disse to sesjonsretningene tillates gjennom ASA (NORONNA_GW_IN / OPC_UA_ZONE_IN).">
+          <rect class="arch-node arch-n-amber" x="440" y="562" width="148" height="58" rx="5" stroke-width="1.5"/>
+          <text class="arch-lbl-main" x="514" y="582" text-anchor="middle">app02</text>
+          <text class="arch-lbl-sub"  x="514" y="597" text-anchor="middle">Cogent DataHub</text>
+          <text class="arch-lbl-sub"  x="514" y="612" text-anchor="middle">10.0.70.11</text>
+        </g>
+
+        <!-- ===== NORMAL FLOW ===== -->
+        <g id="arch-flow-normal">
+          <!-- Sensors → ASA (planlagt IIoT-dataflyt) -->
+          <line class="arch-flow" x1="99" y1="140" x2="99" y2="205" stroke="var(--accent-teal)" stroke-width="1.8" marker-end="url(#arch-arr-teal)"/>
+          <line class="arch-flow arch-flow-d1" x1="223" y1="140" x2="223" y2="205" stroke="var(--accent-teal)" stroke-width="1.8" marker-end="url(#arch-arr-teal)"/>
+          <line class="arch-flow arch-flow-d2" x1="347" y1="140" x2="347" y2="205" stroke="var(--accent-teal)" stroke-width="1.8" marker-end="url(#arch-arr-teal)"/>
+
+          <!-- AP → Historian (planlagt IIoT-dataflyt) -->
+          <path class="arch-flow arch-flow-d1" fill="none" d="M616 140 L616 200 L310 200 L310 323" stroke="var(--accent-teal)" stroke-width="1.5" marker-end="url(#arch-arr-teal)"/>
+
+          <!-- EWS → OT-SERVER (admin) -->
+          <path class="arch-flow-slow arch-flow-d2" fill="none" d="M174 263 L200 263 L200 323" stroke="var(--accent-purple)" stroke-width="1.5" marker-end="url(#arch-arr-purple)"/>
+
+          <!-- Historian → Data-broker (IDMZ) -->
+          <path class="arch-flow-slow arch-flow-d3" fill="none" d="M310 381 L310 420 L510 420 L510 455" stroke="var(--accent-blue)" stroke-width="1.5" marker-end="url(#arch-arr-blue)"/>
+
+          <!-- app02 (NORONNA) → app01 (OPC UA 46040/46041) -->
+          <line class="arch-flow arch-flow-d2" x1="514" y1="562" x2="580" y2="397" stroke="var(--accent-amber)" stroke-width="2" marker-end="url(#arch-arr-amber)"/>
+
+          <!-- OOB management (purple dashed) -->
+          <path class="arch-flow-slow arch-flow-d3" fill="none" d="M768 455 L768 440 L768 420 L720 420 L720 398" stroke="var(--accent-purple)" stroke-width="1.3" marker-end="url(#arch-arr-purple)" opacity="0.6"/>
+        </g>
+
+        <!-- ===== BLOCKED ATTACK ===== -->
+        <g id="arch-flow-attack" style="display:none">
+          <!-- NORONNA → EWS direct (blocked) -->
+          <line class="arch-blocked" x1="514" y1="562" x2="109" y2="263" stroke="var(--accent-coral)" stroke-width="1.8" marker-end="url(#arch-arr-coral)"/>
+          <g class="arch-blocked-icon">
+            <rect x="268" y="388" width="142" height="36" rx="4" fill="var(--accent-coral-dim)" stroke="var(--accent-coral)" stroke-width="0.8"/>
+            <text class="arch-blocked-hd" x="339" y="402" text-anchor="middle">&#10007; BLOKKERT</text>
+            <text class="arch-blocked-lbl" x="339" y="417" text-anchor="middle">ASA NORONNA_GW_IN</text>
+          </g>
+
+          <!-- FIELD → OT-SERVER direct (blocked — conduit kun planlagt) -->
+          <line class="arch-blocked" x1="99" y1="140" x2="99" y2="323" stroke="var(--accent-coral)" stroke-width="1.8" marker-end="url(#arch-arr-coral)"/>
+          <g class="arch-blocked-icon" style="animation-delay:0.8s">
+            <rect x="106" y="218" width="138" height="36" rx="4" fill="var(--accent-coral-dim)" stroke="var(--accent-coral)" stroke-width="0.8"/>
+            <text class="arch-blocked-hd" x="175" y="232" text-anchor="middle">&#10007; BLOKKERT</text>
+            <text class="arch-blocked-lbl" x="175" y="247" text-anchor="middle">FIELD-conduit kun planlagt</text>
+          </g>
+
+          <!-- NORONNA → OOB-MGMT (blocked) -->
+          <path class="arch-blocked" fill="none" d="M440 591 L200 591 L200 484 L44 484" stroke="var(--accent-coral)" stroke-width="1.8" marker-end="url(#arch-arr-coral)"/>
+          <g class="arch-blocked-icon" style="animation-delay:1.4s">
+            <rect x="110" y="528" width="138" height="36" rx="4" fill="var(--accent-coral-dim)" stroke="var(--accent-coral)" stroke-width="0.8"/>
+            <text class="arch-blocked-hd" x="179" y="542" text-anchor="middle">&#10007; BLOKKERT</text>
+            <text class="arch-blocked-lbl" x="179" y="557" text-anchor="middle">Ingen rute til OOB-MGMT</text>
+          </g>
+
+          <!-- EWS → NORONNA direct (blocked) -->
+          <line class="arch-blocked" x1="109" y1="263" x2="440" y2="591" stroke="var(--accent-coral)" stroke-width="1.5" marker-end="url(#arch-arr-coral)" stroke-dasharray="4 6"/>
+          <g class="arch-blocked-icon" style="animation-delay:2s">
+            <rect x="234" y="448" width="148" height="24" rx="4" fill="var(--accent-coral-dim)" stroke="var(--accent-coral)" stroke-width="0.8"/>
+            <text class="arch-blocked-lbl" x="308" y="464" text-anchor="middle">&#10007; EWS &rarr; NORØNNA: blokkert</text>
+          </g>
+        </g>
+
+        <!-- ===== OPC UA DETAIL ===== -->
+        <g id="arch-flow-opc" style="display:none">
+          <rect x="424" y="308" width="410" height="328" rx="8" fill="var(--accent-amber-dim)" stroke="var(--accent-amber)" stroke-width="0.8" stroke-dasharray="5 3" opacity="0.4"/>
+          <text class="arch-opc-hd" x="434" y="325">OPC UA-DATAFLYT — AURORA &harr; NORØNNA</text>
+          <text class="arch-opc-lbl" x="434" y="413">VLAN 45 · 10.0.45.0/24 · dedikert transitt-sone</text>
+
+          <line class="arch-flow" x1="514" y1="562" x2="580" y2="397" stroke="var(--accent-amber)" stroke-width="2.5" marker-end="url(#arch-arr-amber)"/>
+
+          <rect x="232" y="460" width="226" height="72" rx="6" fill="var(--accent-amber-dim)" stroke="var(--accent-amber)" stroke-width="0.8"/>
+          <text class="arch-opc-hd" x="345" y="479" text-anchor="middle">OPC UA · TCP/46040 + 46041</text>
+          <text class="arch-opc-lbl" x="345" y="495" text-anchor="middle">GW_IN: .70.11 &rarr; .45.10 :46040</text>
+          <text class="arch-opc-lbl" x="345" y="510" text-anchor="middle">ZONE_IN: .45.10 &rarr; .70.11 :46041</text>
+          <text class="arch-opc-lbl" x="345" y="524" text-anchor="middle">To retninger · alt annet blokkert</text>
+
+          <rect x="630" y="555" width="200" height="70" rx="6" fill="var(--accent-amber-dim)" stroke="var(--accent-amber)" stroke-width="0.8"/>
+          <text class="arch-opc-hd" x="640" y="573">Tag-whitelisting (SR 7.7)</text>
+          <text class="arch-opc-lbl" x="640" y="590">Applikasjonslag på app01:</text>
+          <text class="arch-opc-lbl" x="640" y="604">ca. 100 av 1000 OPC DA-tags</text>
+          <text class="arch-opc-lbl" x="640" y="618">= Least Functionality</text>
+          <line x1="630" y1="590" x2="588" y2="590" stroke="var(--accent-amber)" stroke-width="0.6" stroke-dasharray="2 2"/>
+        </g>
+      </svg>
+
+      <div class="arch-legend">
+        <div class="arch-legend-item" style="color:var(--accent-teal);"><span class="arch-legend-swatch"></span><span>Planlagt IIoT-dataflyt (design)</span></div>
+        <div class="arch-legend-item" style="color:var(--accent-amber);"><span class="arch-legend-swatch"></span><span>OPC UA (TCP/46040 + 46041)</span></div>
+        <div class="arch-legend-item" style="color:var(--accent-blue);"><span class="arch-legend-swatch"></span><span>HTTPS · admin</span></div>
+        <div class="arch-legend-item" style="color:var(--accent-purple);"><span class="arch-legend-swatch"></span><span>EWS-administrasjon</span></div>
+        <div class="arch-legend-item" style="color:var(--accent-coral);"><span class="arch-legend-swatch"></span><span>Blokkert trafikk</span></div>
+        <div class="arch-legend-item" style="margin-left:auto;">
+          <a href="aurora-nettverksarkitektur.html" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:none;">&#8599; Åpne i eget vindu</a>
+        </div>
+      </div>
+
+      <div class="arch-tooltip" id="arch-tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DUAL-SITE TOPOLOGY ═══════════ -->
+<section class="topo-section section" id="topologi">
+  <div class="container">
+    <div class="section-label">Dual-site topologi</div>
+    <h2 class="section-title">Studentlab &mdash; AURORA &harr; NORØNNA</h2>
+    <p class="section-desc">
+      Forenklet dual-site OPC UA-simulering med &eacute;n VM per site. Cisco ASA 5506-X spiller rollen som SAS FW
+      mellom AURORA landanlegg og NORØNNA offshore &mdash; kun OPC UA på TCP/46040 og TCP/46041 krysser brannmuren,
+      i to eksplisitt definerte sesjonsretninger. Full redundans kan legges til ved behov med ekstra VM-er.
+    </p>
+
+    <!-- Physical infrastructure bar -->
+    <div class="topo-card" style="padding:0;background:transparent;border:none;margin-top:32px;">
+      <div class="topo-bar">
+        <div>
+          <strong>Dell R440 &mdash; VMware ESXi</strong>
+          <span class="topo-bar-tag">vSwitch0 &mdash; AURORA (VLAN 40, 45, 50, 60, 99)</span>
+          <span class="topo-bar-tag">vSwitch1 &mdash; NORØNNA (VLAN 70)</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);">iDRAC: 10.0.99.2 &nbsp;|&nbsp; ESXi: 10.0.99.3</div>
+      </div>
+    </div>
+
+    <!-- Main dual-site topology -->
+    <div class="topo-card">
+      <div class="topo-card-title t-aurora">Dual-site topologi &mdash; 1 VM per site</div>
+
+      <div class="topo-grid">
+        <!-- AURORA PANEL -->
+        <div class="topo-site site-aurora">
+          <div class="topo-site-head">
+            <span class="topo-site-badge ba">AURORA &mdash; Landanlegg</span>
+            <span class="topo-site-sub">ASA G1/2 trunk &rarr; SG250 gi2 &rarr; ESXi vSwitch0</span>
+          </div>
+
+          <!-- OPC-UA-Zone (VLAN 45) -->
+          <div class="topo-zone tz-opcua">
+            <div class="topo-zone-hdr">
+              <span>OPC-UA-Zone &mdash; transitt</span>
+              <span class="topo-vlan-badge">VLAN 45 &middot; 10.0.45.0/24</span>
+            </div>
+            <div class="topo-vm topo-vm-key-aurora">
+              <div>
+                <span class="topo-vm-name">3p-hvl-app01</span>
+                <span class="topo-vm-ip">10.0.45.10</span>
+                <span class="topo-vm-os">&mdash; Windows Server 2022</span>
+              </div>
+              <div style="margin-top:6px;">
+                <span class="topo-tag t-da">ABB OPC Connect Server</span>
+                <span class="topo-tag t-da">Matrikon OPC Explorer</span>
+                <span class="topo-tag t-ua">UaWrapper v1.9 &mdash; OPC UA :46040</span>
+              </div>
+              <div class="topo-vm-note">
+                OPC DA (simulerer ABB 800xA DCS via lokal DCOM) &#9658; <strong>UaWrapper v1.9 &mdash; OPC UA-server på opc.tcp://10.0.45.10:46040</strong>.
+                Tag-whitelisting i OPCDAClientConfig.xlsx: ca. 100 av 1000 tags fra 800xA eksponeres mot NORØNNA.
+              </div>
+              <div class="topo-vm-equiv">&harr; Site: AURORA-app1 (87JS999A &mdash; ao-sys1) &mdash; ABB 800xA</div>
+            </div>
+          </div>
+
+          <!-- OT SERVER (VLAN 40) -->
+          <div class="topo-zone tz-server">
+            <div class="topo-zone-hdr">
+              <span>OT SERVER-sone</span>
+              <span class="topo-vlan-badge">VLAN 40 &middot; 10.0.40.0/24</span>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">DC / RADIUS / NPS</span><span class="topo-vm-ip">10.0.40.10</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">AD DS</span>
+                <span class="topo-tag t-sw">DNS</span>
+                <span class="topo-tag t-sw">RADIUS/NPS</span>
+              </div>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">AD-MGMT</span><span class="topo-vm-ip">10.0.40.20</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">RSAT</span>
+                <span class="topo-tag t-sw">Admin tools</span>
+              </div>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">WSUS</span><span class="topo-vm-ip">10.0.40.30</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">Windows Update</span>
+              </div>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">Lokal Historian</span><span class="topo-vm-ip">10.0.40.40</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">Sensordata-historikk</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- EWS (VLAN 50) -->
+          <div class="topo-zone tz-ews">
+            <div class="topo-zone-hdr">
+              <span>EWS &mdash; Engineering</span>
+              <span class="topo-vlan-badge">VLAN 50 &middot; 10.0.50.0/24</span>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">Workstation</span><span class="topo-vm-ip">10.0.50.10</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">Engineering</span>
+                <span class="topo-tag t-ua">UaExpert (test)</span>
+                <span class="topo-tag t-sw">Domain-joined</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- IDMZ (VLAN 60) -->
+          <div class="topo-zone tz-idmz">
+            <div class="topo-zone-hdr">
+              <span>IDMZ</span>
+              <span class="topo-vlan-badge">VLAN 60 &middot; 10.0.60.0/24</span>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">RDP Jump Host</span><span class="topo-vm-ip">10.0.60.2</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">RDP-inngang</span>
+                <span class="topo-tag t-sw">Fjernaksess</span>
+              </div>
+            </div>
+            <div class="topo-vm">
+              <div><span class="topo-vm-name">IDMZ-Historian</span><span class="topo-vm-ip">10.0.60.10</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">Data-broker OT &rarr; IT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AP-INFRA (VLAN 20) -->
+          <div class="topo-zone tz-ap">
+            <div class="topo-zone-hdr">
+              <span>AP-INFRA</span>
+              <span class="topo-vlan-badge">VLAN 20 &middot; 10.0.20.0/24</span>
+            </div>
+            <div class="topo-vm" style="padding:7px 11px;opacity:0.75;">
+              <div><span class="topo-vm-name">Aksesspunkt</span><span class="topo-vm-ip">10.0.20.10</span></div>
+              <div style="margin-top:4px;">
+                <span class="topo-tag t-sw">PLANLAGT &mdash; ikke fysisk implementert</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FIELD (VLAN 10) -->
+          <div class="topo-zone tz-field">
+            <div class="topo-zone-hdr">
+              <span>FIELD &mdash; IIoT-sensorer</span>
+              <span class="topo-vlan-badge">VLAN 10 &middot; 10.0.10.0/24</span>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-muted);padding:2px;line-height:1.55;font-family:'IBM Plex Mono', monospace;">
+              Logisk definert sone for trådløse IIoT-sensorer &mdash; ikke aktivt ASA-subinterface (subinterface-taket på 5506-X ble brukt av VLAN 45). Trådløsdelen er arkitektonisk designet, ikke fysisk verifisert (T-20, T-22a/b).
+            </div>
+          </div>
+
+          <!-- OOB-MGMT (VLAN 99) -->
+          <div class="topo-zone tz-oob">
+            <div class="topo-zone-hdr">
+              <span>OOB-MGMT</span>
+              <span class="topo-vlan-badge">VLAN 99 &middot; 10.0.99.0/24</span>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-secondary);padding:2px;line-height:1.6;font-family:'IBM Plex Mono', monospace;">
+              OOB-WS (<strong style="color:var(--text);">.99</strong>) &rarr; ASA (<strong style="color:var(--text);">.1</strong>),
+              Switch (<strong style="color:var(--text);">.10</strong>), iDRAC (<strong style="color:var(--text);">.2</strong>),
+              ESXi (<strong style="color:var(--text);">.3</strong>)
+            </div>
+          </div>
+        </div>
+
+        <!-- FIREWALL COLUMN -->
+        <div class="topo-fw-col">
+          <div class="topo-fw-proto">
+            NORØNNA initierer<br>
+            OPC UA<br>&rarr; TCP/46040
+          </div>
+          <div class="topo-fw-arrow">&darr;</div>
+          <div class="topo-fw-box">
+            ASA FW
+            <div class="fw-model">Cisco ASA 5506-X</div>
+            <div class="fw-equiv">&asymp; SAS FW A/B<br>87JQ011A/011B</div>
+          </div>
+          <div class="topo-fw-arrow">&darr;</div>
+          <div class="topo-fw-proto">
+            AURORA initierer<br>
+            retur-retning<br>&rarr; TCP/46041
+          </div>
+          <div class="topo-fw-ports">
+            <code>G1/1</code> IT/WAN<br>
+            <code>G1/2</code> AURORA trunk<br>
+            <code>G1/3</code> OOB-MGMT<br>
+            <code>G1/4</code> NORØNNA
+          </div>
+        </div>
+
+        <!-- NORONNA PANEL -->
+        <div class="topo-site site-noronna">
+          <div class="topo-site-head">
+            <span class="topo-site-badge bn">NORØNNA &mdash; Offshore</span>
+            <span class="topo-site-sub">ASA G1/4 &rarr; SG250 gi7/gi8 &rarr; ESXi vSwitch1</span>
+          </div>
+
+          <div class="topo-zone tz-noronna">
+            <div class="topo-zone-hdr">
+              <span>NORØNNA-GW &mdash; OPC Gateway</span>
+              <span class="topo-vlan-badge">VLAN 70 &middot; 10.0.70.0/24</span>
+            </div>
+
+            <div class="topo-vm topo-vm-key-noronna">
+              <div>
+                <span class="topo-vm-name">3p-hvl-app02</span>
+                <span class="topo-vm-ip">10.0.70.11</span>
+                <span class="topo-vm-os">&mdash; Windows Server 2022</span>
+              </div>
+              <div style="margin-top:6px;">
+                <span class="topo-tag t-hub">Cogent DataHub</span>
+                <span class="topo-tag t-ua">OPC UA Client</span>
+                <span class="topo-tag t-sw">UaExpert</span>
+              </div>
+              <div class="topo-vm-note">
+                Kobler seg til <strong>app01 (10.0.45.10) :46040</strong> gjennom ASA og leser whitelistede tags.
+                AURORA-initiert retur-retning går mot app02 på TCP/46041. Midlertidige test-/ICMP-regler er fjernet
+                i sluttkonfigurasjonen; alt annet blokkeres (NORONNA_GW_IN).
+              </div>
+              <div class="topo-vm-equiv">&harr; Site: NORØNNA OPC Gateway opc1 &mdash; Cogent DataHub Server</div>
+            </div>
+          </div>
+
+          <div class="topo-zone tz-noronna" style="opacity:0.6;border-style:dashed;">
+            <div class="topo-zone-hdr">
+              <span>Offshore Server <em style="font-weight:400;font-style:italic;color:var(--text-muted);">&mdash; valgfri utvidelse</em></span>
+              <span class="topo-vlan-badge">VLAN 71 &middot; 10.0.71.0/24</span>
+            </div>
+            <div class="topo-vm" style="opacity:0.85;">
+              <div><span class="topo-vm-name">IMS Server</span><span class="topo-vm-ip">10.0.71.10</span></div>
+              <div style="margin-top:4px;"><span class="topo-tag t-ua">Aggregating UA Server</span></div>
+              <div class="topo-vm-equiv">&harr; Site: ABB IMS Server 87JS000</div>
+            </div>
+          </div>
+
+          <div class="topo-note">
+            <strong>Fremtidig redundans:</strong> Legg til <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;">3p-hvl-app03</code> (VLAN 45, ao-sys2) og
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;">3p-hvl-app04</code> (VLAN 70, opc2) for full redundans
+            som på ekte site.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Switch bar -->
+    <div class="topo-card" style="padding:0;background:transparent;border:none;margin-top:20px;">
+      <div class="topo-bar">
+        <div>
+          <strong>Cisco SG250-26</strong>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);margin-left:8px;">MGMT: 10.0.99.10</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;">
+          <span class="topo-bar-tag">gi1 Trunk &rarr; ESXi</span>
+          <span class="topo-bar-tag">gi2 Trunk &rarr; ASA</span>
+          <span class="topo-bar-tag" style="background:var(--accent-purple-dim);color:var(--accent-purple);">gi3&ndash;gi6, gi12 OOB</span>
+          <span class="topo-bar-tag" style="background:var(--accent-amber-dim);color:var(--accent-amber);">gi7/gi8 NORØNNA</span>
+          <span class="topo-bar-tag" style="background:var(--bg-secondary);color:var(--text-muted);">gi9-11, 13-26 Void (999)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IT/WAN bar -->
+    <div class="topo-card" style="padding:0;background:transparent;border:none;margin-top:12px;">
+      <div class="topo-bar bar-it">
+        <div>
+          <strong>IT/WAN &mdash; Enterprise</strong>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;margin-left:8px;">VLAN 100 &middot; 10.0.100.0/24 &middot; ASA G1/1</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">
+          ABB bedriftsnettverk &rarr; RDP til Jump Host i IDMZ
+        </div>
+      </div>
+    </div>
+
+    <!-- DATAFLYT -->
+    <div class="topo-card">
+      <div class="topo-card-title t-flow">Dataflyt &mdash; OPC UA gjennom brannmur (steg for steg)</div>
+      <div class="topo-flow-list">
+        <div class="topo-flow-item">
+          <div class="topo-flow-num">1</div>
+          <div>
+            <strong>OPC DA-simulering internt på 3p-hvl-app01</strong><br>
+            ABB OPC Connect Server + Matrikon genererer tags og datapunkter som simulerer ABB 800xA DCS-strukturen.
+            DCOM-trafikken er lokal på VM-en og krysser aldri brannmuren.
+          </div>
+        </div>
+        <div class="topo-flow-item">
+          <div class="topo-flow-num">2</div>
+          <div>
+            <strong>OPC DA &rarr; OPC UA med UaWrapper v1.9 på app01</strong><br>
+            UaWrapper v1.9 leser OPC DA-data fra OPC Connect Server via lokal DCOM og eksponerer dem som
+            <strong>OPC UA-server på opc.tcp://10.0.45.10:46040</strong>. Tag-whitelisting i konfigurasjonsfilen
+            (OPCDAClientConfig.xlsx) sikrer at kun ca. 100 av 1000 tags fra 800xA eksponeres mot NORØNNA (SR 7.7).
+          </div>
+        </div>
+        <div class="topo-flow-item">
+          <div class="topo-flow-num">3</div>
+          <div>
+            <strong>OPC UA gjennom ASA-brannmur &mdash; to eksplisitte sesjonsretninger</strong><br>
+            Når NORØNNA leser tags fra AURORA, initierer NORØNNA-siden (10.0.70.11) TCP-tilkoblingen mot AURORAs
+            OPC UA-endepunkt på port 46040. Når AURORA leser tags fra NORØNNA, initierer AURORA en egen sesjon mot
+            NORØNNAs endepunkt på port 46041.
+            ACL <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-coral);">NORONNA_GW_IN</code> tillater kun TCP/46040 fra 10.0.70.11 til 10.0.45.10, og
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-coral);">OPC_UA_ZONE_IN</code> kun TCP/46041 fra 10.0.45.10 til 10.0.70.11. Returtrafikk tillates statefully.
+          </div>
+        </div>
+        <div class="topo-flow-item">
+          <div class="topo-flow-num">4</div>
+          <div>
+            <strong>Mottak og verifikasjon på app02</strong><br>
+            UaExpert på app02 kobler til UaWrapper-endepunktet (opc.tcp://10.0.45.10:46040) og abonnerer på de
+            whitelistede taggene &mdash; tilsvarende verifikasjonssteget i ABBs testprosedyre (3AJG03xx-0001).
+            Verdier simulert i Matrikon OPC Explorer på AURORA-siden gjenfinnes i UaExpert på NORØNNA-siden.
+          </div>
+        </div>
+        <div class="topo-flow-item">
+          <div class="topo-flow-num opt">5</div>
+          <div style="color:var(--text-muted);">
+            <strong>(Valgfritt) IMS Server aggregerer (VLAN 71)</strong><br>
+            Aggregating UA Server samler fra Cogent DataHub og eksponerer samlet OPC UA-feed til 3rd-party klienter.
+            Tilsvarer ABB IMS Server 87JS000 på ekte site.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAPPING TABLE -->
+    <div class="topo-card">
+      <div class="topo-card-title t-map">Student &harr; Site &mdash; Komponentmapping</div>
+      <div style="overflow-x:auto;">
+        <table class="topo-map">
+          <thead>
+            <tr>
+              <th>Studentlab</th>
+              <th>IP-adresse</th>
+              <th>Site-ekvivalent</th>
+              <th>Funksjon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-a"><strong>3p-hvl-app01</strong></td>
+              <td class="c-ip">10.0.45.10</td>
+              <td>AURORA-app1<br><small>87JS999A &mdash; ao-sys1</small></td>
+              <td>Simulerer ABB 800xA DCS via OPC Connect Server + Matrikon &mdash; UaWrapper v1.9 eksponerer OPC UA-server på port 46040 med tag-whitelisting</td>
+            </tr>
+            <tr>
+              <td class="c-n"><strong>3p-hvl-app02</strong></td>
+              <td class="c-ip">10.0.70.11</td>
+              <td>NORØNNA OPC Gateway opc1<br><small>Cogent DataHub Server</small></td>
+              <td>Cogent DataHub + UaExpert &mdash; initierer OPC UA mot app01:46040 og leser whitelistede tags; mottar AURORA-initiert sesjon på :46041</td>
+            </tr>
+            <tr>
+              <td><strong>ASA 5506-X</strong></td>
+              <td class="c-ip">G1/2 AURORA &amp; G1/4 NORØNNA</td>
+              <td>SAS FW A/B<br><small>87JQ011A / 87JQ011B</small></td>
+              <td>Brannmur mellom AURORA og NORØNNA &mdash; kontrollerer OPC UA TCP/46040 og TCP/46041 via NORONNA_GW_IN / OPC_UA_ZONE_IN</td>
+            </tr>
+            <tr>
+              <td><strong>DC / RADIUS / NPS</strong></td>
+              <td class="c-ip">10.0.40.10</td>
+              <td>Intern AD-infrastruktur</td>
+              <td>Domenetjenester, DNS og sentralisert AAA-autentisering mot ASA via NPS/RADIUS (verifisert i T-13)</td>
+            </tr>
+            <tr>
+              <td><strong>AD-MGMT</strong></td>
+              <td class="c-ip">10.0.40.20</td>
+              <td>Admin workstation</td>
+              <td>Administrativ VM med RSAT og verktøy for AD/domeneforvaltning</td>
+            </tr>
+            <tr>
+              <td><strong>WSUS</strong></td>
+              <td class="c-ip">10.0.40.30</td>
+              <td>Patch management</td>
+              <td>Windows Update Services &mdash; distribuerer oppdateringer til interne VM-er</td>
+            </tr>
+            <tr>
+              <td><strong>RDP Jump Host</strong></td>
+              <td class="c-ip">10.0.60.2</td>
+              <td>Fjernaksess-gateway</td>
+              <td>Eneste RDP-inngang fra IT/WAN &rarr; IDMZ &rarr; OT-sonen (lokale credentials)</td>
+            </tr>
+            <tr>
+              <td class="c-s"><em>3p-hvl-app03</em> (fremtidig)</td>
+              <td class="c-ip"><em>10.0.45.11</em></td>
+              <td class="c-s"><em>AURORA-app2 (87JS999B &mdash; ao-sys2)</em></td>
+              <td class="c-s"><em>Redundant AURORA med OPC UA Server &mdash; path 2</em></td>
+            </tr>
+            <tr>
+              <td class="c-s"><em>3p-hvl-app04</em> (fremtidig)</td>
+              <td class="c-ip"><em>10.0.70.12</em></td>
+              <td class="c-s"><em>NORØNNA OPC Gateway opc2</em></td>
+              <td class="c-s"><em>Redundant Cogent DataHub &mdash; mottar fra ao-sys2 (path 2)</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ASA CONFIG -->
+    <div class="topo-card">
+      <div class="topo-card-title t-map">ASA-konfigurasjon &mdash; sluttløsning (Vedlegg 2)</div>
+      <div class="topo-config-grid">
+        <div>
+          <div class="topo-cfg-label">Interface &mdash; NORØNNA (G1/4)</div>
+<pre class="topo-cfg"><span class="cmt">! G1/4 for NORØNNA-trafikk</span>
+interface GigabitEthernet1/4
+ description "NORONNA mot ESXi"
+ no shutdown
+!
+interface GigabitEthernet1/4.70
+ vlan 70
+ nameif NORONNA-GW
+ security-level 20
+ ip address 10.0.70.1 255.255.255.0
+!
+mtu NORONNA-GW 1500</pre>
+        </div>
+        <div>
+          <div class="topo-cfg-label">ACL-regler &mdash; OPC UA conduit</div>
+<pre class="topo-cfg"><span class="cmt">! NORØNNA-initiert sesjon (leser AURORA-tags):
+! NORONNA-GW &rarr; OPC-UA-Zone (VLAN 45)</span>
+access-list NORONNA_GW_IN extended permit tcp \
+  host 10.0.70.11 host 10.0.45.10 eq 46040
+access-list NORONNA_GW_IN extended deny ip \
+  any any log
+
+<span class="cmt">! AURORA-initiert sesjon (leser NORØNNA-tags):
+! OPC-UA-Zone &rarr; NORONNA-GW (VLAN 70)</span>
+access-list OPC_UA_ZONE_IN extended permit tcp \
+  host 10.0.45.10 host 10.0.70.11 eq 46041
+
+access-group NORONNA_GW_IN in interface NORONNA-GW
+
+<span class="cmt">! ASA er stateful &mdash; retur-trafikk slippes
+! gjennom automatisk. Midlertidige test- og
+! ICMP-regler er fjernet i sluttkonfigurasjonen.</span></pre>
+        </div>
+      </div>
+      <div class="topo-note">
+        <strong>Sesjonsinitiering vs. dataretning:</strong> Den bidireksjonelle OPC UA-dataflyten består av to eksplisitt
+        definerte sesjonsretninger &mdash; ikke en generell åpning mellom sonene. NORØNNA initierer mot AURORA på TCP/46040,
+        AURORA initierer mot NORØNNA på TCP/46041. Tagverdiene returneres som svartrafikk i etablerte TCP-sesjoner
+        (stateful inspection).
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="topo-legend">
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-blue-dim);border-color:var(--accent-blue);"></div>AURORA (landanlegg)</div>
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-amber-dim);border-color:var(--accent-amber);"></div>NORØNNA (offshore)</div>
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-coral);"></div>Brannmur (ASA / SAS FW)</div>
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-coral-dim);border-color:var(--accent-coral);"></div>OPC DA (lokal, intern VM)</div>
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-amber-dim);border-color:var(--accent-amber);"></div>OPC UA (gjennom brannmur)</div>
+      <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-teal-dim);border-color:var(--accent-teal);"></div>Cogent DataHub</div>
+      <div class="topo-leg" style="margin-left:auto;">
+        <a href="AURORA-NORONNA-topologi-v2.html" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:none;">
+          &#8599; Åpne fullt topologi-dokument
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -2018,12 +3301,12 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
       <div class="concept-card" style="--card-accent: var(--accent-amber);">
         <span class="concept-tag tag-protocol">Protokoll</span>
         <h3>OPC UA</h3>
-        <p>Moderne industriprotokoll (IEC 62541) som erstatter eldre OPC DA/DCOM. Støtter SignAndEncrypt, sertifikat-autentisering, og applikasjonslags tag-filtrering.</p>
+        <p>Moderne industriprotokoll (IEC 62541) som erstatter eldre OPC DA/DCOM. Sertifikatbasert applikasjonstillit (trust list), sikkerhetsprofiler som Sign &amp; Encrypt, og applikasjonslags tag-filtrering.</p>
       </div>
       <div class="concept-card" style="--card-accent: var(--accent-teal);">
-        <span class="concept-tag tag-protocol">Protokoll</span>
-        <h3>MQTT</h3>
-        <p>Lettvekts meldingsprotokoll for IIoT-sensorer. Sensordata sendes via MQTT (TCP/1883) til broker/historian i SERVER-sonen, som videresender til IDMZ.</p>
+        <span class="concept-tag tag-protocol">Programvare</span>
+        <h3>UaWrapper v1.9</h3>
+        <p>ABBs protokollbro fra OPC DA til OPC UA. Leser 800xA-simulerte tags via lokal DCOM og eksponerer kun whitelistede tags som OPC UA-server (TCP/46040) &mdash; least functionality (SR 7.7).</p>
       </div>
       <div class="concept-card" style="--card-accent: var(--accent-coral);">
         <span class="concept-tag tag-security">Sikkerhet</span>
@@ -2033,7 +3316,7 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
       <div class="concept-card" style="--card-accent: var(--accent-teal);">
         <span class="concept-tag tag-infra">Infrastruktur</span>
         <h3>Cisco ASA 5506-X</h3>
-        <p>Stateful brannmur med VLAN-subinterfaces og ACL per sone. Alle 8 nettverkssoner rutes gjennom ASA med egne regler og security-levels.</p>
+        <p>Stateful brannmur med VLAN-subinterfaces og ACL per sone. Aktive nettverkssoner rutes gjennom ASA med egne regler og security-levels &mdash; med kjent begrensning på 5 subinterfaces per fysisk interface.</p>
       </div>
     </div>
   </div>
@@ -2053,47 +3336,72 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <div class="purdue-level" style="background:rgba(88,166,255,0.06);border-left:3px solid var(--accent-blue);">
           <span class="purdue-lvl-label" style="color:var(--accent-blue);">L4/L5</span>
           <span class="purdue-lvl-name">IT / WAN / Enterprise</span>
-          <span class="purdue-lvl-detail">VLAN 100 &middot; SL 10</span>
+          <span class="purdue-lvl-detail">VLAN 100 &middot; ASA SL 0</span>
         </div>
 
         <div class="purdue-divider"></div>
-        <div class="purdue-divider-label">Cisco ASA &middot; IDMZ-grense</div>
+        <div class="purdue-divider-label">Cisco ASA 5506-X &middot; IDMZ-grense</div>
         <div class="purdue-divider"></div>
 
         <div class="purdue-level" style="background:rgba(88,166,255,0.05);border-left:3px solid var(--accent-blue);">
-          <span class="purdue-lvl-label" style="color:var(--accent-blue);">IDMZ</span>
-          <span class="purdue-lvl-name">Jump Host + Data-broker</span>
-          <span class="purdue-lvl-detail">VLAN 60 &middot; SL 40</span>
+          <span class="purdue-lvl-label" style="color:var(--accent-blue);">L3.5 &middot; IDMZ</span>
+          <span class="purdue-lvl-name">Jump Host + IDMZ Historian</span>
+          <span class="purdue-lvl-detail">VLAN 60 &middot; SL-T 3 &middot; ASA SL 35</span>
         </div>
 
         <div class="purdue-level" style="background:rgba(244,112,103,0.05);border-left:3px solid var(--accent-coral);">
           <span class="purdue-lvl-label" style="color:var(--accent-coral);">L3</span>
-          <span class="purdue-lvl-name">SERVER &mdash; DC, Historian, WSUS, UaWrapper</span>
-          <span class="purdue-lvl-detail">VLAN 40 &middot; SL 80</span>
+          <span class="purdue-lvl-name">OT-SERVER &mdash; DC/DNS/NPS, WSUS, MGMT, Historian</span>
+          <span class="purdue-lvl-detail">VLAN 40 &middot; SL-T 2 &middot; ASA SL 70</span>
+        </div>
+
+        <div class="purdue-level" style="background:rgba(240,180,41,0.05);border-left:3px solid var(--accent-amber);">
+          <span class="purdue-lvl-label" style="color:var(--accent-amber);">TRANSIT</span>
+          <span class="purdue-lvl-name">OPC-UA-Zone &mdash; app01 (OPC UA-server, simulert 800xA)</span>
+          <span class="purdue-lvl-detail">VLAN 45 &middot; SL-T 3 &middot; ASA SL 30</span>
         </div>
 
         <div class="purdue-level" style="background:rgba(188,140,255,0.05);border-left:3px solid var(--accent-purple);">
-          <span class="purdue-lvl-label" style="color:var(--accent-purple);">L2</span>
+          <span class="purdue-lvl-label" style="color:var(--accent-purple);">L3</span>
           <span class="purdue-lvl-name">EWS &mdash; Engineering Workstation</span>
-          <span class="purdue-lvl-detail">VLAN 50 &middot; SL 70</span>
+          <span class="purdue-lvl-detail">VLAN 50 &middot; SL-T 2 &middot; ASA SL 55</span>
+        </div>
+
+        <div class="purdue-level" style="background:rgba(55,138,221,0.05);border-left:3px solid var(--accent-blue);">
+          <span class="purdue-lvl-label" style="color:var(--accent-blue);">L1</span>
+          <span class="purdue-lvl-name">AP-INFRA &mdash; Trådløs infrastruktur (AP management)</span>
+          <span class="purdue-lvl-detail">VLAN 20 &middot; SL-T 2 &middot; ASA SL 25</span>
         </div>
 
         <div class="purdue-level" style="background:rgba(29,233,182,0.05);border-left:3px solid var(--accent-teal);">
-          <span class="purdue-lvl-label" style="color:var(--accent-teal);">L1</span>
-          <span class="purdue-lvl-name">FIELD &mdash; IIoT-sensorer + aksesspunkter</span>
-          <span class="purdue-lvl-detail">VLAN 10, 20</span>
+          <span class="purdue-lvl-label" style="color:var(--accent-teal);">L0-L1</span>
+          <span class="purdue-lvl-name">FIELD &mdash; IIoT-sensorer og feltenheter</span>
+          <span class="purdue-lvl-detail">VLAN 10 &middot; SL-T 1 &middot; ASA SL 15*</span>
         </div>
 
         <div class="purdue-divider" style="background:repeating-linear-gradient(90deg, var(--accent-amber), var(--accent-amber) 8px, transparent 8px, transparent 16px);"></div>
-        <div class="purdue-divider-label" style="color:var(--accent-amber);">ASA &middot; Ekstern site-grense</div>
+        <div class="purdue-divider-label" style="color:var(--accent-amber);">ASA &middot; Ekstern site-grense (OPC UA conduit)</div>
         <div class="purdue-divider" style="background:repeating-linear-gradient(90deg, var(--accent-amber), var(--accent-amber) 8px, transparent 8px, transparent 16px);"></div>
 
         <div class="purdue-level" style="background:rgba(240,180,41,0.06);border-left:3px solid var(--accent-amber);">
           <span class="purdue-lvl-label" style="color:var(--accent-amber);">EKS.</span>
-          <span class="purdue-lvl-name">NORØNNA-GW &mdash; Cogent DataHub (OPC UA)</span>
-          <span class="purdue-lvl-detail">VLAN 70 &middot; SL 20</span>
+          <span class="purdue-lvl-name">NORØNNA-GW &mdash; Cogent DataHub (OPC UA-klient)</span>
+          <span class="purdue-lvl-detail">VLAN 70 &middot; ASA SL 20</span>
+        </div>
+
+        <div class="purdue-divider"></div>
+        <div class="purdue-divider-label">Out-of-band management (L2-isolert, ingen routet vei)</div>
+        <div class="purdue-divider"></div>
+
+        <div class="purdue-level" style="background:rgba(29,233,182,0.06);border-left:3px solid var(--accent-teal);">
+          <span class="purdue-lvl-label" style="color:var(--accent-teal);">OOB</span>
+          <span class="purdue-lvl-name">OOB-MGMT &mdash; ASA, switch, iDRAC, ESXi</span>
+          <span class="purdue-lvl-detail">VLAN 99 &middot; ASA SL 85</span>
         </div>
       </div>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-top:14px; font-family:'IBM Plex Mono',monospace;">
+        * FIELD-sonen er definert logisk, men har ikke aktiv ASA-subinterface — Cisco ASA 5506-X støtter maks 5 subinterfaces per G1/2, og kapasiteten ble brukt av OPC-UA-Zone (VLAN 45). Sensortrafikk vil passere via AP-INFRA i ferdig løsning. VOID (VLAN 999) er et svart hull for ubrukte switchporter.
+      </p>
     </div>
   </div>
 </section>
@@ -2105,6 +3413,7 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
     <h2 class="section-title">Tillatte dataflyter gjennom brannmur</h2>
     <p class="section-desc">
       Alle dataflyter er eksplisitt tillatt via ACL-regler. Alt annet blokkeres med implicit deny.
+      Midlertidige test- og feilsøkingsregler ble fjernet i sluttkonfigurasjonen (rapport kap. 4.7).
     </p>
     <div class="flow-table-wrapper">
       <table class="flow-table">
@@ -2118,61 +3427,75 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>IIoT-sensorer (FIELD)</td>
-            <td>Historian (SERVER)</td>
-            <td><span class="proto-badge proto-mqtt">MQTT</span></td>
-            <td>TCP/1883</td>
-            <td>Sensordata-innsamling</td>
+          <tr style="opacity:0.6;">
+            <td>FIELD (VLAN 10)*</td>
+            <td>Historian (OT-SERVER 10.0.40.0/24)</td>
+            <td><span class="proto-badge proto-mqtt">N/A</span></td>
+            <td>&mdash;</td>
+            <td>Sensordata fra felt til Historian (F1) &mdash; planlagt conduit, ikke realisert (jf. T-20)</td>
           </tr>
           <tr>
-            <td>EWS</td>
-            <td>SERVER-sonen</td>
-            <td><span class="proto-badge proto-rdp">RDP</span> <span class="proto-badge proto-ssh">SSH</span></td>
-            <td>3389, 22</td>
-            <td>Administrasjon og vedlikehold</td>
+            <td>AP-INFRA (VLAN 20)</td>
+            <td>OOB-MGMT (VLAN 99)</td>
+            <td><span class="proto-badge proto-https">HTTPS</span></td>
+            <td>TCP/443</td>
+            <td>AP-management og provisjonering (F5, F7)</td>
           </tr>
           <tr>
-            <td>EWS</td>
-            <td>DC (SERVER)</td>
-            <td><span class="proto-badge proto-https">AD/DNS</span></td>
-            <td>53, 88, 389...</td>
-            <td>Domenetjenester og autentisering</td>
+            <td>EWS (VLAN 50)</td>
+            <td>OT-SERVER / OPC-UA-Zone</td>
+            <td><span class="proto-badge proto-https">HTTPS</span> <span class="proto-badge proto-https">AD/DNS</span></td>
+            <td>WSUS, domenetjenester</td>
+            <td>WSUS, domenetjenester og nødvendig applikasjonskommunikasjon mot OPC UA-vert</td>
           </tr>
           <tr>
-            <td>Historian (SERVER)</td>
-            <td>Data-broker (IDMZ)</td>
-            <td><span class="proto-badge proto-https">HTTPS</span> <span class="proto-badge proto-mqtt">MQTT</span></td>
-            <td>443, 1883</td>
-            <td>Data-eksport til DMZ</td>
+            <td>OT-SERVER (Historian)</td>
+            <td>IDMZ-Historian (VLAN 60)</td>
+            <td><span class="proto-badge proto-https">Definert conduit</span></td>
+            <td>&mdash;</td>
+            <td>Kontrollert videreføring av data til IDMZ (data-broker OT &rarr; IT)</td>
           </tr>
           <tr>
-            <td>IT/WAN</td>
-            <td>Jump Host (IDMZ)</td>
+            <td>IT/WAN (VLAN 100)</td>
+            <td>Jump Host (IDMZ 10.0.60.2)</td>
             <td><span class="proto-badge proto-rdp">RDP</span></td>
-            <td>3389</td>
-            <td>Fjernaksess via IDMZ</td>
+            <td>TCP/3389</td>
+            <td>Fjerntilgang kun til Jump Host (F7) &mdash; verifisert i T-02</td>
           </tr>
           <tr>
             <td>Jump Host (IDMZ)</td>
-            <td>SERVER, EWS, MGMT</td>
-            <td><span class="proto-badge proto-rdp">RDP</span> <span class="proto-badge proto-ssh">SSH</span></td>
-            <td>3389, 22</td>
-            <td>Administrasjonssti innover</td>
+            <td>Definerte OT-servere</td>
+            <td><span class="proto-badge proto-rdp">RDP</span></td>
+            <td>TCP/3389</td>
+            <td>Jump Host → interne OT-VM-er (F7) &mdash; to-trinns fjerntilgang (T-16)</td>
           </tr>
           <tr class="highlight-row">
-            <td><strong>app02 / Cogent DataHub (NORØNNA)</strong></td>
-            <td><strong>app01 / UaWrapper (SERVER)</strong></td>
+            <td><strong>NORØNNA-GW (10.0.70.11)</strong></td>
+            <td><strong>app01 / UaWrapper (OPC-UA-Zone &middot; 10.0.45.10)</strong></td>
             <td><span class="proto-badge proto-opcua">OPC UA</span></td>
-            <td><strong>TCP/4840</strong></td>
-            <td><strong>Kryss-site prosessdata</strong></td>
+            <td><strong>TCP/46040</strong></td>
+            <td><strong>NORØNNA-initiert sesjon &middot; kryss-site prosessdata &middot; tag-whitelisting (F8, F9)</strong></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>OPC-UA-Zone (10.0.45.10)</strong></td>
+            <td><strong>app02 / Cogent DataHub (NORØNNA-GW &middot; 10.0.70.11)</strong></td>
+            <td><span class="proto-badge proto-opcua">OPC UA</span></td>
+            <td><strong>TCP/46041</strong></td>
+            <td><strong>AURORA-initiert sesjon &middot; bidireksjonell dataflyt via to definerte retninger (F8, F9)</strong></td>
           </tr>
           <tr>
-            <td>MGMT-WS (OOB)</td>
-            <td>ASA, ESXi, iDRAC, switch</td>
-            <td><span class="proto-badge proto-ssh">SSH</span> <span class="proto-badge proto-https">HTTPS</span></td>
-            <td>22, 443</td>
-            <td>Out-of-band management</td>
+            <td>OT-SERVER (40)</td>
+            <td>IT-WAN (100)</td>
+            <td><span class="proto-badge proto-https">HTTPS</span></td>
+            <td>TCP/443</td>
+            <td>WSUS upstream-synk (begrenset)</td>
+          </tr>
+          <tr>
+            <td>OOB-Workstation (10.0.99.99)</td>
+            <td>ASA, switch, iDRAC, ESXi mgmt</td>
+            <td><span class="proto-badge proto-ssh">SSH</span> <span class="proto-badge proto-https">HTTPS</span> <span class="proto-badge proto-https">SNMPv3</span> <span class="proto-badge proto-https">Syslog</span></td>
+            <td>22, 443, 161/162, 514</td>
+            <td>Administrativ tilgang til management-grensesnitt (F7) &mdash; ingen ordinær conduit inn i OOB-MGMT</td>
           </tr>
         </tbody>
       </table>
@@ -2194,7 +3517,7 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
         <div class="sec-icon" style="background:var(--accent-teal-dim);color:var(--accent-teal);">&#9783;</div>
         <div>
           <h4>Nettverkssegmentering</h4>
-          <p>8 separate VLANs med ASA-subinterfaces. Ingen trafikk flyter mellom soner uten eksplisitt ACL-regel. Implicit deny med logging på alle soner.</p>
+          <p>9 separate VLANs (inkl. dedikert OPC-UA-Zone) med ASA-subinterfaces. Ingen trafikk flyter mellom soner uten eksplisitt ACL-regel. Implicit deny med logging på alle soner.</p>
         </div>
       </div>
       <div class="sec-card">
@@ -2207,15 +3530,15 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
       <div class="sec-card">
         <div class="sec-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);">&#9878;</div>
         <div>
-          <h4>OPC UA SignAndEncrypt</h4>
-          <p>All OPC UA-kommunikasjon mellom sites bruker SignAndEncrypt sikkerhetsmodus med X.509-sertifikat-autentisering. Ingen anonym tilgang.</p>
+          <h4>OPC UA sertifikatbasert tillit</h4>
+          <p>Klienten må klarere UaWrapper-instansens applikasjonssertifikat (trust list) før sesjon kan etableres &mdash; verifisert via BadCertificateUntrusted ved første tilkobling. Endepunktet eksponerer profiler opp til Sign &amp; Encrypt; produksjonsnær løsning bør håndheve SignAndEncrypt med Basic256Sha256.</p>
         </div>
       </div>
       <div class="sec-card">
         <div class="sec-icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);">&#9881;</div>
         <div>
-          <h4>Tag-filtrering</h4>
-          <p>UaWrapper eksponerer kun 100 av 1000 OPC DA-tagger via OPC UA. Applikasjonslags whitelisting sikrer at kun nødvendig data krysser sone-grenser.</p>
+          <h4>Tag-whitelisting</h4>
+          <p>UaWrapper på app01 eksponerer kun ca. 100 av 1000 OPC DA-tags via OPC UA. Applikasjonslags whitelisting (SR 7.7, verifisert i T-09) sikrer at kun nødvendig data krysser sone-grenser.</p>
         </div>
       </div>
       <div class="sec-card">
@@ -2231,6 +3554,169 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
           <h4>OOB Management</h4>
           <p>Fysisk separert management-nett (VLAN 99) med egne porter. ESXi, iDRAC, switch og ASA administreres out-of-band, isolert fra prosess-trafikk.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TESTRESULTATER ═══════════ -->
+<section class="section" id="resultater">
+  <div class="container">
+    <div class="section-label">Verifikasjon</div>
+    <h2 class="section-title">Testresultater</h2>
+    <p class="section-desc">
+      Den realiserte delen av arkitekturen er verifisert gjennom 23 definerte tester koblet til
+      kravspesifikasjonen (F1&ndash;F9, NF1&ndash;NF5) og IEC 62443-3-3 FR/SR. 19 tester er gjennomført
+      med status Pass/Pass* &mdash; ingen tester feilet. Fire tester (FIELD, EWS og trådløs del) er
+      dokumentert som N/A fordi nødvendig fysisk utstyr ikke var tilgjengelig i prosjektperioden.
+      Fullstendig testprotokoll i Vedlegg 4 (BO26EB-20-TP-001).
+    </p>
+
+    <div class="security-grid">
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-teal-dim);color:var(--accent-teal);">&#10003;</div>
+        <div>
+          <h4>T-02 &middot; Jump Host som eneste inngang</h4>
+          <p>Kun RDP til Jump Host fra IT/WAN fungerer. Direkte trafikk mot DC, OPC-UA-Zone og EWS blokkeres,
+          og forsøkene logges i syslog. Verifisert med ACL-treff og packet-tracer. <strong>Pass.</strong></p>
+        </div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);">&#10003;</div>
+        <div>
+          <h4>T-04 &middot; OOB-MGMT som separat management-plane</h4>
+          <p>Management-planet er adskilt fra data-planet: produksjons- og OPC UA-trafikk når ikke OOB-MGMT,
+          mens administrativ tilgang fra OOB-Workstation fungerer som definert. <strong>Pass.</strong></p>
+        </div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);">&#10003;</div>
+        <div>
+          <h4>T-09 &middot; Tag-whitelisting som applikasjonslags-kontroll</h4>
+          <p>Kun tags definert i UaWrapper-konfigurasjonen er synlige i OPC UA-adresserommet &mdash;
+          uavhengig av hva nettverkslaget tillater. Least Functionality (SR 7.7). <strong>Pass.</strong></p>
+        </div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-coral-dim);color:var(--accent-coral);">&#10003;</div>
+        <div>
+          <h4>T-13 &middot; Sentralisert AAA mot ASA (AD/NPS)</h4>
+          <p>RADIUS/AD-autentisering mot ASA-brannmuren verifisert ende-til-ende med
+          <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;">test aaa-server authentication</code>.
+          Ugyldige brukere avvises (T-14). <strong>Pass.</strong></p>
+        </div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">&#10003;</div>
+        <div>
+          <h4>T-15 &middot; Kiwi Syslog og OOB-MGMT</h4>
+          <p>ASA og switch sender syslog til Kiwi Syslog Server på OOB-Workstation (10.0.99.99).
+          Deny-treff fra negative tester gjenfinnes i loggen med riktig severity. <strong>Pass.</strong></p>
+        </div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-icon" style="background:var(--accent-teal-dim);color:var(--accent-teal);">&#8943;</div>
+        <div>
+          <h4>T-20&ndash;T-22b &middot; Ikke utført (N/A)</h4>
+          <p>FIELD-segmentering, EWS-isolering og trådløs dekning/AP-administrasjon krever fysisk testklient,
+          EWS-arbeidsstasjon og aksesspunkt som ikke var tilgjengelig. Dokumentert som ferdig
+          verifikasjonsgrunnlag for videre arbeid.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-table-wrapper" style="margin-top:28px;">
+      <table class="flow-table">
+        <thead>
+          <tr>
+            <th>Test-ID</th>
+            <th>Beskrivelse</th>
+            <th>Kravref.</th>
+            <th>IEC 62443-3-3</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>T-01</td><td>NORØNNA-GW &rarr; OPC UA conduit</td><td>F4, F9</td><td>SR 5.1, SR 5.2</td><td>Pass*</td></tr>
+          <tr><td>T-02</td><td>IT/WAN &rarr; Jump Host (eneste inngang)</td><td>F4, F7</td><td>SR 5.1, SR 5.2, SR 1.1</td><td>Pass</td></tr>
+          <tr><td>T-03</td><td>VLAN L2-isolering</td><td>F3</td><td>SR 5.1</td><td>Pass</td></tr>
+          <tr><td>T-04</td><td>OOB-MGMT som separat management-plane</td><td>F4, F7</td><td>SR 5.1, SR 5.2</td><td>Pass</td></tr>
+          <tr><td>T-05</td><td>OPC DA Connect Server verifikasjon</td><td>F8</td><td>&mdash; (funksjonell)</td><td>Pass</td></tr>
+          <tr><td>T-06</td><td>UaWrapper v1.9 oppstart og OPC UA-endepunkt</td><td>F8</td><td>SR 3.1, SR 7.7</td><td>Pass*</td></tr>
+          <tr><td>T-07</td><td>OPC UA-tilkobling over ASA conduit</td><td>F8</td><td>SR 5.2, SR 3.1</td><td>Pass</td></tr>
+          <tr><td>T-08</td><td>Lese/skrive tagverdi AURORA &harr; NORØNNA</td><td>F8, F9</td><td>SR 3.1</td><td>Pass</td></tr>
+          <tr class="highlight-row"><td><strong>T-09</strong></td><td><strong>Tag-whitelisting (Least Functionality)</strong></td><td>F9</td><td>SR 7.7</td><td><strong>Pass</strong></td></tr>
+          <tr><td>T-10</td><td>Bidireksjonelle OPC UA-sesjoner</td><td>F8, F9</td><td>SR 5.1, SR 5.2</td><td>Pass</td></tr>
+          <tr><td>T-11</td><td>Enkeltinstans-begrensning for UaWrapper</td><td>F8</td><td>SR 7.2</td><td>Pass</td></tr>
+          <tr><td>T-12</td><td>BREAK-GLASS bruker</td><td>F5, F7, NF2</td><td>SR 1.1, 1.3, 1.5, 2.1</td><td>Pass</td></tr>
+          <tr><td>T-13</td><td>Sentralisert AAA-autentisering mot ASA (AD/NPS)</td><td>F5</td><td>SR 1.1 RE 1, 1.3, 1.5, 2.1</td><td>Pass</td></tr>
+          <tr><td>T-14</td><td>Avvisning av ugyldig bruker</td><td>F5</td><td>SR 1.1, SR 6.1</td><td>Pass</td></tr>
+          <tr><td>T-15</td><td>OOB-MGMT &mdash; Workstation og Kiwi Syslog</td><td>F7, NF5</td><td>SR 6.1, SR 6.2</td><td>Pass</td></tr>
+          <tr><td>T-16</td><td>Jump Host to-trinns fjerntilgang</td><td>F4, F7</td><td>SR 1.1, 2.1, 5.1, 5.2</td><td>Pass</td></tr>
+          <tr><td>T-17</td><td>SSH til ASA fra OOB-MGMT</td><td>F5, F7</td><td>SR 1.1, 2.1, 5.1, 5.2</td><td>Pass*</td></tr>
+          <tr><td>T-18</td><td>WSUS-konfigurasjon og klientpeking</td><td>F7, NF2, NF5</td><td>IEC 62443-2-3</td><td>Pass</td></tr>
+          <tr><td>T-19</td><td>Skalerbarhetsvurdering &mdash; ny sone</td><td>NF1</td><td>IEC 62443-3-2/ZCR</td><td>Pass*</td></tr>
+          <tr style="opacity:0.6;"><td>T-20</td><td>FIELD &rarr; OT-SERVER segmentering</td><td>F3, F4</td><td>SR 5.1, SR 5.2</td><td>N/A</td></tr>
+          <tr style="opacity:0.6;"><td>T-21</td><td>EWS &rarr; IT/WAN isolering</td><td>F4</td><td>SR 5.1, SR 5.2</td><td>N/A</td></tr>
+          <tr style="opacity:0.6;"><td>T-22a</td><td>Administrativ tilgang til aksesspunkt</td><td>F2, F7, NF3</td><td>SR 1.6, 2.1, 5.1</td><td>N/A</td></tr>
+          <tr style="opacity:0.6;"><td>T-22b</td><td>Trådløs dekningstesting og segmentering</td><td>F2, F4, NF3</td><td>SR 1.6, 2.2, 5.1, 5.2</td><td>N/A</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;font-family:'IBM Plex Mono',monospace;">
+      Pass* = bestått med dokumentert anmerkning akseptert som restrisiko. N/A = definert i testomfanget,
+      men ikke gjennomført pga. manglende fysisk utstyr (rapport kap. 5.5). Ingen tester har status Fail.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ KONKLUSJON ═══════════ -->
+<section class="section" id="konklusjon">
+  <div class="container">
+    <div class="section-label">Konklusjon</div>
+    <h2 class="section-title">Hva prosjektet viser</h2>
+    <p class="section-desc">
+      Resultatene tyder på at en segmentert og dokumenterbar OT-arkitektur kan utformes og delvis
+      realiseres i testlab &mdash; og at soneinndeling, conduits, brannmurhåndheving, Jump Host, OOB-MGMT,
+      AD/NPS og OPC UA med tag-whitelisting kan verifiseres innenfor prosjektets rammer.
+    </p>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon" style="background:var(--accent-teal-dim);color:var(--accent-teal);">&#10003;</div>
+        <h3>Praktisk verifisert</h3>
+        <p>
+          OPC UA-conduiten mellom AURORA og NORØNNA fungerer som tiltenkt med tag-whitelisting som
+          applikasjonslagskontroll. Jump Host er verifisert som eneste inngang fra IT/WAN, og RADIUS/AD-autentisering
+          samt syslog over OOB-MGMT er testet ende-til-ende (F3&ndash;F5, F7&ndash;F9).
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);">&#9888;</div>
+        <h3>Kjente begrensninger</h3>
+        <p>
+          Trådløsdelen er arkitektonisk designet, men ikke fysisk implementert eller radioteknisk verifisert.
+          FIELD-sonen mangler aktivt ASA-subinterface. For soner med SL-T 3 er oppnådd kapabilitet SL-C 2
+          (manglende MFA, IDS/IPS, redundans og delt fysisk infrastruktur).
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">&#9881;</div>
+        <h3>Verdi for ABB</h3>
+        <p>
+          Testlabben ble brukt til å teste, verifisere og feilsøke UaWrapper v1.9 med tilhørende
+          OPC DA/UA-programvarekjede &mdash; inkludert overgang til en UaWrapper-basert arkitektur der en
+          mellomliggende gateway-server ble fjernet. Erfaringene gikk inn i ABBs videre arbeid med den reelle løsningen.
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);">&#8599;</div>
+        <h3>Videre arbeid</h3>
+        <p>
+          1) Fysisk implementasjon og radioteknisk verifikasjon av trådløsdelen.
+          2) Styrket OPC UA-sikkerhet: formalisert PKI/trust list, sertifikatrotasjon og håndhevet
+          Sign &amp; Encrypt (Basic256Sha256 / Aes256Sha256RsaPss).
+          3) Robusthet: redundant brannmur, switch og DC, IDS/IPS og modnere logganalyse.
+        </p>
       </div>
     </div>
   </div>
@@ -2270,7 +3756,8 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
     <div class="footer-logo">AURORA</div>
     <p class="footer-text">
       BO26EB-20 &middot; Bacheloroppgave 2026<br>
-      Høgskulen på Vestlandet &middot; ABB Kokstad
+      Høgskulen på Vestlandet &middot; ABB Kokstad<br>
+      <span style="font-size:0.72rem;color:var(--text-muted);">&laquo;Wireless Network Architecture and Controlled Data Flow for Operational Technology&raquo; &middot; Endelig rapport rev 1.0 &middot; 19.05.2026</span>
     </p>
     <div class="footer-badges">
       <span class="footer-badge" style="color:var(--accent-blue);background:var(--accent-blue-dim);">IEC 62443</span>
@@ -2368,20 +3855,52 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
   draw();
 })();
 
-/* ── Load architecture diagram into iframe ── */
+/* ── Inline architecture diagram: tooltip + mode toggle ── */
 (function() {
-  const iframe = document.getElementById('arch-iframe');
-  // Fetch the architecture HTML and embed it
-  fetch('aurora-nettverksarkitektur.html')
-    .then(r => r.text())
-    .then(html => {
-      iframe.srcdoc = html;
-    })
-    .catch(() => {
-      // Fallback: try loading directly
-      iframe.removeAttribute('srcdoc');
-      iframe.src = 'aurora-nettverksarkitektur.html';
+  const tooltip = document.getElementById('arch-tooltip');
+  if (!tooltip) return;
+
+  document.querySelectorAll('.arch-node-group').forEach(node => {
+    const tip = node.getAttribute('data-tip');
+    if (!tip) return;
+    node.addEventListener('mouseenter', () => {
+      tooltip.innerHTML = tip.replace(/&#10;/g, '<br>').replace(/\n/g, '<br>');
+      tooltip.classList.add('show');
     });
+    node.addEventListener('mousemove', e => {
+      const x = e.clientX + 14;
+      const y = e.clientY - 10;
+      const w = tooltip.offsetWidth;
+      tooltip.style.left = (x + w > window.innerWidth ? e.clientX - w - 14 : x) + 'px';
+      tooltip.style.top  = y + 'px';
+    });
+    node.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('show');
+    });
+  });
+
+  function setArchMode(mode) {
+    const fNormal = document.getElementById('arch-flow-normal');
+    const fAttack = document.getElementById('arch-flow-attack');
+    const fOpc    = document.getElementById('arch-flow-opc');
+    if (fNormal) fNormal.style.display = mode === 'normal' ? '' : 'none';
+    if (fAttack) fAttack.style.display = mode === 'attack' ? '' : 'none';
+    if (fOpc)    fOpc.style.display    = mode === 'opc'    ? '' : 'none';
+
+    ['normal','attack','opc'].forEach(m => {
+      const btn = document.getElementById('arch-btn-' + m);
+      if (!btn) return;
+      btn.classList.remove('active-normal','active-attack','active-opc');
+      if (m === mode) btn.classList.add('active-' + mode);
+    });
+  }
+
+  const bN = document.getElementById('arch-btn-normal');
+  const bA = document.getElementById('arch-btn-attack');
+  const bO = document.getElementById('arch-btn-opc');
+  if (bN) bN.addEventListener('click', () => setArchMode('normal'));
+  if (bA) bA.addEventListener('click', () => setArchMode('attack'));
+  if (bO) bO.addEventListener('click', () => setArchMode('opc'));
 })();
 
 /* ── Scroll animations ── */
@@ -2488,16 +4007,16 @@ window.addEventListener('scroll', updateNavBg);
     { delay: 300,  html: '<span class="t-prompt">root@scada-hmi-01:~$</span> <span class="t-cmd">tail -f /var/log/ics/plc-gateway.log</span>' },
     { delay: 800,  html: '<span class="t-dim">[2026-04-03 02:14:01]</span> PLC-GW01 &mdash; Modbus/TCP session active &mdash; 10.0.10.0/24 &rarr; 10.0.40.40:502 <span class="t-green">OK</span>' },
     { delay: 600,  html: '<span class="t-dim">[2026-04-03 02:14:03]</span> OPC-UA-SRV &mdash; Client connected &mdash; cert=CN=CogentDataHub <span class="t-green">VERIFIED</span>' },
-    { delay: 500,  html: '<span class="t-dim">[2026-04-03 02:14:04]</span> MQTT-BROKER &mdash; Publish from sensor-03 &mdash; topic=field/temp/zone-a <span class="t-green">OK</span>' },
+    { delay: 500,  html: '<span class="t-dim">[2026-04-03 02:14:04]</span> UAWRAPPER &mdash; Subscription update &mdash; whitelisted tag AURORA/PT-101 <span class="t-green">OK</span>' },
     { delay: 1200, html: '<span class="t-dim">[2026-04-03 02:14:07]</span> <span class="t-amber">WARN</span> &mdash; ASA NORONNA_GW_IN &mdash; Unexpected TCP SYN from 10.0.70.11 &rarr; 10.0.40.10:445 <span class="t-red">DENIED</span>' },
     { delay: 400,  html: '<span class="t-dim">[2026-04-03 02:14:07]</span> <span class="t-amber">WARN</span> &mdash; ASA NORONNA_GW_IN &mdash; TCP SYN from 10.0.70.11 &rarr; 10.0.50.10:3389 <span class="t-red">DENIED</span>' },
     { delay: 400,  html: '<span class="t-dim">[2026-04-03 02:14:08]</span> <span class="t-amber">WARN</span> &mdash; ASA NORONNA_GW_IN &mdash; TCP SYN from 10.0.70.11 &rarr; 10.0.40.10:22 <span class="t-red">DENIED</span>' },
     { delay: 800,  html: '<span class="t-dim">[2026-04-03 02:14:09]</span> <span class="t-red">ALERT</span> &mdash; IDS &mdash; Port scan detected from NORONNA-GW (10.0.70.11) &mdash; 14 ports in 2.1s' },
     { delay: 600,  html: '<span class="t-dim">[2026-04-03 02:14:09]</span> <span class="t-red">ALERT</span> &mdash; ASA implicit deny triggered 14 times &mdash; source: 10.0.70.11 &mdash; zone: NORONNA-GW' },
-    { delay: 1000, html: '<span class="t-dim">[2026-04-03 02:14:10]</span> ASA &mdash; <span class="t-bold">All lateral movement blocked.</span> Only TCP/4840 (OPC UA) permitted through conduit.' },
+    { delay: 1000, html: '<span class="t-dim">[2026-04-03 02:14:10]</span> ASA &mdash; <span class="t-bold">All lateral movement blocked.</span> Only TCP/46040+46041 (OPC UA) permitted through conduit.' },
     { delay: 300,  html: '' },
     { delay: 500,  html: '<span class="t-prompt">root@scada-hmi-01:~$</span> <span class="t-cmd">show access-list NORONNA_GW_IN | include hitcnt</span>' },
-    { delay: 700,  html: '  <span class="t-green">permit tcp host 10.0.70.11 host 10.0.40.50 eq 4840</span>  hitcnt=1247  (OPC UA)' },
+    { delay: 700,  html: '  <span class="t-green">permit tcp host 10.0.70.11 host 10.0.45.10 eq 46040</span>  hitcnt=1247  (OPC UA)' },
     { delay: 300,  html: '  <span class="t-dim">permit icmp 10.0.70.0/24 10.0.40.0/24</span>                 hitcnt=89' },
     { delay: 300,  html: '  <span class="t-red">deny ip any any log</span>                                    <span class="t-red">hitcnt=14</span>  &larr; port scan blocked' },
     { delay: 800,  html: '' },
@@ -2613,8 +4132,8 @@ window.addEventListener('scroll', updateNavBg);
       { id: 'app02',     label: 'app02',              sub: 'Cogent DataHub', x: leftX,        y: cY + 10,  w: 110, h: 50, zone: 'noronna' },
       { id: 'noronna-gw',label: 'NORØNNA-GW',         sub: 'VLAN 70',       x: leftX,        y: cY + 110, w: 110, h: 50, zone: 'noronna' },
       { id: 'asa',       label: 'Cisco ASA',           sub: 'Brannmur',      x: fwX,          y: cY,       w: 80,  h: 200, zone: 'fw', isFW: true },
-      { id: 'app01',     label: 'app01',              sub: 'UaWrapper :4840',x: W * 0.62,     y: cY - 140, w: 115, h: 50, zone: 'server' },
-      { id: 'historian', label: 'Historian',           sub: 'MQTT :1883',    x: W * 0.62,     y: cY - 60,  w: 115, h: 50, zone: 'server' },
+      { id: 'app01',     label: 'app01',              sub: 'OPC UA :46040',  x: W * 0.62,     y: cY - 140, w: 115, h: 50, zone: 'server' },
+      { id: 'historian', label: 'Historian',           sub: '10.0.40.40',    x: W * 0.62,     y: cY - 60,  w: 115, h: 50, zone: 'server' },
       { id: 'dc',        label: 'DC / RADIUS',        sub: '10.0.40.10',    x: W * 0.62,     y: cY + 20,  w: 115, h: 50, zone: 'server' },
       { id: 'ews',       label: 'EWS',                sub: '10.0.50.10',    x: W * 0.62,     y: cY + 100, w: 115, h: 50, zone: 'ews' },
       { id: 'field',     label: 'IIoT-sensorer',      sub: 'FIELD VLAN 10', x: W * 0.84,     y: cY - 100, w: 115, h: 50, zone: 'field' },
@@ -2633,7 +4152,7 @@ window.addEventListener('scroll', updateNavBg);
     },
     {
       title: 'Steg 2 — Lateral bevegelse via OPC UA',
-      desc: 'Fra app02 kobler angriperen seg til UaWrapper på app01 via OPC UA (TCP 4840). Ingen brannmur stopper trafikken.',
+      desc: 'Fra app02 kobler angriperen seg til OPC UA-serveren på app01 (TCP 46040). Ingen brannmur stopper trafikken.',
       states: { attacker: 'attack', app02: 'attack', app01: 'warning' },
       packets: [['app02', 'app01', 'attack']],
     },
@@ -2678,13 +4197,13 @@ window.addEventListener('scroll', updateNavBg);
     },
     {
       title: 'Steg 2 — OPC UA tillatt (men begrenset)',
-      desc: 'NORONNA_GW_IN tillater kun TCP 4840 til app01. Forbindelsen krever SignAndEncrypt med gyldig X.509-sertifikat. Angriperen mangler sertifikat.',
+      desc: 'NORONNA_GW_IN tillater kun TCP 46040 til app01. UaWrapper krever klarert applikasjonssertifikat (trust list) &mdash; angriperens klient avvises med BadCertificateUntrusted.',
       states: { attacker: 'attack', app02: 'attack', app01: 'blocked', asa: 'warning' },
       packets: [['app02', 'asa', 'warning']],
     },
     {
       title: 'Steg 3 — Lateral bevegelse blokkert',
-      desc: 'Angriperen prøver å nå DC (445), EWS (3389), Historian (1883). Alle forsøk treffes av ASA implicit deny. 14 blokkeringer logges.',
+      desc: 'Angriperen prøver å nå DC (445), EWS (3389), Historian (443). Alle forsøk treffes av ASA implicit deny. 14 blokkeringer logges til Kiwi Syslog.',
       states: { attacker: 'attack', app02: 'attack', dc: 'blocked', historian: 'blocked', ews: 'blocked', asa: 'blocked' },
       packets: [['app02', 'asa', 'attack'], ['asa', 'asa', 'blocked']],
     },
