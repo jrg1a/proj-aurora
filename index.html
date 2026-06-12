@@ -707,10 +707,13 @@ html.light .arch-tooltip { box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  contain: inline-size;
 }
 .flow-table {
   width: 100%;
+  min-width: 680px;
   border-collapse: collapse;
   font-size: 13px;
 }
@@ -1594,6 +1597,13 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
   justify-content: flex-end;
   min-width: 260px;
 }
+.topo-map-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 300px;
+}
 .topo-status-pill {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
@@ -1605,9 +1615,102 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
   white-space: nowrap;
 }
 .topo-status-pill strong { color: var(--text); font-weight: 600; }
+.topo-mode-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.topo-mode-btn {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), color var(--transition), transform var(--transition);
+}
+.topo-mode-btn:hover,
+.topo-mode-btn:focus-visible {
+  border-color: var(--accent-teal);
+  color: var(--text);
+  background: var(--bg-card-hover);
+  outline: none;
+}
+.topo-mode-btn.is-active {
+  color: var(--accent-teal);
+  border-color: var(--accent-teal);
+  background: var(--accent-teal-dim);
+  transform: translateY(-1px);
+}
+.topo-mode-btn[data-topo-mode-btn="opc"].is-active {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+  background: var(--accent-amber-dim);
+}
+.topo-mode-btn[data-topo-mode-btn="seg"].is-active {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  background: var(--accent-blue-dim);
+}
+.topo-mode-btn[data-topo-mode-btn="planned"].is-active {
+  color: var(--accent-purple);
+  border-color: var(--accent-purple);
+  background: var(--accent-purple-dim);
+}
+.topo-inspector {
+  display: grid;
+  grid-template-columns: minmax(170px, 260px) minmax(0, 1fr) minmax(220px, 0.6fr);
+  gap: 14px 18px;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, rgba(29,233,182,0.06), transparent 48%), var(--bg-card);
+}
+.topo-inspector-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: 5px;
+}
+.topo-inspector-title {
+  display: block;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--text);
+}
+.topo-inspector p {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+.topo-inspector-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.topo-inspector-tags span {
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 5px 7px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  white-space: nowrap;
+}
 .topo-map-scroll {
   overflow-x: auto;
   padding: 16px;
+  contain: inline-size;
 }
 .topo-svg {
   display: block;
@@ -1692,6 +1795,81 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
 .topo-path.admin { stroke: var(--accent-blue); stroke-dasharray: 6 5; }
 .topo-path.planned { stroke: var(--accent-teal); stroke-dasharray: 5 5; opacity: 0.75; }
 .topo-path.oob { stroke: var(--accent-purple); stroke-dasharray: 4 5; opacity: 0.8; }
+.topo-zone-shape,
+.topo-site-shell,
+.topo-ext-shell,
+.topo-device,
+.topo-path {
+  transition: opacity var(--transition), stroke-width var(--transition), filter var(--transition);
+}
+.topo-map-stage[data-topo-mode="opc"] .topo-zone-shape:not(.opc),
+.topo-map-stage[data-topo-mode="opc"] .topo-device:not(.key-aurora):not(.key-noronna) {
+  opacity: 0.34;
+}
+.topo-map-stage[data-topo-mode="opc"] .topo-path:not(.opc-a):not(.opc-b),
+.topo-map-stage[data-topo-mode="opc"] .topo-packet:not(.opc) {
+  opacity: 0.1;
+}
+.topo-map-stage[data-topo-mode="opc"] .topo-zone-shape.opc,
+.topo-map-stage[data-topo-mode="opc"] .topo-device.key-aurora,
+.topo-map-stage[data-topo-mode="opc"] .topo-device.key-noronna {
+  filter: drop-shadow(0 0 12px rgba(240,180,41,0.18));
+}
+.topo-map-stage[data-topo-mode="seg"] .topo-path,
+.topo-map-stage[data-topo-mode="seg"] .topo-packet {
+  opacity: 0.16;
+}
+.topo-map-stage[data-topo-mode="seg"] .topo-zone-shape,
+.topo-map-stage[data-topo-mode="seg"] .topo-site-shell,
+.topo-map-stage[data-topo-mode="seg"] .topo-ext-shell {
+  stroke-width: 1.8;
+}
+.topo-map-stage[data-topo-mode="planned"] .topo-zone-shape:not(.planned),
+.topo-map-stage[data-topo-mode="planned"] .topo-device {
+  opacity: 0.32;
+}
+.topo-map-stage[data-topo-mode="planned"] .topo-path:not(.planned),
+.topo-map-stage[data-topo-mode="planned"] .topo-packet:not(.planned) {
+  opacity: 0.1;
+}
+.topo-packets {
+  pointer-events: none;
+}
+.topo-packet {
+  opacity: 0.92;
+  filter: drop-shadow(0 0 7px currentColor);
+}
+.topo-packet.opc { fill: var(--accent-amber); color: var(--accent-amber); }
+.topo-packet.admin { fill: var(--accent-blue); color: var(--accent-blue); }
+.topo-packet.planned { fill: var(--accent-teal); color: var(--accent-teal); opacity: 0.7; }
+.topo-packet.oob { fill: var(--accent-purple); color: var(--accent-purple); opacity: 0.75; }
+.topo-hotspots {
+  pointer-events: none;
+}
+.topo-hotspot {
+  --hotspot-stroke: var(--accent-teal);
+  --hotspot-fill: rgba(29,233,182,0.06);
+  pointer-events: all;
+  cursor: pointer;
+  outline: none;
+}
+.topo-hotspot[data-topo-tone="blue"] { --hotspot-stroke: var(--accent-blue); --hotspot-fill: rgba(88,166,255,0.07); }
+.topo-hotspot[data-topo-tone="amber"] { --hotspot-stroke: var(--accent-amber); --hotspot-fill: rgba(240,180,41,0.07); }
+.topo-hotspot[data-topo-tone="coral"] { --hotspot-stroke: var(--accent-coral); --hotspot-fill: rgba(244,112,103,0.07); }
+.topo-hotspot[data-topo-tone="purple"] { --hotspot-stroke: var(--accent-purple); --hotspot-fill: rgba(188,140,255,0.07); }
+.topo-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 2;
+  transition: fill var(--transition), stroke var(--transition), stroke-width var(--transition);
+}
+.topo-hotspot:hover .topo-hit,
+.topo-hotspot:focus-visible .topo-hit,
+.topo-hotspot.is-active .topo-hit {
+  fill: var(--hotspot-fill);
+  stroke: var(--hotspot-stroke);
+  stroke-width: 2.2;
+}
 .topo-path-label {
   font-size: 10px;
   font-weight: 700;
@@ -2064,6 +2242,13 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
 .topo-map .c-n { color: var(--accent-amber); font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
 .topo-map .c-s { color: var(--text-muted); font-style: italic; }
 .topo-map .c-ip { font-family: 'IBM Plex Mono', monospace; color: var(--text-secondary); font-size: 11px; }
+.topo-table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  contain: inline-size;
+}
 
 /* Note/callout */
 .topo-note {
@@ -2081,9 +2266,10 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
 /* Config blocks */
 .topo-config-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
+.topo-config-grid > div { min-width: 0; }
 .topo-cfg-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
@@ -2103,6 +2289,8 @@ pre.topo-cfg {
   font-size: 11px;
   line-height: 1.6;
   overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
 }
 pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
@@ -2139,9 +2327,13 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
   .topo-grid { grid-template-columns: 1fr; }
   .topo-fw-col { flex-direction: row; justify-content: center; padding: 8px; flex-wrap: wrap; }
   .topo-fw-arrow { transform: rotate(-90deg); }
-  .topo-config-grid { grid-template-columns: 1fr; }
+  .topo-config-grid { grid-template-columns: minmax(0, 1fr); }
   .topo-map-header { flex-direction: column; }
+  .topo-map-side { align-items: flex-start; min-width: 0; }
   .topo-map-status { justify-content: flex-start; min-width: 0; }
+  .topo-mode-controls { justify-content: flex-start; }
+  .topo-inspector { grid-template-columns: 1fr; }
+  .topo-inspector-tags { justify-content: flex-start; }
   .topo-map-footer { grid-template-columns: 1fr 1fr; }
 }
 
@@ -2162,6 +2354,13 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
   .topo-map-scroll { padding: 10px; }
   .topo-map-footer { grid-template-columns: 1fr; }
   .topo-fact { min-height: auto; }
+  .topo-mode-btn { flex: 1 1 calc(50% - 6px); }
+  .topo-inspector { padding: 13px 14px; }
+  .topo-inspector-tags span { white-space: normal; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topo-packet { display: none; }
 }
 </style>
 </head>
@@ -3003,7 +3202,7 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
       i to eksplisitt definerte sesjonsretninger. Full redundans kan legges til ved behov med ekstra VM-er.
     </p>
 
-    <div class="topo-map-stage">
+    <div class="topo-map-stage" data-topo-mode="drift">
       <div class="topo-map-header">
         <div>
           <div class="topo-kicker">Inline topologi &middot; sluttløsning</div>
@@ -3013,11 +3212,32 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
             og den dedikerte OPC-UA-sonen som ble etablert for AURORA/NORØNNA-testen.
           </p>
         </div>
-        <div class="topo-map-status" aria-label="Topologistatus">
-          <span class="topo-status-pill"><strong>app01</strong> VLAN 45 / 10.0.45.10</span>
-          <span class="topo-status-pill"><strong>app02</strong> VLAN 70 / 10.0.70.11</span>
-          <span class="topo-status-pill"><strong>ASA</strong> G1/2, G1/3, G1/4</span>
-          <span class="topo-status-pill"><strong>OPC UA</strong> TCP 46040 + 46041</span>
+        <div class="topo-map-side">
+          <div class="topo-map-status" aria-label="Topologistatus">
+            <span class="topo-status-pill"><strong>app01</strong> VLAN 45 / 10.0.45.10</span>
+            <span class="topo-status-pill"><strong>app02</strong> VLAN 70 / 10.0.70.11</span>
+            <span class="topo-status-pill"><strong>ASA</strong> G1/2, G1/3, G1/4</span>
+            <span class="topo-status-pill"><strong>OPC UA</strong> TCP 46040 + 46041</span>
+          </div>
+          <div class="topo-mode-controls" role="group" aria-label="Visningsmodus for topologi">
+            <button class="topo-mode-btn is-active" type="button" data-topo-mode-btn="drift" aria-pressed="true">&#9679; Drift</button>
+            <button class="topo-mode-btn" type="button" data-topo-mode-btn="opc" aria-pressed="false">&#8644; OPC UA</button>
+            <button class="topo-mode-btn" type="button" data-topo-mode-btn="seg" aria-pressed="false">&#9633; Segmentering</button>
+            <button class="topo-mode-btn" type="button" data-topo-mode-btn="planned" aria-pressed="false">&#8943; Planlagt</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="topo-inspector" id="topo-inspector" aria-live="polite">
+        <div>
+          <div class="topo-inspector-kicker" id="topo-inspector-kicker">Aktivt perspektiv</div>
+          <strong class="topo-inspector-title" id="topo-inspector-title">Driftsmodus</strong>
+        </div>
+        <p id="topo-inspector-body">Realisert labtopologi med app01 i VLAN 45, app02 i VLAN 70 og ASA-regler som kun slipper de definerte OPC UA-sesjonene.</p>
+        <div class="topo-inspector-tags" id="topo-inspector-tags">
+          <span>19 tester</span>
+          <span>implicit deny</span>
+          <span>stateful retur</span>
         </div>
       </div>
 
@@ -3139,17 +3359,84 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
           <text class="topo-zone-title" x="828" y="485">VLAN 71 &middot; VALGFRI UTVIDELSE</text>
           <text class="topo-zone-meta" x="828" y="504">IMS Server / aggregating UA server</text>
 
-          <path class="topo-path opc-a" d="M830 410 C800 410 786 392 758 392 L674 392 C640 392 620 450 592 450" marker-end="url(#topo-arrow-amber)"/>
-          <path class="topo-path opc-b" d="M592 478 C626 478 646 454 674 454 L758 454 C792 454 806 426 830 426" marker-end="url(#topo-arrow-amber)"/>
+          <path id="topo-route-opc-a" class="topo-path opc-a" d="M830 410 C800 410 786 392 758 392 L674 392 C640 392 620 450 592 450" marker-end="url(#topo-arrow-amber)"/>
+          <path id="topo-route-opc-b" class="topo-path opc-b" d="M592 478 C626 478 646 454 674 454 L758 454 C792 454 806 426 830 426" marker-end="url(#topo-arrow-amber)"/>
           <text class="topo-path-label" x="675" y="374" text-anchor="middle" fill="var(--accent-amber)">OPC UA conduit</text>
           <text class="topo-path-sub" x="675" y="389" text-anchor="middle">:46040 NORØNNA &rarr; AURORA</text>
           <text class="topo-path-sub" x="675" y="404" text-anchor="middle">:46041 AURORA &rarr; NORØNNA</text>
-          <path class="topo-path admin" d="M790 196 L758 196 L758 316 L674 316 C620 316 530 344 468 344" marker-end="url(#topo-arrow-blue)"/>
+          <path id="topo-route-admin" class="topo-path admin" d="M790 196 L758 196 L758 316 L674 316 C620 316 530 344 468 344" marker-end="url(#topo-arrow-blue)"/>
           <text class="topo-path-label" x="604" y="296" fill="var(--accent-blue)">RDP/3389 via Jump Host</text>
-          <path class="topo-path planned" d="M172 264 L172 370 L232 438" marker-end="url(#topo-arrow-teal)"/>
+          <path id="topo-route-planned" class="topo-path planned" d="M172 264 L172 370 L232 438" marker-end="url(#topo-arrow-teal)"/>
           <text class="topo-path-sub" x="118" y="374">Planlagt feltdata</text>
-          <path class="topo-path oob" d="M620 566 C644 566 650 556 674 556" marker-end="url(#topo-arrow-purple)"/>
+          <path id="topo-route-oob" class="topo-path oob" d="M620 566 C644 566 650 556 674 556" marker-end="url(#topo-arrow-purple)"/>
           <text class="topo-path-sub" x="500" y="580">Management-plane, ikke produksjonstransit</text>
+
+          <g class="topo-packets" aria-hidden="true">
+            <circle class="topo-packet opc" r="4.5">
+              <animateMotion dur="4.4s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#topo-route-opc-a"/>
+              </animateMotion>
+            </circle>
+            <circle class="topo-packet opc" r="4.5">
+              <animateMotion dur="4.9s" begin="1s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#topo-route-opc-b"/>
+              </animateMotion>
+            </circle>
+            <circle class="topo-packet admin" r="3.5">
+              <animateMotion dur="5.2s" begin="0.3s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#topo-route-admin"/>
+              </animateMotion>
+            </circle>
+            <circle class="topo-packet planned" r="3.5">
+              <animateMotion dur="6s" begin="0.8s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#topo-route-planned"/>
+              </animateMotion>
+            </circle>
+            <circle class="topo-packet oob" r="3.5">
+              <animateMotion dur="5.8s" begin="1.4s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#topo-route-oob"/>
+              </animateMotion>
+            </circle>
+          </g>
+
+          <g class="topo-hotspots" aria-label="Klikkbare topologidetaljer">
+            <g class="topo-hotspot" data-topo-id="field" data-topo-tone="teal" tabindex="0" role="button" aria-label="FIELD sone">
+              <rect class="topo-hit" x="60" y="190" width="220" height="74" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="ap" data-topo-tone="blue" tabindex="0" role="button" aria-label="AP-INFRA sone">
+              <rect class="topo-hit" x="306" y="190" width="313" height="74" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="ews" data-topo-tone="purple" tabindex="0" role="button" aria-label="EWS sone">
+              <rect class="topo-hit" x="60" y="284" width="245" height="76" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="idmz" data-topo-tone="blue" tabindex="0" role="button" aria-label="IDMZ sone">
+              <rect class="topo-hit" x="330" y="284" width="289" height="76" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="server" data-topo-tone="coral" tabindex="0" role="button" aria-label="OT-SERVER sone">
+              <rect class="topo-hit" x="60" y="384" width="265" height="136" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="opc-zone" data-topo-tone="amber" tabindex="0" role="button" aria-label="OPC-UA-ZONE">
+              <rect class="topo-hit" x="350" y="384" width="269" height="136" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="oob" data-topo-tone="purple" tabindex="0" role="button" aria-label="OOB-MGMT sone">
+              <rect class="topo-hit" x="60" y="542" width="559" height="48" rx="7"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="asa" data-topo-tone="coral" tabindex="0" role="button" aria-label="ASA brannmur">
+              <rect class="topo-hit" x="674" y="156" width="84" height="424" rx="8"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="itwan" data-topo-tone="blue" tabindex="0" role="button" aria-label="IT/WAN sone">
+              <rect class="topo-hit" x="790" y="154" width="270" height="82" rx="8"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="noronna" data-topo-tone="amber" tabindex="0" role="button" aria-label="NORØNNA offshore site">
+              <rect class="topo-hit" x="790" y="282" width="270" height="268" rx="10"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="app01" data-topo-tone="amber" tabindex="0" role="button" aria-label="3p-hvl-app01">
+              <rect class="topo-hit" x="372" y="440" width="220" height="56" rx="5"/>
+            </g>
+            <g class="topo-hotspot" data-topo-id="app02" data-topo-tone="amber" tabindex="0" role="button" aria-label="3p-hvl-app02">
+              <rect class="topo-hit" x="830" y="398" width="190" height="40" rx="4"/>
+            </g>
+          </g>
         </svg>
       </div>
 
@@ -3500,7 +3787,7 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
     <!-- MAPPING TABLE -->
     <div class="topo-card">
       <div class="topo-card-title t-map">Student &harr; Site &mdash; Komponentmapping</div>
-      <div style="overflow-x:auto;">
+      <div class="topo-table-scroll">
         <table class="topo-map">
           <thead>
             <tr>
@@ -4256,6 +4543,173 @@ access-group NORONNA_GW_IN in interface NORONNA-GW
   if (bN) bN.addEventListener('click', () => setArchMode('normal'));
   if (bA) bA.addEventListener('click', () => setArchMode('attack'));
   if (bO) bO.addEventListener('click', () => setArchMode('opc'));
+})();
+
+/* ── Inline topology interaction ── */
+(function() {
+  const stage = document.querySelector('.topo-map-stage');
+  if (!stage) return;
+
+  const title = document.getElementById('topo-inspector-title');
+  const body = document.getElementById('topo-inspector-body');
+  const kicker = document.getElementById('topo-inspector-kicker');
+  const tags = document.getElementById('topo-inspector-tags');
+  const buttons = Array.from(document.querySelectorAll('[data-topo-mode-btn]'));
+  const hotspots = Array.from(stage.querySelectorAll('.topo-hotspot'));
+
+  const info = {
+    drift: {
+      title: 'Driftsmodus',
+      body: 'Realisert labtopologi med app01 i VLAN 45, app02 i VLAN 70 og ASA-regler som kun slipper de definerte OPC UA-sesjonene.',
+      tags: ['19 tester', 'implicit deny', 'stateful retur']
+    },
+    opc: {
+      title: 'OPC UA-conduit',
+      body: 'To eksplisitte sesjonsretninger er vist: NORØNNA til AURORA på TCP/46040, og AURORA tilbake til NORØNNA på TCP/46041.',
+      tags: ['TCP 46040', 'TCP 46041', 'SL-T 3']
+    },
+    seg: {
+      title: 'Segmentering',
+      body: 'Sonene er skilt med VLAN og ASA-grensesnitt. IT/WAN får kun RDP til Jump Host, mens produksjons- og management-plane holdes adskilt.',
+      tags: ['VLAN 40/45/60/70/99', 'ASA G1/2-G1/4', 'RDP via IDMZ']
+    },
+    planned: {
+      title: 'Planlagt utvidelse',
+      body: 'FIELD, AP-INFRA og EWS er modellert i designet, men ikke fysisk verifisert i bachelor-testen. De vises derfor som stiplete soner.',
+      tags: ['VLAN 10', 'VLAN 20', 'VLAN 50']
+    },
+    field: {
+      mode: 'planned',
+      title: 'FIELD',
+      body: 'Planlagt felt-/IIoT-segment for sensordata mot OT-serverlaget. Ikke fysisk koblet opp i slutt-testene.',
+      tags: ['10.0.10.0/24', 'planlagt', 'ikke testet']
+    },
+    ap: {
+      mode: 'planned',
+      title: 'AP-INFRA',
+      body: 'Planlagt trådløs infrastruktur. Diagrammet holder den synlig som egen sone for å vise hvor trådløs tilgang ville blitt segmentert.',
+      tags: ['10.0.20.0/24', 'AP-design', 'ikke testet']
+    },
+    ews: {
+      mode: 'planned',
+      title: 'EWS',
+      body: 'Engineering workstation-sonen er med i designet, men arbeidsstasjonen var ikke aktiv del av den verifiserte OPC UA-sluttløsningen.',
+      tags: ['10.0.50.0/24', '10.0.50.10', 'planlagt']
+    },
+    idmz: {
+      mode: 'seg',
+      title: 'IDMZ',
+      body: 'Mellomsone for Jump Host og broker. IT/WAN skal treffe Jump Host, ikke direkte OT-servere eller OPC-UA-Zone.',
+      tags: ['10.0.60.0/24', 'Jump Host .2', 'Broker .10']
+    },
+    server: {
+      mode: 'seg',
+      title: 'OT-SERVER',
+      body: 'SERVER-sonen inneholder støtteservere som DC/RADIUS, AD-MGMT, WSUS og Historian. app01 er bevisst flyttet ut til OPC-UA-Zone.',
+      tags: ['10.0.40.0/24', 'støtteservere', 'ikke app01']
+    },
+    'opc-zone': {
+      mode: 'opc',
+      title: 'OPC-UA-ZONE',
+      body: 'Dedikert AURORA-sone for UaWrapper på app01. Her eksponeres whiteliste-de OPC UA-tags mot NORØNNA.',
+      tags: ['VLAN 45', '10.0.45.10', 'UaWrapper']
+    },
+    oob: {
+      mode: 'seg',
+      title: 'OOB-MGMT',
+      body: 'Separat management-plane for ASA, iDRAC, ESXi, SG250 og OOB-WS. Den skal ikke bære produksjons- eller OPC UA-transit.',
+      tags: ['VLAN 99', 'management', 'ingen transit']
+    },
+    asa: {
+      mode: 'seg',
+      title: 'Cisco ASA 5506-X',
+      body: 'Brannmuren er sonegrensen mellom AURORA og NORØNNA. ACL-er tillater de to OPC UA-sesjonene og blokkerer øvrige forsøk.',
+      tags: ['G1/2 trunk', 'G1/3 OOB', 'G1/4 NORØNNA']
+    },
+    itwan: {
+      mode: 'seg',
+      title: 'IT/WAN',
+      body: 'Ekstern IT/WAN-sone. I designet er administrativ tilgang begrenset til RDP mot Jump Host i IDMZ.',
+      tags: ['VLAN 100', '10.0.100.0/24', 'RDP 3389']
+    },
+    noronna: {
+      mode: 'opc',
+      title: 'NORØNNA',
+      body: 'Offshore-siden i simuleringen. Den er modellert som ekstern site-grense bak ASA G1/4.70.',
+      tags: ['VLAN 70', '10.0.70.0/24', 'ekstern site']
+    },
+    app01: {
+      mode: 'opc',
+      title: '3p-hvl-app01',
+      body: 'AURORA-noden kjører OPC DA lokalt og eksponerer valgte tags som OPC UA på opc.tcp://10.0.45.10:46040.',
+      tags: ['10.0.45.10', 'TCP/46040', 'UaWrapper v1.9']
+    },
+    app02: {
+      mode: 'opc',
+      title: '3p-hvl-app02',
+      body: 'NORØNNA-noden kjører DataHub og UaExpert, og tester både lesing fra AURORA og egen retur-sesjon.',
+      tags: ['10.0.70.11', 'DataHub', 'UaExpert']
+    }
+  };
+
+  function renderInfo(id, nextKicker) {
+    const item = info[id] || info.drift;
+    if (kicker) kicker.textContent = nextKicker || 'Aktivt perspektiv';
+    if (title) title.textContent = item.title;
+    if (body) body.textContent = item.body;
+    if (tags) {
+      tags.textContent = '';
+      item.tags.forEach(tag => {
+        const chip = document.createElement('span');
+        chip.textContent = tag;
+        tags.appendChild(chip);
+      });
+    }
+  }
+
+  function applyMode(mode) {
+    stage.dataset.topoMode = mode;
+    buttons.forEach(button => {
+      const active = button.dataset.topoModeBtn === mode;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  function clearHotspots() {
+    hotspots.forEach(hotspot => hotspot.classList.remove('is-active'));
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.topoModeBtn || 'drift';
+      applyMode(mode);
+      clearHotspots();
+      renderInfo(mode, 'Aktivt perspektiv');
+    });
+  });
+
+  hotspots.forEach(hotspot => {
+    const id = hotspot.dataset.topoId;
+    const activate = () => {
+      const item = info[id];
+      if (!item) return;
+      if (item.mode) applyMode(item.mode);
+      clearHotspots();
+      hotspot.classList.add('is-active');
+      renderInfo(id, 'Valgt detalj');
+    };
+    hotspot.addEventListener('click', activate);
+    hotspot.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activate();
+      }
+    });
+  });
+
+  applyMode('drift');
+  renderInfo('drift', 'Aktivt perspektiv');
 })();
 
 /* ── Scroll animations ── */
