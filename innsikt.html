@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Innsikt | Project AURORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/aurora.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+      <div class="nav-links" data-nav-links>
+        <a href="index.html">Oversikt</a>
+        <a href="arkitektur.html">Arkitektur</a>
+        <a href="topologi.html">Topologi</a>
+        <a href="tester.html">Tester</a>
+        <a href="innsikt.html">Innsikt</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="rapport.html">Rapport</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="page-hero">
+      <canvas class="ambient-canvas" data-network-canvas></canvas>
+      <div class="shell">
+        <div class="eyebrow">Innsikt</div>
+        <h1>Designvalg, risiko og læring</h1>
+        <p class="lead">
+          En ren refleksjonsflate for hva vi valgte, hvorfor det betyr noe,
+          og hva laben lærer oss om OT-sikkerhet.
+        </p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="shell grid three">
+        <article class="insight-card">
+          <h3>Skille mellom simulert og realisert</h3>
+          <p>FIELD, AP-INFRA og EWS er fortsatt viktige i arkitekturen, men markeres tydelig som planlagte elementer når de ikke er fysisk testet.</p>
+          <div class="tag-row"><span class="tag teal">ærlighet</span><span class="tag">sporbarhet</span></div>
+        </article>
+        <article class="insight-card">
+          <h3>OPC UA trenger mer enn en port</h3>
+          <p>Prosjektet viser hvorfor protokollvalg, retning, identitet og tag-filtrering må ses sammen.</p>
+          <div class="tag-row"><span class="tag amber">OPC UA</span><span class="tag">conduit</span></div>
+        </article>
+        <article class="insight-card">
+          <h3>Brannmur er ikke arkitektur alene</h3>
+          <p>ASA-regler gir kontrollpunktet, men verdien kommer først når sonene, testene og dokumentasjonen henger sammen.</p>
+          <div class="tag-row"><span class="tag coral">ASA</span><span class="tag">defense in depth</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell section-head">
+        <div>
+          <div class="eyebrow">Scenario</div>
+          <h2 class="section-title">Hva skjer når antakelser endres?</h2>
+          <p class="section-text">
+            Velg et scenario for å se hvor prosjektets kontrollpunkter får betydning.
+          </p>
+        </div>
+        <div class="scenario-tabs" role="group" aria-label="Scenario">
+          <button class="chip is-active" type="button" data-scenario="normal">Normal drift</button>
+          <button class="chip" type="button" data-scenario="attack">Uønsket trafikk</button>
+          <button class="chip" type="button" data-scenario="recovery">Gjenoppretting</button>
+        </div>
+      </div>
+
+      <div class="shell grid two">
+        <div class="scenario-board" data-scenario-board>
+          <div class="scenario-grid"></div>
+          <div class="scenario-node" style="left:8%;top:18%;border-color:var(--blue);"><strong>AURORA</strong><span>app01 · UaWrapper</span></div>
+          <div class="scenario-node" style="left:42%;top:38%;border-color:var(--coral);"><strong>ASA</strong><span>ACL · implicit deny</span></div>
+          <div class="scenario-node" style="right:8%;top:18%;border-color:var(--amber);"><strong>NORØNNA</strong><span>app02 · DataHub</span></div>
+          <div class="scenario-node" style="left:18%;bottom:16%;border-color:var(--violet);"><strong>OOB</strong><span>management-plane</span></div>
+          <div class="scenario-node" style="right:18%;bottom:16%;border-color:var(--teal);"><strong>IDMZ</strong><span>Jump Host</span></div>
+          <span class="scenario-line is-hot" data-scenario-line="normal" style="left:22%;top:32%;width:56%;transform:rotate(0deg);background:var(--amber);"></span>
+          <span class="scenario-line" data-scenario-line="attack" style="left:10%;top:66%;width:76%;transform:rotate(-20deg);"></span>
+          <span class="scenario-line" data-scenario-line="recovery" style="left:24%;bottom:28%;width:48%;transform:rotate(0deg);"></span>
+        </div>
+        <div>
+          <div class="eyebrow">Tolkning</div>
+          <h2 class="section-title" style="font-size:clamp(26px,4vw,42px);">Kontrollflater som tåler spørsmål</h2>
+          <p class="scenario-copy" data-scenario-copy></p>
+          <div class="tag-row">
+            <span class="tag amber">OPC UA</span>
+            <span class="tag coral">blokkerte forsøk</span>
+            <span class="tag violet">OOB</span>
+            <span class="tag teal">IDMZ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell grid three">
+        <article class="card">
+          <h3>Det viktigste funnet</h3>
+          <p>Riktig topologi er en forutsetning for riktig sikkerhetsargument. Feil plassering av app01 endrer hva sonene egentlig betyr.</p>
+        </article>
+        <article class="card">
+          <h3>Det mest nyttige kompromisset</h3>
+          <p>En forenklet dual-site-lab kan fortsatt gi troverdig læring når begrensninger dokumenteres eksplisitt.</p>
+        </article>
+        <article class="card">
+          <h3>Det neste steget</h3>
+          <p>Legg inn redundante noder, sertifikathåndtering og mer detaljert OPC UA-hardening for en mer produksjonsnær lab.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">Project AURORA · Innsikt</div>
+  </footer>
+  <script src="assets/aurora.js"></script>
+</body>
+</html>

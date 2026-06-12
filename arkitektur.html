@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arkitektur | Project AURORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/aurora.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+      <div class="nav-links" data-nav-links>
+        <a href="index.html">Oversikt</a>
+        <a href="arkitektur.html">Arkitektur</a>
+        <a href="topologi.html">Topologi</a>
+        <a href="tester.html">Tester</a>
+        <a href="innsikt.html">Innsikt</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="rapport.html">Rapport</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="page-hero">
+      <canvas class="ambient-canvas" data-network-canvas></canvas>
+      <div class="shell">
+        <div class="eyebrow">Arkitektur</div>
+        <h1>Segmentering som faktisk kan testes</h1>
+        <p class="lead">
+          AURORA er bygget rundt soner og conduits: tydelige nettverksgrenser, begrensede protokoller,
+          og en lab der designvalg kan verifiseres med konkrete tester.
+        </p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="shell section-head">
+        <div>
+          <div class="eyebrow">Purdue-modell</div>
+          <h2 class="section-title">Fra enterprise til felt</h2>
+          <p class="section-text">
+            Modellen er brukt som struktur for å plassere systemer etter funksjon og risiko, ikke som en rigid fasit.
+          </p>
+        </div>
+      </div>
+      <div class="shell purdue-stack">
+        <div class="purdue-level"><code>L5/L4</code><strong>Enterprise / IT-WAN</strong><span>Kun administrativ vei til Jump Host i IDMZ.</span></div>
+        <div class="purdue-divider">Kontrollert overgang via ASA og IDMZ</div>
+        <div class="purdue-level"><code>L3.5</code><strong>IDMZ</strong><span>Jump Host, broker og kontrollerte mellomledd.</span></div>
+        <div class="purdue-level"><code>L3</code><strong>OT operations</strong><span>SERVER, OPC-UA-Zone, EWS og støttetjenester.</span></div>
+        <div class="purdue-level"><code>L2-L0</code><strong>Control / field</strong><span>FIELD og AP-INFRA er modellert, men ikke fysisk verifisert.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell section-head">
+        <div>
+          <div class="eyebrow">Zones & conduits</div>
+          <h2 class="section-title">Hver flyt må fortjene å finnes</h2>
+          <p class="section-text">
+            Sluttkonfigurasjonen bruker implicit deny som normaltilstand. Det som skal virke, må beskrives eksplisitt.
+          </p>
+        </div>
+      </div>
+      <div class="shell grid three">
+        <article class="card">
+          <h3>OPC-UA-Zone</h3>
+          <p>Dedikert AURORA-sone for app01 og UaWrapper. Skiller OPC UA-conduiten fra OT-SERVER.</p>
+          <div class="tag-row"><span class="tag amber">VLAN 45</span><span class="tag">10.0.45.10</span></div>
+        </article>
+        <article class="card">
+          <h3>NORØNNA-GW</h3>
+          <p>Offshore-siden i simuleringen. app02 mottar og initierer kontrollerte OPC UA-sesjoner.</p>
+          <div class="tag-row"><span class="tag amber">VLAN 70</span><span class="tag">10.0.70.11</span></div>
+        </article>
+        <article class="card">
+          <h3>OOB-MGMT</h3>
+          <p>Management-plane for ASA, ESXi, iDRAC og switch. Holdes utenfor produksjonstransit.</p>
+          <div class="tag-row"><span class="tag violet">VLAN 99</span><span class="tag">isolert</span></div>
+        </article>
+        <article class="card">
+          <h3>IDMZ</h3>
+          <p>Mellomsone for Jump Host og brokerfunksjoner mellom IT/WAN og OT.</p>
+          <div class="tag-row"><span class="tag blue">VLAN 60</span><span class="tag">RDP/3389</span></div>
+        </article>
+        <article class="card">
+          <h3>OT-SERVER</h3>
+          <p>DC/RADIUS, AD-MGMT, WSUS og Historian ligger i serverlaget, adskilt fra app01.</p>
+          <div class="tag-row"><span class="tag coral">VLAN 40</span><span class="tag">støttesystemer</span></div>
+        </article>
+        <article class="card">
+          <h3>Planlagte soner</h3>
+          <p>FIELD, AP-INFRA og EWS er del av designet, men markeres som ikke fysisk sluttverifisert.</p>
+          <div class="tag-row"><span class="tag teal">VLAN 10/20/50</span><span class="tag">planlagt</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell grid three">
+        <article class="insight-card">
+          <h3>Minimering</h3>
+          <p>Kun nødvendige porter åpnes. OPC UA flyttes ut i en tydelig conduit fremfor å gjemmes i server-sonen.</p>
+        </article>
+        <article class="insight-card">
+          <h3>Verifiserbarhet</h3>
+          <p>Arkitekturen er koblet til teststeg, slik at sikkerhetskrav ikke bare blir diagrammer.</p>
+        </article>
+        <article class="insight-card">
+          <h3>Utvidbarhet</h3>
+          <p>Redundante noder og IMS-server kan legges til uten å endre hovedideen i soneinndelingen.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">Project AURORA · Arkitektur</div>
+  </footer>
+  <script src="assets/aurora.js"></script>
+</body>
+</html>

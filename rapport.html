@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport | Project AURORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/aurora.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+      <div class="nav-links" data-nav-links>
+        <a href="index.html">Oversikt</a>
+        <a href="arkitektur.html">Arkitektur</a>
+        <a href="topologi.html">Topologi</a>
+        <a href="tester.html">Tester</a>
+        <a href="innsikt.html">Innsikt</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="rapport.html">Rapport</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="page-hero">
+      <canvas class="ambient-canvas" data-network-canvas></canvas>
+      <div class="shell">
+        <div class="eyebrow">Rapport og vedlegg</div>
+        <h1>Dokumentasjon som følger arkitekturen</h1>
+        <p class="lead">
+          Nettstedet er en lesbar inngang til bachelorprosjektet. Rapport, vedlegg og eldre detaljdiagrammer ligger fortsatt tilgjengelig.
+        </p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="shell grid two">
+        <div>
+          <div class="eyebrow">Konklusjon</div>
+          <h2 class="section-title">Det prosjektet viser</h2>
+          <p class="section-text">
+            En liten studentlab kan demonstrere sentrale OT-sikkerhetsprinsipper når soner, conduits,
+            brannmurregler og verifikasjon henger sammen. Den viktigste forbedringen i nettsiden er at
+            realisert topologi nå skilles tydelig fra planlagte utvidelser.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Team</h3>
+          <p>Tre studenter ved Høgskulen på Vestlandet, Institutt for datateknologi, elektro og realfag, i samarbeid med ABB Process Automation.</p>
+          <div class="tag-row"><span class="tag teal">HVL</span><span class="tag coral">ABB</span><span class="tag blue">Bachelor 2026</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="shell section-head">
+        <div>
+          <div class="eyebrow">Ressurser</div>
+          <h2 class="section-title">Filer og detaljsider</h2>
+          <p class="section-text">Noen av de gamle detaljdiagrammene er beholdt som referanser, men ikke som hovednavigasjon.</p>
+        </div>
+      </div>
+      <div class="shell resource-list">
+        <a class="resource-link" href="intern-fat-test-bachelor-med-packet-tracer.docx"><strong>Bachelor-rapport / FAT-grunnlag</strong><span>DOCX</span></a>
+        <a class="resource-link" href="IP%20og%20VLAN%20-%20oppdatert.xlsx"><strong>IP- og VLAN-oversikt</strong><span>XLSX</span></a>
+        <a class="resource-link" href="AURORA-NORONNA-topologi-v2.html"><strong>Legacy topologiside</strong><span>HTML</span></a>
+        <a class="resource-link" href="aurora-nettverksarkitektur.html"><strong>Legacy nettverksarkitektur</strong><span>HTML</span></a>
+        <a class="resource-link" href="aurora-zones-conduits.html"><strong>Zones & conduits detalj</strong><span>HTML</span></a>
+        <a class="resource-link" href="aurora-purdue.html"><strong>Purdue detalj</strong><span>HTML</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">Project AURORA · Rapport</div>
+  </footer>
+  <script src="assets/aurora.js"></script>
+</body>
+</html>

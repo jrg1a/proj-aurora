@@ -12,7 +12,7 @@
 
 *Bacheloroppgave · Elektroingeniør – Cyberfysisk Nettverksteknologi · HVL 2026*
 
-[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [🗺️ Arkitektur/topologi](https://jrg1a.github.io/proj-aurora/#arkitektur) · [🔄 Dataflytdiagram](dataflow-diagram.html)
+[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [🗺️ Topologi](https://jrg1a.github.io/proj-aurora/topologi.html) · [📊 Tester](https://jrg1a.github.io/proj-aurora/tester.html)
 
 </div>
 
@@ -132,18 +132,17 @@ graph LR
 
 ## 🌐 Showcase-nettside
 
-Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
+Prosjektet har en moderne flerside showcase-nettside som dekker:
 
 | Side/seksjon | Beskrivelse |
 |---|---|
-| 🎯 **Hero** | Animert nettverksvisualisering |
-| ⚠️ **Trusselbildet** | 9 virkelige OT-angrep, sektorstatistikk, angrepssimulering |
-| 🗺️ **Arkitektur og topologi** | Interaktiv SVG med 3 visningsmoduser + inline AURORA/NORØNNA-topologi |
-| 🔐 **MITRE ATT&CK** | ICS kill chain, teknikkkort, tiltakstabell |
-| 📊 **Dataflytdiagram** | Sone-til-sone trafikk med protokoller/porter |
-| 🔥 **Brannfakler** | Provoserende påstander om OT-sikkerhet (flippkort) |
-| 🧠 **Quiz** | 14 tankevekkende spørsmål om OT-sikkerhet |
-| 👥 **Team** | Gruppemedlemmer og roller |
+| 🎯 **Oversikt** | Ren forside med animert nettverksvisualisering og nøkkeltall |
+| 🧭 **Arkitektur** | Purdue, IEC 62443, soner, conduits og designprinsipper |
+| 🗺️ **Topologi** | Interaktiv AURORA/NORØNNA SVG med drift-, OPC UA-, segmenterings- og planlagt-modus |
+| 📊 **Tester** | Filtrerbart testdashboard for OPC UA, segmentering og management |
+| 💡 **Innsikt** | Designvalg, risiko og levende scenarioer |
+| 🧠 **Quiz** | Kort kontroll av porter, VLAN og OOB-forståelse |
+| 📎 **Rapport** | Ressurser, vedlegg, legacy-diagrammer og konklusjon |
 
 ---
 
@@ -175,11 +174,17 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 ```
 📂 proj-aurora/
 ├── 📄 index.html                       # Showcase-nettside (GitHub Pages entry point)
-├── 📄 aurora-expo.html                 # Showcase-nettside
+├── 📄 arkitektur.html                  # Arkitektur, Purdue, soner og conduits
+├── 📄 topologi.html                    # Interaktiv AURORA/NORØNNA-topologi
+├── 📄 tester.html                      # Testdashboard og verifikasjon
+├── 📄 innsikt.html                     # Refleksjon, risiko og scenarioer
+├── 📄 quiz.html                        # Interaktiv OT-sikkerhetsquiz
+├── 📄 rapport.html                     # Rapportressurser og legacy-lenker
+├── 📁 assets/                          # Felles CSS og JavaScript
+├── 📄 aurora-expo.html                 # Speilet forside for eldre lenker
 ├── 📄 aurora-nettverksarkitektur.html  # Supplerende standalone arkitekturdiagram
 ├── 📄 dataflow-diagram.html            # Dataflytdiagram med protokoller/porter
-├── 📄 brannfakler.html                 # Provoserende OT-sikkerhetspåstander
-├── 📄 quiz.html                        # Interaktiv OT-sikkerhetsquiz (14 spørsmål)
+├── 📄 brannfakler.html                 # Redirect til ny innsiktsside
 ├── 📄 LICENSE                          # MIT-lisens
 └── 📄 README.md                        # Denne filen
 ```
