@@ -12,7 +12,7 @@
 
 *Bacheloroppgave · Elektroingeniør – Cyberfysisk Nettverksteknologi · HVL 2026*
 
-[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [📊 Arkitekturdiagram](aurora-nettverksarkitektur.html) · [🔄 Dataflytdiagram](dataflow-diagram.html)
+[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [🗺️ Arkitektur/topologi](https://jrg1a.github.io/proj-aurora/#arkitektur) · [🔄 Dataflytdiagram](dataflow-diagram.html)
 
 </div>
 
@@ -35,51 +35,48 @@ Prosjektet er utført i samarbeid med **ABB**, som trenger offline-testing av si
 
 ## 🗺️ Nettverksarkitektur
 
-Arkitekturen er bygget rundt **8 VLANer** fordelt på 5 sikkerhetssoner, separert av en **Cisco ASA 5506-X** brannmur med VLAN-subinterfaces.
+Sluttarkitekturen er bygget som en segmentert OT-lab med dedikert OPC-UA-sone for AURORA/NORØNNA-caset. Cisco ASA 5506-X håndhever sonegrensene med eksplisitte ACL-er, og den realiserte site-til-site-dataflyten går kun mellom app01 i **VLAN 45** og app02 i **VLAN 70** på TCP/46040 og TCP/46041.
 
 ```mermaid
 graph TB
-    subgraph WAN["🌐 WAN (VLAN 100)"]
-        NORONNA["🏗️ NORØNNA (Offshore Site)"]
-    end
-
     ASA["🔥 Cisco ASA 5506-X\nBrannmur · ACL · VLAN-ruting"]
 
-    subgraph IDMZ["🟡 IDMZ — Industrial DMZ (VLAN 40/50)"]
-        JH["💻 Jump Host\nRDP/SSH inn-punkt"]
-        DB["📡 Data-broker\nOPC UA → WAN"]
-        HIST["🗄️ Historian"]
+    subgraph AURORA["AURORA landanlegg"]
+        FIELD["FIELD\nVLAN 10 · planlagt IIoT"]
+        AP["AP-INFRA\nVLAN 20 · planlagt AP"]
+        EWS["EWS\nVLAN 50"]
+        SERVER["OT-SERVER\nVLAN 40\nDC · AD-MGMT · WSUS · Historian"]
+        OPCUA["OPC-UA-Zone\nVLAN 45\napp01 · 10.0.45.10"]
+        IDMZ["IDMZ\nVLAN 60\nJump Host · data-broker"]
     end
 
-    subgraph IT["🔵 IT-sone (VLAN 60/70)"]
-        EWS["🖥️ EWS\nEngineering Workstation"]
-        DC["🔐 DC / RADIUS\nActive Directory"]
-        WSUS["⬇️ WSUS\nPatch-server"]
+    subgraph NORONNA["NORØNNA offshore"]
+        GW["NORØNNA-GW\nVLAN 70\napp02 · 10.0.70.11"]
+        IMS["VLAN 71\nvalgfri IMS-utvidelse"]
     end
 
-    subgraph OT["🔴 OT / Field-sone (VLAN 10/20)"]
-        SENSORS["⚙️ Sensorer og aktuatorer\n802.1X Access Points"]
-        APP01["🔄 app01 — UaWrapper\nOPC DA → OPC UA"]
-        APP02["🔄 app02 — Cogent DataHub\nOPC DA-server"]
+    subgraph WAN["IT/WAN"]
+        ITWAN["VLAN 100\nkun RDP til Jump Host"]
     end
 
     subgraph MGMT["⚫ OOB-MGMT (VLAN 99)"]
-        CONSOLE["🖥️ Console-server\nOut-of-band admin"]
+        OOB["OOB-WS · ASA · SG250 · iDRAC · ESXi"]
     end
 
-    NORONNA <-->|"OPC UA\nSignAndEncrypt\nTCP 4840"| ASA
-    ASA <-->|"Kontrollert"| IDMZ
-    ASA <-->|"Begrenset"| IT
-    ASA <-->|"Streng ACL"| OT
-    APP01 -->|"OPC UA"| DB
-    JH -.->|"RDP/SSH\ngjennom IDMZ"| EWS
-    ASA -.->|"Kun admin"| MGMT
+    GW -->|"OPC UA TCP/46040"| ASA
+    ASA -->|"kun til app01"| OPCUA
+    OPCUA -->|"OPC UA TCP/46041"| ASA
+    ASA -->|"kun til app02"| GW
+    ITWAN -->|"RDP/3389"| ASA
+    ASA -->|"Jump Host"| IDMZ
+    FIELD -.->|"planlagt feltdata"| SERVER
+    OOB -.->|"management-plane"| ASA
 
-    style WAN fill:#0d1a2e,color:#fff,stroke:#00d4ff
+    style AURORA fill:#0d1a2e,color:#fff,stroke:#58a6ff
+    style NORONNA fill:#2d2200,color:#fff,stroke:#f0b429
     style ASA fill:#2d1b00,color:#fff,stroke:#ff6b00
-    style IDMZ fill:#2d2d00,color:#fff,stroke:#ffd700
-    style IT fill:#001a33,color:#fff,stroke:#0080ff
-    style OT fill:#1a0000,color:#fff,stroke:#ff4444
+    style OPCUA fill:#2d2200,color:#fff,stroke:#f0b429
+    style SERVER fill:#1a0000,color:#fff,stroke:#ff4444
     style MGMT fill:#111,color:#aaa,stroke:#555
 ```
 
@@ -141,11 +138,11 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 |---|---|
 | 🎯 **Hero** | Animert nettverksvisualisering |
 | ⚠️ **Trusselbildet** | 9 virkelige OT-angrep, sektorstatistikk, angrepssimulering |
-| 🗺️ **Arkitekturdiagram** | Interaktiv SVG med 3 visningsmoduser |
+| 🗺️ **Arkitektur og topologi** | Interaktiv SVG med 3 visningsmoduser + inline AURORA/NORØNNA-topologi |
 | 🔐 **MITRE ATT&CK** | ICS kill chain, teknikkkort, tiltakstabell |
 | 📊 **Dataflytdiagram** | Sone-til-sone trafikk med protokoller/porter |
 | 🔥 **Brannfakler** | Provoserende påstander om OT-sikkerhet (flippkort) |
-| 🧠 **Quiz** | 14 tankevkkende spørsmål om OT-sikkerhet |
+| 🧠 **Quiz** | 14 tankevekkende spørsmål om OT-sikkerhet |
 | 👥 **Team** | Gruppemedlemmer og roller |
 
 ---
@@ -179,7 +176,7 @@ Prosjektet har en fullstendig interaktiv showcase-nettside som dekker:
 📂 proj-aurora/
 ├── 📄 index.html                       # Showcase-nettside (GitHub Pages entry point)
 ├── 📄 aurora-expo.html                 # Showcase-nettside
-├── 📄 aurora-nettverksarkitektur.html  # Interaktivt arkitekturdiagram (SVG)
+├── 📄 aurora-nettverksarkitektur.html  # Supplerende standalone arkitekturdiagram
 ├── 📄 dataflow-diagram.html            # Dataflytdiagram med protokoller/porter
 ├── 📄 brannfakler.html                 # Provoserende OT-sikkerhetspåstander
 ├── 📄 quiz.html                        # Interaktiv OT-sikkerhetsquiz (14 spørsmål)
@@ -203,7 +200,7 @@ start index.html         # Windows
 xdg-open index.html      # Linux
 ```
 
-> **Merk:** Arkitekturdiagrammet lastes inn via `fetch()` fra `aurora-nettverksarkitektur.html`. For full funksjonalitet, kjør via en lokal webserver:
+> **Merk:** Hovedsiden er selvstendig og har arkitektur/topologi innebygd. En lokal webserver er likevel nyttig for å teste samme oppførsel som på GitHub Pages:
 > ```bash
 > python3 -m http.server 8080
 > # Åpne http://localhost:8080

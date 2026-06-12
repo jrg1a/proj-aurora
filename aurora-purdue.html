@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<title>AURORA · Purdue-modellen</title>
+<script>try{if(localStorage.getItem('aurora-theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f8fc;--panel:#ffffff;--ink:#0b1220;--mute:#566378;
+  --teal:#0d9e9c;--amber:#c47d00;--red:#c9374f;--blue:#2d6fd4;
+  --green:#16a34a;--purple:#7c3aed;--border:#d8dee8;
+  --l0:#fee2e2;--l1:#fef3c7;--l2:#fef9c3;--l3:#dcfce7;
+  --l35:#dbeafe;--l4:#ede9fe;--l5:#fce7f3;
+  --l0b:#c9374f;--l1b:#c47d00;--l2b:#a16207;--l3b:#16a34a;
+  --l35b:#2d6fd4;--l4b:#7c3aed;--l5b:#be185d;
+}
+html.dark{
+  --bg:#050810;--panel:#0b1220;--ink:#e6edf7;--mute:#8a97ac;
+  --teal:#3ddbd9;--amber:#ffb454;--red:#ff5e7a;--blue:#6aa6ff;
+  --green:#4ade80;--purple:#c084fc;--border:#1b2637;
+  --l0:#2d0a0a;--l1:#2d1b00;--l2:#252000;--l3:#052e14;
+  --l35:#061a36;--l4:#180a2e;--l5:#2a0518;
+  --l0b:#ff5e7a;--l1b:#ffb454;--l2b:#fde047;--l3b:#4ade80;
+  --l35b:#6aa6ff;--l4b:#c084fc;--l5b:#f472b6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;padding:60px 24px 80px}
+.wrap{max-width:1200px;margin:0 auto}
+h1{font-size:2em;margin-bottom:6px}
+.sub{color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:0.88em;margin-bottom:36px}
+.back{position:fixed;top:20px;left:20px;color:var(--teal);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:0.9em;z-index:10}
+
+/* Purdue level stack */
+.stack{display:flex;flex-direction:column;gap:0}
+
+.level{
+  display:grid;
+  grid-template-columns:80px 1fr;
+  align-items:stretch;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:6px;
+  border:1.5px solid var(--border);
+  transition:box-shadow .2s;
+}
+.level:hover{box-shadow:0 4px 24px rgba(0,0,0,.12)}
+
+.level-badge{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px 8px;
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.5em;
+  min-height:100px;
+}
+.level-body{padding:18px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start}
+.level-title{font-size:1em;font-weight:700;margin-bottom:2px}
+.level-desc{font-size:0.82em;color:var(--mute);margin-bottom:10px}
+.chip-group{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  font-family:'IBM Plex Mono',monospace;font-size:0.74em;font-weight:600;
+  border:1px solid currentColor;
+}
+.col-title{font-family:'IBM Plex Mono',monospace;font-size:0.72em;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+
+/* Firewall separators */
+.fw-sep{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 16px;
+  background:var(--panel);
+  border:1.5px dashed var(--amber);
+  border-radius:8px;
+  margin:4px 0 10px;
+  font-family:'IBM Plex Mono',monospace;font-size:0.82em;color:var(--amber);
+  font-weight:600;
+}
+
+/* Level colors */
+.l0{background:var(--l0);border-color:var(--l0b)}.l0 .level-badge{background:var(--l0b);color:#fff}
+.l1{background:var(--l1);border-color:var(--l1b)}.l1 .level-badge{background:var(--l1b);color:#fff}
+.l2{background:var(--l2);border-color:var(--l2b)}.l2 .level-badge{background:var(--l2b);color:#fff}
+.l3{background:var(--l3);border-color:var(--l3b)}.l3 .level-badge{background:var(--l3b);color:#fff}
+.l35{background:var(--l35);border-color:var(--l35b)}.l35 .level-badge{background:var(--l35b);color:#fff}
+.l4{background:var(--l4);border-color:var(--l4b)}.l4 .level-badge{background:var(--l4b);color:#fff}
+.l5{background:var(--l5);border-color:var(--l5b)}.l5 .level-badge{background:var(--l5b);color:#fff}
+
+/* Side arrow */
+.arrow-col{width:40px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-lr;font-size:0.7em;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;padding:12px 0}
+
+/* VLAN badge */
+.vlan{font-size:0.72em;font-family:'IBM Plex Mono',monospace;padding:2px 8px;border-radius:4px;background:var(--panel);border:1px solid var(--border);color:var(--ink)}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin-top:32px;font-size:0.82em}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{font-family:'IBM Plex Mono',monospace;color:var(--teal)}
+h2{font-size:1.25em;margin:40px 0 14px}
+</style>
+</head>
+<body>
+<a href="index.html" class="back">← Tilbake</a>
+<div class="wrap">
+
+<h1>🏭 Purdue-modellen — Prosjekt AURORA</h1>
+<div class="sub">ISA-95 / IEC 62443 lagdelt OT/IT-arkitektur · VLAN-mapping og Cisco ASA-segmentering</div>
+
+<div class="stack">
+
+  <!-- L5 -->
+  <div class="level l5">
+    <div class="level-badge">L5</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Enterprise-nettverk</div>
+        <div class="level-desc">Internett, sky, ekstern kommunikasjon</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l5b)">Internett</span>
+          <span class="chip" style="color:var(--l5b)">Cloud</span>
+          <span class="chip" style="color:var(--l5b)">E-post</span>
+          <span class="chip" style="color:var(--l5b)">Remote access</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 100 — IT-WAN</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">10.0.100.0/24<br>Innfallsport for remote admin</div>
+      </div>
+      <div>
+        <div class="col-title">Tilgang inn</div>
+        <div style="font-size:0.8em;color:var(--mute)">Kun RDP 3389 → Jump Host i IDMZ.<br>Ingen direkte OT-tilgang.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fw-sep">🔥 Cisco ASA — ITWAN_IN ACL &nbsp;·&nbsp; Blokkerer all direkte IT→OT</div>
+
+  <!-- L4 -->
+  <div class="level l4">
+    <div class="level-badge">L4</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Forretningsplanlegging</div>
+        <div class="level-desc">ERP, MES, forretningssystemer og IT-tjenester</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l4b)">ERP</span>
+          <span class="chip" style="color:var(--l4b)">MES</span>
+          <span class="chip" style="color:var(--l4b)">AD (IT)</span>
+          <span class="chip" style="color:var(--l4b)">DNS / DHCP</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">Ikke eksplisitt modellert i AURORA.<br>Representert via IT-WAN (VLAN 100) som innfallsport.<br>ERP/MES er utenfor labbens scope.</div>
+      </div>
+      <div>
+        <div class="col-title">Beskyttelse</div>
+        <div style="font-size:0.8em;color:var(--mute)">Ingen direkte rute til OT.<br>All tilgang via IDMZ (L3.5) og Jump Host.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fw-sep">🔥 Cisco ASA — IDMZ-barriere (Purdue L3.5)</div>
+
+  <!-- L3.5 IDMZ -->
+  <div class="level l35">
+    <div class="level-badge" style="font-size:1.1em">L3.5<br><span style="font-size:0.7em">IDMZ</span></div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Industrial DMZ</div>
+        <div class="level-desc">IT/OT-barriere, ingen direkte IT↔OT-flyt</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l35b)">Jump Host</span>
+          <span class="chip" style="color:var(--l35b)">Historian (kopi)</span>
+          <span class="chip" style="color:var(--l35b)">Data-broker</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 60 — IDMZ</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">10.0.60.0/24<br>Jump Host: 10.0.60.2<br>Historian: 10.0.60.10</div>
+      </div>
+      <div>
+        <div class="col-title">Funksjon</div>
+        <div style="font-size:0.8em;color:var(--mute)">Eneste lovlige innfallsport fra IT til OT.<br>Historiandata replikeres enveis opp hit.<br>Ingen direkte pakker mellom L4 og L3.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- L3 -->
+  <div class="level l3">
+    <div class="level-badge">L3</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Site Operations</div>
+        <div class="level-desc">OT-server-infrastruktur, historikk, AD</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l3b)">DC / RADIUS</span>
+          <span class="chip" style="color:var(--l3b)">Historian</span>
+          <span class="chip" style="color:var(--l3b)">WSUS / NTP</span>
+          <span class="chip" style="color:var(--l3b)">EWS</span>
+          <span class="chip" style="color:var(--l3b)">OPC-UA-Zone</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 40 — SERVER</span>
+          <span class="vlan">VLAN 45 — OPC-UA-Zone</span>
+          <span class="vlan">VLAN 50 — EWS</span>
+          <span class="vlan">VLAN 70 — NORØNNA</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">DC: 10.0.40.10 · Historian: 10.0.40.40<br>app01 (UaWrapper): 10.0.45.10<br>EWS: 10.0.50.10 · app02 (Cogent): 10.0.70.11</div>
+      </div>
+      <div>
+        <div class="col-title">Protokoll-bro (VLAN 45)</div>
+        <div style="font-size:0.8em;color:var(--mute)">NORØNNA (OPC DA) → UaWrapper → OPC UA.<br>Kryptert med SignAndEncrypt + X.509.<br>NORØNNA sec-level 20 (untrusted).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fw-sep">🔥 Cisco ASA — ASA ACL mellom L3 og L2 (FIELD_IN / EWS_IN)</div>
+
+  <!-- L2 -->
+  <div class="level l2">
+    <div class="level-badge">L2</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Area Supervisory</div>
+        <div class="level-desc">HMI, SCADA, lokalt prosessovervåking og nettverksinfrastruktur</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l2b)">HMI</span>
+          <span class="chip" style="color:var(--l2b)">SCADA</span>
+          <span class="chip" style="color:var(--l2b)">OPC DA (klient)</span>
+          <span class="chip" style="color:var(--l2b)">Access Points</span>
+          <span class="chip" style="color:var(--l2b)">Switch (trunk)</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 10 — FIELD (øvre del)</span>
+          <span class="vlan">VLAN 20 — AP-INFRA</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">10.0.10.0/24 — HMI/SCADA<br>10.0.20.0/24 — Access Points (802.1X)<br>AP-INFRA: nettverksinfrastruktur på dette nivået</div>
+      </div>
+      <div>
+        <div class="col-title">Trafikk ut</div>
+        <div style="font-size:0.8em;color:var(--mute)">MQTT 1883 → Historian 10.0.40.40.<br>AP-INFRA: kun SNMP/SSH fra admin-plan.<br>Ingenting opp til L3.5 direkte.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- L1 -->
+  <div class="level l1">
+    <div class="level-badge">L1</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Basic Control</div>
+        <div class="level-desc">PLS, RTU, regulering</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l1b)">PLC</span>
+          <span class="chip" style="color:var(--l1b)">RTU</span>
+          <span class="chip" style="color:var(--l1b)">Safety Controller</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 10 — FIELD</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">10.0.10.0/24 (samme VLAN som L2)<br>PLC: 10.0.10.20</div>
+      </div>
+      <div>
+        <div class="col-title">Isolasjon</div>
+        <div style="font-size:0.8em;color:var(--mute)">Ingen innkommende ACL fra høyere nivåer.<br>FIELD_IN blokkerer alt ikke eksplisitt tillatt.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- L0 -->
+  <div class="level l0">
+    <div class="level-badge">L0</div>
+    <div class="level-body">
+      <div>
+        <div class="level-title">Feltenheter / Prosess</div>
+        <div class="level-desc">Sensorer, aktuatorer, instrumentering</div>
+        <div class="chip-group">
+          <span class="chip" style="color:var(--l0b)">Sensor</span>
+          <span class="chip" style="color:var(--l0b)">Aktuator</span>
+          <span class="chip" style="color:var(--l0b)">Transmitter</span>
+          <span class="chip" style="color:var(--l0b)">4–20 mA / Fieldbus</span>
+        </div>
+      </div>
+      <div>
+        <div class="col-title">AURORA-mapping</div>
+        <div class="chip-group">
+          <span class="vlan">VLAN 10 — FIELD</span>
+        </div>
+        <div style="font-size:0.8em;color:var(--mute);margin-top:6px">10.0.10.0/24<br>Sensor A: 10.0.10.10</div>
+      </div>
+      <div>
+        <div class="col-title">Merknad</div>
+        <div style="font-size:0.8em;color:var(--mute)">I AURORA er L0–L2 samlet i VLAN 10.<br>Videre segmentering anbefales ved produksjonsetting (SL-T 3).</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /stack -->
+
+<h2>📋 VLAN → Purdue-nivå oversikt</h2>
+<table>
+<tr><th>VLAN</th><th>Navn</th><th>Purdue-nivå</th><th>Subnet</th><th>Nøkkelverter</th><th>sec-level (ASA)</th></tr>
+<tr><td>10</td><td>FIELD</td><td>L0–L2</td><td>10.0.10.0/24</td><td>Sensorer, PLC, HMI</td><td>50</td></tr>
+<tr><td>20</td><td>AP-INFRA</td><td>L2 (nettverksinfra)</td><td>10.0.20.0/24</td><td>Access Points (802.1X)</td><td>60</td></tr>
+<tr><td>40</td><td>SERVER</td><td>L3</td><td>10.0.40.0/24</td><td>DC 10.0.40.10, Historian 10.0.40.40</td><td>70</td></tr>
+<tr><td>45</td><td>OPC-UA-Zone</td><td>L3 (protokoll-bro)</td><td>10.0.45.0/24</td><td>app01 UaWrapper 10.0.45.10</td><td>65</td></tr>
+<tr><td>50</td><td>EWS</td><td>L3</td><td>10.0.50.0/24</td><td>EWS 10.0.50.10</td><td>55</td></tr>
+<tr><td>60</td><td>IDMZ</td><td>L3.5 (barriere)</td><td>10.0.60.0/24</td><td>Jump Host 10.0.60.2, Hist. 10.0.60.10</td><td>40</td></tr>
+<tr><td>70</td><td>NORØNNA</td><td>L3 (eksternt site)</td><td>10.0.70.0/24</td><td>app02 Cogent 10.0.70.11</td><td>20</td></tr>
+<tr><td>99</td><td>OOB-MGMT</td><td>Utenfor Purdue (separat mgmt-plan)</td><td>10.0.99.0/24</td><td>Console-server 10.0.99.99</td><td>80</td></tr>
+<tr><td>100</td><td>IT-WAN</td><td>L5</td><td>10.0.100.0/24</td><td>Enterprise uplink</td><td>10</td></tr>
+</table>
+
+<h2>🔒 Segmenteringsprinsipper</h2>
+<p style="color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:0.83em;line-height:1.7;margin-top:10px">
+<strong>Ingen direkte flyt over to nivåer:</strong> IT-WAN (L5) kan ikke nå SERVER (L3) uten å passere gjennom IDMZ (L3.5) og Jump Host.<br>
+<strong>OPC UA-broen:</strong> NORØNNA (untrusted, sec-level 20) kommuniserer kun med OPC-UA-Zone (VLAN 45) på port 4840 med SignAndEncrypt. Cogent DataHub-siden (OPC DA) er isolert fra resten av OT-nettverket.<br>
+<strong>AP-INFRA ved L2:</strong> Access Points er nettverksinfrastruktur som betjener det trådløse nettverket i feltområdet — dermed L2 i Purdue-hierarkiet, ikke L4.<br>
+<strong>OOB-MGMT utenfor Purdue:</strong> Out-of-band management-nettverket (VLAN 99) er et separat, isolert management-plan som ikke tilhører noe Purdue-nivå. Det gir adminilgang til alle enheter uten å gå gjennom produksjonsnettverket.<br>
+<strong>ASA som enforcement point:</strong> Alle kryssinger mellom Purdue-nivåer går gjennom ASA 5506-X med ACL rev-04. Ingen routing mellom VLAN uten eksplisitt tillatelse.
+</p>
+
+</div>
+</body>
+</html>

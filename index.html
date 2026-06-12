@@ -1551,6 +1551,184 @@ html.light .mm-row:hover { background: rgba(0,0,0,0.02); }
 .topo-card-title.t-flow::before    { background: var(--accent-purple); }
 .topo-card-title.t-map::before     { background: var(--accent-coral); }
 
+/* Integrated topology map */
+.topo-map-stage {
+  margin-top: 34px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.topo-map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+.topo-map-header h3 {
+  font-size: 17px;
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+.topo-map-header p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 660px;
+  line-height: 1.6;
+}
+.topo-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.topo-map-status {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 260px;
+}
+.topo-status-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: 4px;
+  padding: 5px 8px;
+  white-space: nowrap;
+}
+.topo-status-pill strong { color: var(--text); font-weight: 600; }
+.topo-map-scroll {
+  overflow-x: auto;
+  padding: 16px;
+}
+.topo-svg {
+  display: block;
+  min-width: 980px;
+  width: 100%;
+  height: auto;
+}
+.topo-svg text {
+  font-family: 'IBM Plex Mono', monospace;
+  fill: var(--text);
+}
+.topo-rail,
+.topo-site-shell,
+.topo-ext-shell {
+  fill: var(--bg-secondary);
+  stroke: var(--border-hover);
+  stroke-width: 1;
+}
+.topo-site-shell.aurora { stroke: var(--accent-blue); fill: var(--accent-blue-dim); }
+.topo-ext-shell.noronna { stroke: var(--accent-amber); fill: var(--accent-amber-dim); }
+.topo-zone-shape {
+  fill: var(--bg-card);
+  stroke: var(--border-hover);
+  stroke-width: 1;
+}
+.topo-zone-shape.planned {
+  stroke-dasharray: 7 5;
+  opacity: 0.8;
+}
+.topo-zone-shape.server { stroke: var(--accent-coral); fill: var(--accent-coral-dim); }
+.topo-zone-shape.opc { stroke: var(--accent-amber); fill: var(--accent-amber-dim); stroke-width: 1.4; }
+.topo-zone-shape.idmz,
+.topo-zone-shape.ap { stroke: var(--accent-blue); fill: var(--accent-blue-dim); }
+.topo-zone-shape.ews,
+.topo-zone-shape.oob { stroke: var(--accent-purple); fill: var(--accent-purple-dim); }
+.topo-zone-shape.field { stroke: var(--accent-teal); fill: var(--accent-teal-dim); }
+.topo-zone-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.topo-zone-meta {
+  font-size: 9px;
+  fill: var(--text-secondary) !important;
+  letter-spacing: 0.05em;
+}
+.topo-device {
+  fill: var(--bg-secondary);
+  stroke: var(--border-hover);
+  stroke-width: 1;
+}
+.topo-device.key-aurora { stroke: var(--accent-amber); stroke-width: 1.5; }
+.topo-device.key-noronna { stroke: var(--accent-amber); stroke-width: 1.5; }
+.topo-device.server { stroke: rgba(244,112,103,0.55); }
+.topo-device.idmz { stroke: rgba(88,166,255,0.55); }
+.topo-device.oob { stroke: rgba(188,140,255,0.55); }
+.topo-device-title {
+  font-size: 11px;
+  font-weight: 700;
+}
+.topo-device-meta {
+  font-size: 9px;
+  fill: var(--text-secondary) !important;
+}
+.topo-port {
+  fill: var(--bg-card);
+  stroke: var(--border-hover);
+  stroke-width: 1;
+}
+.topo-port-label {
+  font-size: 8.5px;
+  fill: var(--text-secondary) !important;
+}
+.topo-path {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.topo-path.opc-a { stroke: var(--accent-amber); }
+.topo-path.opc-b { stroke: var(--accent-amber); stroke-dasharray: 8 5; }
+.topo-path.admin { stroke: var(--accent-blue); stroke-dasharray: 6 5; }
+.topo-path.planned { stroke: var(--accent-teal); stroke-dasharray: 5 5; opacity: 0.75; }
+.topo-path.oob { stroke: var(--accent-purple); stroke-dasharray: 4 5; opacity: 0.8; }
+.topo-path-label {
+  font-size: 10px;
+  font-weight: 700;
+}
+.topo-path-sub {
+  font-size: 8.5px;
+  fill: var(--text-secondary) !important;
+}
+.topo-mini-label {
+  font-size: 9px;
+  fill: var(--text-secondary) !important;
+}
+.topo-map-footer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border-top: 1px solid var(--border);
+  background: var(--border);
+}
+.topo-fact {
+  background: var(--bg-secondary);
+  padding: 14px 16px;
+  min-height: 98px;
+}
+.topo-fact strong {
+  display: block;
+  color: var(--text);
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.topo-fact span {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
 /* Physical infra & switch bars */
 .topo-bar {
   background: var(--bg-secondary);
@@ -1962,6 +2140,9 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
   .topo-fw-col { flex-direction: row; justify-content: center; padding: 8px; flex-wrap: wrap; }
   .topo-fw-arrow { transform: rotate(-90deg); }
   .topo-config-grid { grid-template-columns: 1fr; }
+  .topo-map-header { flex-direction: column; }
+  .topo-map-status { justify-content: flex-start; min-width: 0; }
+  .topo-map-footer { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 900px) {
@@ -1978,6 +2159,9 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
   .purdue-lvl-detail { display: none; }
   .topo-map { font-size: 11px; }
   .topo-map td, .topo-map th { padding: 8px; }
+  .topo-map-scroll { padding: 10px; }
+  .topo-map-footer { grid-template-columns: 1fr; }
+  .topo-fact { min-height: auto; }
 }
 </style>
 </head>
@@ -2798,8 +2982,8 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
         <div class="arch-legend-item" style="color:var(--accent-blue);"><span class="arch-legend-swatch"></span><span>HTTPS · admin</span></div>
         <div class="arch-legend-item" style="color:var(--accent-purple);"><span class="arch-legend-swatch"></span><span>EWS-administrasjon</span></div>
         <div class="arch-legend-item" style="color:var(--accent-coral);"><span class="arch-legend-swatch"></span><span>Blokkert trafikk</span></div>
-        <div class="arch-legend-item" style="margin-left:auto;">
-          <a href="aurora-nettverksarkitektur.html" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:none;">&#8599; Åpne i eget vindu</a>
+        <div class="arch-legend-item" style="margin-left:auto;color:var(--text-muted);">
+          <span>Innebygd SVG i hovedsiden</span>
         </div>
       </div>
 
@@ -2819,6 +3003,177 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
       i to eksplisitt definerte sesjonsretninger. Full redundans kan legges til ved behov med ekstra VM-er.
     </p>
 
+    <div class="topo-map-stage">
+      <div class="topo-map-header">
+        <div>
+          <div class="topo-kicker">Inline topologi &middot; sluttløsning</div>
+          <h3>Fysisk lab, logiske soner og OPC UA-conduit i samme diagram</h3>
+          <p>
+            Diagrammet er tegnet direkte i hovedsiden. Det skiller mellom realiserte soner, planlagte trådløse/field-deler,
+            og den dedikerte OPC-UA-sonen som ble etablert for AURORA/NORØNNA-testen.
+          </p>
+        </div>
+        <div class="topo-map-status" aria-label="Topologistatus">
+          <span class="topo-status-pill"><strong>app01</strong> VLAN 45 / 10.0.45.10</span>
+          <span class="topo-status-pill"><strong>app02</strong> VLAN 70 / 10.0.70.11</span>
+          <span class="topo-status-pill"><strong>ASA</strong> G1/2, G1/3, G1/4</span>
+          <span class="topo-status-pill"><strong>OPC UA</strong> TCP 46040 + 46041</span>
+        </div>
+      </div>
+
+      <div class="topo-map-scroll" aria-label="AURORA/NORØNNA topologidiagram">
+        <svg class="topo-svg" viewBox="0 0 1100 720" role="img" aria-labelledby="topo-title topo-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="topo-title">AURORA og NORØNNA nettverkstopologi</title>
+          <desc id="topo-desc">Inline SVG som viser fysisk labutstyr, AURORA-soner, Cisco ASA-brannmur, NORØNNA gateway og tillatte OPC UA-retninger.</desc>
+          <defs>
+            <marker id="topo-arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="topo-arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="topo-arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="topo-arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <rect class="topo-rail" x="40" y="24" width="1020" height="78" rx="8"/>
+          <text class="topo-zone-title" x="60" y="47">FYSISK LABLAG</text>
+          <text class="topo-zone-meta" x="60" y="66">Hypervisor, switch og ASA</text>
+          <rect class="topo-device" x="260" y="48" width="190" height="36" rx="5"/>
+          <text class="topo-device-title" x="278" y="64">Dell R440 / ESXi</text>
+          <text class="topo-device-meta" x="278" y="78">vSwitch0 AURORA &middot; vSwitch1 NORØNNA</text>
+          <rect class="topo-device" x="500" y="48" width="170" height="36" rx="5"/>
+          <text class="topo-device-title" x="518" y="64">Cisco SG250-26</text>
+          <text class="topo-device-meta" x="518" y="78">trunk + access + VOID 999</text>
+          <rect class="topo-device" x="720" y="48" width="180" height="36" rx="5"/>
+          <text class="topo-device-title" x="738" y="64">Cisco ASA 5506-X</text>
+          <text class="topo-device-meta" x="738" y="78">ACL per sone, stateful retur</text>
+          <rect class="topo-device oob" x="930" y="48" width="110" height="36" rx="5"/>
+          <text class="topo-device-title" x="948" y="64">OOB-noder</text>
+          <text class="topo-device-meta" x="948" y="78">iDRAC, ESXi, OOB-WS</text>
+          <path class="topo-path oob" d="M450 66 L500 66" marker-end="url(#topo-arrow-purple)"/>
+          <path class="topo-path oob" d="M670 66 L720 66" marker-end="url(#topo-arrow-purple)"/>
+          <path class="topo-path oob" d="M900 66 L930 66" marker-end="url(#topo-arrow-purple)"/>
+
+          <rect class="topo-site-shell aurora" x="40" y="128" width="605" height="480" rx="10"/>
+          <text class="topo-zone-title" x="60" y="154">AURORA &middot; LANDANLEGG</text>
+          <text class="topo-zone-meta" x="60" y="171">ASA G1/2 trunk: VLAN 10 / 20 / 40 / 45 / 50 / 60</text>
+
+          <rect class="topo-zone-shape field planned" x="60" y="190" width="220" height="74" rx="7"/>
+          <text class="topo-zone-title" x="78" y="213">FIELD</text>
+          <text class="topo-zone-meta" x="78" y="229">VLAN 10 &middot; 10.0.10.0/24</text>
+          <text class="topo-mini-label" x="78" y="247">Planlagt IIoT-sensortrafikk</text>
+          <rect class="topo-zone-shape ap planned" x="306" y="190" width="313" height="74" rx="7"/>
+          <text class="topo-zone-title" x="324" y="213">AP-INFRA</text>
+          <text class="topo-zone-meta" x="324" y="229">VLAN 20 &middot; 10.0.20.0/24</text>
+          <text class="topo-mini-label" x="324" y="247">Trådløst aksesspunkt &middot; ikke fysisk testet</text>
+
+          <rect class="topo-zone-shape ews planned" x="60" y="284" width="245" height="76" rx="7"/>
+          <text class="topo-zone-title" x="78" y="307">EWS</text>
+          <text class="topo-zone-meta" x="78" y="323">VLAN 50 &middot; 10.0.50.0/24</text>
+          <text class="topo-mini-label" x="78" y="342">Workstation 10.0.50.10 &middot; ikke tilkoblet</text>
+          <rect class="topo-zone-shape idmz" x="330" y="284" width="289" height="76" rx="7"/>
+          <text class="topo-zone-title" x="348" y="307">IDMZ</text>
+          <text class="topo-zone-meta" x="348" y="323">VLAN 60 &middot; 10.0.60.0/24</text>
+          <rect class="topo-device idmz" x="348" y="334" width="120" height="20" rx="4"/>
+          <text class="topo-device-meta" x="360" y="348">Jump Host .2</text>
+          <rect class="topo-device idmz" x="482" y="334" width="116" height="20" rx="4"/>
+          <text class="topo-device-meta" x="494" y="348">Broker .10</text>
+
+          <rect class="topo-zone-shape server" x="60" y="384" width="265" height="136" rx="7"/>
+          <text class="topo-zone-title" x="78" y="407">OT-SERVER</text>
+          <text class="topo-zone-meta" x="78" y="423">VLAN 40 &middot; 10.0.40.0/24</text>
+          <rect class="topo-device server" x="78" y="438" width="103" height="26" rx="4"/>
+          <text class="topo-device-meta" x="91" y="455">DC/RADIUS .10</text>
+          <rect class="topo-device server" x="194" y="438" width="103" height="26" rx="4"/>
+          <text class="topo-device-meta" x="207" y="455">AD-MGMT .20</text>
+          <rect class="topo-device server" x="78" y="476" width="103" height="26" rx="4"/>
+          <text class="topo-device-meta" x="105" y="493">WSUS .30</text>
+          <rect class="topo-device server" x="194" y="476" width="103" height="26" rx="4"/>
+          <text class="topo-device-meta" x="211" y="493">Historian .40</text>
+
+          <rect class="topo-zone-shape opc" x="350" y="384" width="269" height="136" rx="7"/>
+          <text class="topo-zone-title" x="368" y="407">OPC-UA-ZONE</text>
+          <text class="topo-zone-meta" x="368" y="423">VLAN 45 &middot; 10.0.45.0/24 &middot; SL-T 3</text>
+          <rect class="topo-device key-aurora" x="372" y="440" width="220" height="56" rx="5"/>
+          <text class="topo-device-title" x="392" y="461">3p-hvl-app01</text>
+          <text class="topo-device-meta" x="392" y="476">10.0.45.10 &middot; UaWrapper :46040</text>
+          <text class="topo-device-meta" x="392" y="489">OPC DA lokalt, whitelister OPC UA-tags</text>
+
+          <rect class="topo-zone-shape oob" x="60" y="542" width="559" height="48" rx="7"/>
+          <text class="topo-zone-title" x="78" y="566">OOB-MGMT</text>
+          <text class="topo-zone-meta" x="78" y="582">VLAN 99: OOB-WS .99, ASA .1, iDRAC .2, ESXi .3, SG250 .10</text>
+
+          <rect x="674" y="156" width="84" height="424" rx="8" fill="var(--accent-coral-dim)" stroke="var(--accent-coral)" stroke-width="1.2"/>
+          <text class="topo-zone-title" x="716" y="186" text-anchor="middle">ASA FW</text>
+          <text class="topo-zone-meta" x="716" y="204" text-anchor="middle">5506-X</text>
+          <text class="topo-zone-meta" x="716" y="224" text-anchor="middle">ACL per sone</text>
+          <text class="topo-zone-meta" x="716" y="242" text-anchor="middle">implicit deny</text>
+          <rect class="topo-port" x="648" y="292" width="52" height="20" rx="4"/>
+          <text class="topo-port-label" x="674" y="306" text-anchor="middle">G1/2</text>
+          <rect class="topo-port" x="648" y="546" width="52" height="20" rx="4"/>
+          <text class="topo-port-label" x="674" y="560" text-anchor="middle">G1/3</text>
+          <rect class="topo-port" x="732" y="194" width="52" height="20" rx="4"/>
+          <text class="topo-port-label" x="758" y="208" text-anchor="middle">G1/1</text>
+          <rect class="topo-port" x="732" y="404" width="52" height="20" rx="4"/>
+          <text class="topo-port-label" x="758" y="418" text-anchor="middle">G1/4</text>
+
+          <rect class="topo-ext-shell" x="790" y="154" width="270" height="82" rx="8"/>
+          <text class="topo-zone-title" x="810" y="181">IT/WAN</text>
+          <text class="topo-zone-meta" x="810" y="198">VLAN 100 &middot; 10.0.100.0/24</text>
+          <text class="topo-mini-label" x="810" y="216">Kun RDP til Jump Host i IDMZ</text>
+          <rect class="topo-ext-shell noronna" x="790" y="282" width="270" height="268" rx="10"/>
+          <text class="topo-zone-title" x="810" y="310">NORØNNA &middot; OFFSHORE</text>
+          <text class="topo-zone-meta" x="810" y="328">ASA G1/4.70 &middot; ekstern site-grense</text>
+          <rect class="topo-zone-shape opc" x="810" y="346" width="230" height="92" rx="7"/>
+          <text class="topo-zone-title" x="828" y="369">NORØNNA-GW</text>
+          <text class="topo-zone-meta" x="828" y="385">VLAN 70 &middot; 10.0.70.0/24</text>
+          <rect class="topo-device key-noronna" x="830" y="398" width="190" height="40" rx="4"/>
+          <text class="topo-device-meta" x="846" y="414">3p-hvl-app02 .11</text>
+          <text class="topo-device-meta" x="846" y="429">DataHub / UaExpert</text>
+          <rect class="topo-zone-shape planned" x="810" y="462" width="230" height="58" rx="7"/>
+          <text class="topo-zone-title" x="828" y="485">VLAN 71 &middot; VALGFRI UTVIDELSE</text>
+          <text class="topo-zone-meta" x="828" y="504">IMS Server / aggregating UA server</text>
+
+          <path class="topo-path opc-a" d="M830 410 C800 410 786 392 758 392 L674 392 C640 392 620 450 592 450" marker-end="url(#topo-arrow-amber)"/>
+          <path class="topo-path opc-b" d="M592 478 C626 478 646 454 674 454 L758 454 C792 454 806 426 830 426" marker-end="url(#topo-arrow-amber)"/>
+          <text class="topo-path-label" x="675" y="374" text-anchor="middle" fill="var(--accent-amber)">OPC UA conduit</text>
+          <text class="topo-path-sub" x="675" y="389" text-anchor="middle">:46040 NORØNNA &rarr; AURORA</text>
+          <text class="topo-path-sub" x="675" y="404" text-anchor="middle">:46041 AURORA &rarr; NORØNNA</text>
+          <path class="topo-path admin" d="M790 196 L758 196 L758 316 L674 316 C620 316 530 344 468 344" marker-end="url(#topo-arrow-blue)"/>
+          <text class="topo-path-label" x="604" y="296" fill="var(--accent-blue)">RDP/3389 via Jump Host</text>
+          <path class="topo-path planned" d="M172 264 L172 370 L232 438" marker-end="url(#topo-arrow-teal)"/>
+          <text class="topo-path-sub" x="118" y="374">Planlagt feltdata</text>
+          <path class="topo-path oob" d="M620 566 C644 566 650 556 674 556" marker-end="url(#topo-arrow-purple)"/>
+          <text class="topo-path-sub" x="500" y="580">Management-plane, ikke produksjonstransit</text>
+        </svg>
+      </div>
+
+      <div class="topo-map-footer">
+        <div class="topo-fact">
+          <strong>Rettet plassering</strong>
+          <span>app01 er vist i OPC-UA-Zone (VLAN 45 / 10.0.45.10), mens DC, AD-MGMT, WSUS og Historian ligger i SERVER (VLAN 40).</span>
+        </div>
+        <div class="topo-fact">
+          <strong>To eksplisitte retninger</strong>
+          <span>NORØNNA initierer til AURORA på TCP/46040. AURORA initierer egen sesjon tilbake på TCP/46041. Returtrafikk håndteres statefully.</span>
+        </div>
+        <div class="topo-fact">
+          <strong>Planlagt vs. testet</strong>
+          <span>FIELD, AP-INFRA og EWS er markert som planlagt/ikke fysisk verifisert. Den realiserte OPC UA-conduiten er testet i T-01 og T-07 til T-10.</span>
+        </div>
+        <div class="topo-fact">
+          <strong>Kontrollflater</strong>
+          <span>IT/WAN får kun RDP til Jump Host. OOB-MGMT er egen management-plane og skal ikke bære produksjons- eller OPC UA-trafikk.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="topo-legacy" hidden>
     <!-- Physical infrastructure bar -->
     <div class="topo-card" style="padding:0;background:transparent;border:none;margin-top:32px;">
       <div class="topo-bar">
@@ -3088,6 +3443,8 @@ pre.topo-cfg .cmt { color: var(--accent-teal); opacity: 0.75; }
       </div>
     </div>
 
+    </div>
+
     <!-- DATAFLYT -->
     <div class="topo-card">
       <div class="topo-card-title t-flow">Dataflyt &mdash; OPC UA gjennom brannmur (steg for steg)</div>
@@ -3269,10 +3626,8 @@ access-group NORONNA_GW_IN in interface NORONNA-GW
       <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-coral-dim);border-color:var(--accent-coral);"></div>OPC DA (lokal, intern VM)</div>
       <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-amber-dim);border-color:var(--accent-amber);"></div>OPC UA (gjennom brannmur)</div>
       <div class="topo-leg"><div class="topo-leg-c" style="background:var(--accent-teal-dim);border-color:var(--accent-teal);"></div>Cogent DataHub</div>
-      <div class="topo-leg" style="margin-left:auto;">
-        <a href="AURORA-NORONNA-topologi-v2.html" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:none;">
-          &#8599; Åpne fullt topologi-dokument
-        </a>
+      <div class="topo-leg" style="margin-left:auto;color:var(--text-muted);">
+        <span>Erstattet av inline-topologi i hovedsiden</span>
       </div>
     </div>
   </div>
