@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260613b">
+  <link rel="stylesheet" href="assets/aurora.css?v=20260613c">
 </head>
 <body>
   <nav class="site-nav">
@@ -31,35 +31,98 @@
   </nav>
 
   <main>
-    <header class="page-hero">
-      <canvas class="ambient-canvas" data-network-canvas></canvas>
+    <section class="hero quiz-hero">
+      <canvas class="hero-canvas" data-network-canvas></canvas>
       <div class="shell">
-        <div class="eyebrow">Quiz</div>
-        <h1>Test topologiforståelsen</h1>
-        <p class="lead">
-          En kort kontroll på de viktigste detaljene: porter, VLAN og hvorfor OOB ikke er produksjonstransit.
-        </p>
-      </div>
-    </header>
-
-    <section class="section">
-      <div class="shell grid two">
-        <article class="card" data-quiz>
-          <div class="tag-row" style="margin-top:0;margin-bottom:16px;">
-            <span class="tag teal" data-quiz-progress>1 / 3</span>
-            <span class="tag amber">Score <span data-quiz-score>0/3</span></span>
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Bacheloroppgave · Quiz</div>
+            <h1>Test <span>AURORA</span></h1>
+            <p class="lead">
+              Velg en kort konseptquiz for ikke-teknisk bakgrunn, eller en lengre teknisk runde
+              med porter, VLAN, soner og brannmurvalg.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#quiz">Start quiz</a>
+              <a class="btn ghost" href="topologi.html">Se topologien først</a>
+            </div>
           </div>
-          <h2 class="section-title" style="font-size:clamp(24px,4vw,38px);" data-quiz-question></h2>
-          <div data-quiz-options></div>
-          <p class="section-text" data-quiz-note></p>
-        </article>
-        <aside>
-          <div class="eyebrow">Hvorfor quiz?</div>
-          <h2 class="section-title" style="font-size:clamp(26px,4vw,42px);">Små spørsmål avslører store misforståelser</h2>
+
+          <aside class="signal-panel" aria-label="Quizstatus">
+            <div class="signal-row">
+              <div><strong>Kort runde</strong><span>5 tilfeldige konseptspørsmål</span></div>
+              <span class="status-dot"></span>
+            </div>
+            <div class="signal-row">
+              <div><strong>Teknisk runde</strong><span>10 spørsmål fra en større bank</span></div>
+              <span class="status-dot blue"></span>
+            </div>
+            <div class="signal-row">
+              <div><strong>Forklaring</strong><span>Riktig svar får faglig notat</span></div>
+              <span class="status-dot amber"></span>
+            </div>
+            <div class="signal-row">
+              <div><strong>Tema</strong><span>Følger valgt lys eller mørk modus</span></div>
+              <span class="status-dot"></span>
+            </div>
+          </aside>
+        </div>
+
+        <div class="metric-strip" aria-label="Quiznøkkeltall">
+          <div class="metric"><strong>2</strong><span>nivåer for ulike målgrupper</span></div>
+          <div class="metric"><strong>30</strong><span>spørsmål i samlet bank</span></div>
+          <div class="metric"><strong>15</strong><span>spørsmål per full gjennomgang</span></div>
+          <div class="metric"><strong>1</strong><span>samme tema på alle sider</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact" id="quiz">
+      <div class="shell section-head">
+        <div>
+          <div class="eyebrow">Interaktiv quiz</div>
+          <h2 class="section-title">Velg nivå og få en ny runde hver gang</h2>
           <p class="section-text">
-            Dersom port, retning eller soneplassering blandes, endres hele sikkerhetsargumentet.
-            Derfor er quizzen koblet til de samme detaljene som topologi- og testsidene.
+            Spørsmålene trekkes tilfeldig, og svaralternativene blandes slik at quizen ikke bare kan pugges på rekkefølge.
           </p>
+        </div>
+      </div>
+
+      <div class="shell grid two quiz-grid">
+        <article class="card quiz-card" data-quiz>
+          <div class="quiz-mode-grid" role="group" aria-label="Velg quiztype">
+            <button class="quiz-mode-card is-active" type="button" data-quiz-mode="short" aria-pressed="true">
+              <strong>Kort quiz</strong>
+              <span>5 spørsmål · for ikke-teknisk bakgrunn</span>
+            </button>
+            <button class="quiz-mode-card" type="button" data-quiz-mode="technical" aria-pressed="false">
+              <strong>Teknisk quiz</strong>
+              <span>10 spørsmål · for teknisk bakgrunn</span>
+            </button>
+          </div>
+          <div class="quiz-status-bar">
+            <span class="tag teal" data-quiz-progress>1 / 5</span>
+            <span class="tag amber">Score <span data-quiz-score>0/5</span></span>
+          </div>
+          <h3 class="quiz-question" data-quiz-question aria-live="polite"></h3>
+          <div class="quiz-options" data-quiz-options></div>
+          <p class="quiz-note" data-quiz-note></p>
+          <div class="quiz-actions">
+            <button class="btn ghost" type="button" data-quiz-restart>Ny tilfeldig runde</button>
+          </div>
+        </article>
+        <aside class="card quiz-context">
+          <div class="eyebrow">Hvorfor quiz?</div>
+          <h3>Små spørsmål avslører store misforståelser</h3>
+          <p class="section-text">
+            Den korte quizen handler om konseptene uten å kreve nettverksbakgrunn.
+            Den tekniske quizen går dypere i VLAN, porter, ASA-regler og verifikasjon.
+          </p>
+          <div class="quiz-route" aria-label="Quiztema i AURORA-dataflyten">
+            <span>AURORA</span>
+            <span>ASA</span>
+            <span>NORØNNA</span>
+          </div>
           <div class="tag-row">
             <span class="tag amber">TCP/46040</span>
             <span class="tag amber">TCP/46041</span>
@@ -74,6 +137,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Quiz</div>
   </footer>
-  <script src="assets/aurora.js?v=20260613b"></script>
+  <script src="assets/aurora.js?v=20260613c"></script>
 </body>
 </html>
