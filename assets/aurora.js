@@ -1,13 +1,40 @@
 (function() {
   const root = document.documentElement;
-  const savedTheme = localStorage.getItem('aurora-theme');
-  if (savedTheme === 'light') root.classList.add('light');
+  const themeButtons = document.querySelectorAll('[data-theme-toggle]');
 
-  document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+  function getStoredTheme() {
+    try { return localStorage.getItem('aurora-theme'); } catch (e) { return null; }
+  }
+
+  function setStoredTheme(theme) {
+    try { localStorage.setItem('aurora-theme', theme); } catch (e) {}
+  }
+
+  function syncThemeButtons() {
+    const isLight = root.classList.contains('light');
+    themeButtons.forEach(button => {
+      button.setAttribute('aria-pressed', String(isLight));
+      button.setAttribute('aria-label', isLight ? 'Bytt til mørk modus' : 'Bytt til lys modus');
+    });
+  }
+
+  const savedTheme = getStoredTheme();
+  if (savedTheme === 'light') root.classList.add('light');
+  if (savedTheme === 'dark') root.classList.remove('light');
+
+  themeButtons.forEach(button => {
     button.addEventListener('click', () => {
       const isLight = root.classList.toggle('light');
-      localStorage.setItem('aurora-theme', isLight ? 'light' : 'dark');
+      setStoredTheme(isLight ? 'light' : 'dark');
+      syncThemeButtons();
     });
+  });
+  syncThemeButtons();
+
+  window.addEventListener('storage', event => {
+    if (event.key !== 'aurora-theme') return;
+    root.classList.toggle('light', event.newValue === 'light');
+    syncThemeButtons();
   });
 
   const menuButton = document.querySelector('[data-menu-toggle]');
