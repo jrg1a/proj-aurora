@@ -2,7 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Bundled Page</title>
+  <title>Project AURORA | OT-sikkerhet</title>
+  <script>
+    if (location.pathname.endsWith('/proj-aurora/')) {
+      location.replace('index.html' + location.search + location.hash);
+    }
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #faf9f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -25,6 +30,8 @@
   <script>
     
 document.addEventListener('DOMContentLoaded', async function() {
+  const pageTitle = 'Project AURORA | OT-sikkerhet';
+  document.title = pageTitle;
   const loading = document.getElementById('__bundler_loading');
   function setStatus(msg) { if (loading) loading.textContent = msg; }
 
@@ -50,6 +57,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
+    if (!/<title[\s>]/i.test(template)) {
+      template = template.replace(/<head[^>]*>/i, function(match) {
+        return match + '<title>' + pageTitle + '</title>';
+      });
+    }
 
     const uuids = Object.keys(manifest);
     setStatus('Unpacking ' + uuids.length + ' assets...');
@@ -111,6 +123,24 @@ document.addEventListener('DOMContentLoaded', async function() {
     const resourceScript = '<script>window.__resources = ' +
       JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
       ';</' + 'script>';
+    const mobileFixStyle = '<style id="aurora-mobile-fix">' +
+      '*,*::before,*::after{box-sizing:border-box!important}' +
+      'html,body{max-width:100%;overflow-x:hidden}' +
+      'svg,img,canvas{max-width:100%;height:auto}' +
+      '@media (max-width:720px){' +
+        'body{overflow-x:hidden!important}' +
+        '[style*="position:sticky"]>div{padding-left:16px!important;padding-right:16px!important;gap:14px!important;overflow:hidden!important}' +
+        '[style*="gap: 24px"][style*="text-transform: uppercase"]{display:none!important}' +
+        '[style*="gap: 24px"][style*="text-transform: uppercase"]::-webkit-scrollbar{display:none}' +
+        '[style*="max-width:1280px"],[style*="max-width: 1280px"]{max-width:100%!important}' +
+        '[style*="padding: 0px 48px"],[style*="padding:0 48px"]{padding-left:28px!important;padding-right:28px!important}' +
+        'h1{max-width:100%;font-size:clamp(54px,17vw,76px)!important;line-height:.9!important}' +
+        'p{max-width:100%;overflow-wrap:break-word}' +
+      '}' +
+      '@media (max-width:430px){' +
+        '[style*="padding: 0px 48px"],[style*="padding:0 48px"]{padding-left:24px!important;padding-right:24px!important}' +
+      '}' +
+      '</style>';
     // Inject after <head> so the DOCTYPE stays first; prepending the script
     // would push the parser into quirks mode. DOMParser always emits a <head>
     // (synthesizing one if the source HTML omitted it) but may carry
@@ -119,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const headOpen = template.match(/<head[^>]*>/i);
     if (headOpen) {
       const i = headOpen.index + headOpen[0].length;
-      template = template.slice(0, i) + resourceScript + template.slice(i);
+      template = template.slice(0, i) + resourceScript + mobileFixStyle + template.slice(i);
     }
 
     // Parse the template and swap the root element. Scripts inserted via
