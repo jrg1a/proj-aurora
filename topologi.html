@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Topologi | Project AURORA</title>
   <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
-  <link rel="stylesheet" href="assets/editorial.css?v=20260620d">
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620e">
 </head>
 <body>
   <header class="topbar">
@@ -38,6 +38,31 @@
         </p>
       </div>
     </header>
+
+    <section class="section opcua-animation-band" aria-labelledby="opcua-animation-title">
+      <div class="shell section-head full">
+        <div>
+          <p class="kicker">3D-dataflyt</p>
+          <h2 id="opcua-animation-title" class="home-section-title">NORØNNA til AURORA i bevegelse.</h2>
+        </div>
+        <p class="section-text">
+          Animasjonen viser offshore-installasjonen, landanlegget og den kontrollerte OPC UA-conduiten
+          som frakter data mellom sites.
+        </p>
+      </div>
+
+      <div class="opcua-visual" data-opcua-animation aria-label="3D-animasjon av OPC UA-dataflyt mellom NORØNNA og AURORA">
+        <div class="opcua-scene" data-opcua-scene></div>
+        <div class="opcua-label-layer" data-opcua-labels></div>
+        <div class="opcua-caption">
+          <div class="mono-label">BO26EB-20</div>
+          <h3>Kontrollert dataflyt for OT</h3>
+          <p>Segmentert OT/ICS-nettverk etter IEC 62443, med OPC UA-integrasjon mellom NORØNNA offshore og AURORA onshore.</p>
+        </div>
+        <div class="opcua-hint">Dra for å rotere</div>
+        <div class="opcua-fallback" data-opcua-fallback>3D-scenen kunne ikke lastes i denne nettleseren.</div>
+      </div>
+    </section>
 
     <section class="section compact">
       <div class="shell diagram-shell" data-topology data-topology-mode="drift">
@@ -167,6 +192,8 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Topologi</div>
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="assets/noronna-opcua-animation.js?v=20260620e"></script>
   <script src="assets/editorial.js?v=20260620c"></script>
 </body>
 </html>

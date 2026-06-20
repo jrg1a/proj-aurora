@@ -648,6 +648,134 @@ h3 {
   color: var(--muted);
 }
 
+.opcua-animation-band {
+  padding-bottom: 0;
+}
+
+.opcua-visual {
+  position: relative;
+  min-height: clamp(540px, 72vh, 760px);
+  margin-top: 34px;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #0b1a2a;
+  color: #e8eef4;
+  touch-action: pan-y;
+}
+
+.opcua-scene,
+.opcua-label-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.opcua-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.opcua-label-layer {
+  pointer-events: none;
+  z-index: 2;
+}
+
+.opcua-animation-label {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  transition: opacity 180ms ease;
+  text-shadow: 0 1px 16px rgba(5, 10, 16, 0.7);
+}
+
+.opcua-animation-label .marker {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  margin-right: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.opcua-animation-label .name {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.opcua-animation-label .meta {
+  display: block;
+  margin: 3px 0 0 15px;
+  color: #8da3b8;
+  font-size: 10.5px;
+}
+
+.opcua-animation-label .name,
+.opcua-animation-label .meta,
+.opcua-caption .mono-label,
+.opcua-hint {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0;
+}
+
+.opcua-caption {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  z-index: 3;
+  max-width: min(86vw, 560px);
+  padding: 14px 16px;
+  border: 1px solid rgba(120, 150, 175, 0.22);
+  border-radius: var(--radius);
+  background: rgba(8, 17, 27, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.opcua-caption .mono-label {
+  color: #35e0d0;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.opcua-caption h3 {
+  margin-top: 6px;
+  color: #f6f5f1;
+}
+
+.opcua-caption p {
+  margin: 6px 0 0;
+  color: #a8b6c4;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.opcua-hint {
+  position: absolute;
+  right: 20px;
+  bottom: 22px;
+  z-index: 3;
+  color: #8da3b8;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.opcua-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  z-index: 4;
+  padding: 28px;
+  background: #0b1a2a;
+  color: #e8eef4;
+  text-align: center;
+}
+
+.opcua-visual.is-unavailable .opcua-fallback {
+  display: grid;
+}
+
 .diagram-shell[data-arch-mode="attack"] .arch-normal,
 .diagram-shell[data-arch-mode="attack"] .arch-opc {
   opacity: 0.18;
@@ -1027,5 +1155,32 @@ tr:last-child td {
   .topology-svg,
   .attack-svg {
     min-width: 760px;
+  }
+
+  .opcua-visual {
+    min-height: 640px;
+  }
+
+  .opcua-caption {
+    right: 12px;
+    bottom: 14px;
+    left: 12px;
+    max-width: none;
+  }
+
+  .opcua-hint {
+    display: none;
+  }
+
+  .opcua-animation-label .name {
+    font-size: 11px;
+  }
+
+  .opcua-animation-label .meta {
+    display: none;
+  }
+
+  .opcua-animation-label.site {
+    display: none;
   }
 }
