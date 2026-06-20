@@ -181,7 +181,7 @@ Prosjektet har en moderne flerside showcase-nettside som dekker:
 ├── 📄 quiz.html                        # Interaktiv OT-sikkerhetsquiz
 ├── 📄 rapport.html                     # Rapportressurser og legacy-lenker
 ├── 📁 assets/                          # Felles CSS og JavaScript
-├── 📄 aurora-expo.html                 # Speilet forside for eldre lenker
+├── 📄 aurora-expo.html                 # Redirect fra eldre expo-lenker
 ├── 📄 aurora-nettverksarkitektur.html  # Redirect til ny topologiside for gamle lenker
 ├── 📄 dataflow-diagram.html            # Redirect til ny topologiside for gamle lenker
 ├── 📄 brannfakler.html                 # Redirect til ny innsiktsside

@@ -8,7 +8,7 @@
     if (location.pathname.endsWith('/proj-aurora/')) location.replace('index.html' + location.search + location.hash);
     try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}
   </script>
-  <link rel="stylesheet" href="assets/editorial.css?v=20260620b">
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620c">
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +20,7 @@
         <a href="topologi.html">Topologi</a>
         <a href="tester.html">Tester</a>
         <a href="innsikt.html">Innsikt</a>
-        <a href="quiz.html">Quiz</a>
+        <a href="quiz.html?v=20260620c">Quiz</a>
         <a href="rapport.html">Rapport</a>
       </div>
       <div class="nav-actions">
@@ -43,7 +43,7 @@
             </p>
             <div class="hero-actions">
               <a class="btn primary" href="arkitektur.html">Utforsk arkitekturen</a>
-              <a class="btn" href="quiz.html">Ta OT-awareness quiz</a>
+              <a class="btn" href="quiz.html?v=20260620c">Ta OT-awareness quiz</a>
             </div>
           </div>
 
@@ -102,7 +102,7 @@
           </div>
           <div class="tag-row"><span class="tag green">Pass</span><span class="tag violet">FAT</span></div>
         </a>
-        <a class="card card-link" href="quiz.html">
+        <a class="card card-link" href="quiz.html?v=20260620c">
           <div>
             <h3>Quiz</h3>
             <p>Tilfeldig OT-awareness quiz i kort og dypere versjon, uten å bli prosjektspesifikk.</p>
@@ -140,6 +140,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Bacheloroppgave · HVL × ABB</div>
   </footer>
-  <script src="assets/editorial.js?v=20260620b"></script>
+  <script src="assets/editorial.js?v=20260620c"></script>
 </body>
 </html>

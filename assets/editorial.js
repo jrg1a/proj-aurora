@@ -46,7 +46,7 @@
   const currentPage = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('[data-nav-links] a').forEach((link) => {
     const href = link.getAttribute('href') || '';
-    const page = href.split('#')[0] || 'index.html';
+    const page = href.split('#')[0].split('?')[0] || 'index.html';
     if (page === currentPage) link.classList.add('is-active');
   });
 

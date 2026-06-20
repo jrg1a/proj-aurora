@@ -1,159 +1,28 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project AURORA | Sikker OT-nettverksarkitektur</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
+  <meta http-equiv="refresh" content="0; url=index.html?v=20260620c">
+  <link rel="canonical" href="index.html">
+  <title>Sender videre | Project AURORA</title>
+  <script>
+    try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}
+    location.replace('index.html?v=20260620c');
+  </script>
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620c">
 </head>
 <body>
-  <nav class="site-nav">
-    <div class="shell nav-inner">
-      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
-      <div class="nav-links" data-nav-links>
-        <a href="index.html">Oversikt</a>
-        <a href="arkitektur.html">Arkitektur</a>
-        <a href="topologi.html">Topologi</a>
-        <a href="tester.html">Tester</a>
-        <a href="innsikt.html">Innsikt</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="rapport.html">Rapport</a>
-      </div>
-      <div class="nav-actions">
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
-        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
+  <main class="page-hero">
+    <div class="shell">
+      <p class="kicker">Project AURORA</p>
+      <h1>Expo-siden er flyttet.</h1>
+      <p class="lead">Den gamle inngangen peker nå til den nye flersidige forsiden.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="index.html?v=20260620c">Gå til ny forside</a>
+        <a class="btn" href="quiz.html?v=20260620c">Åpne ny quiz</a>
       </div>
     </div>
-  </nav>
-
-  <main>
-    <section class="hero">
-      <canvas class="hero-canvas" data-network-canvas></canvas>
-      <div class="shell">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">Bacheloroppgave · HVL · ABB</div>
-            <h1>Project <span>AURORA</span></h1>
-            <p class="lead">
-              En segmentert OT-lab som simulerer AURORA landanlegg og NORØNNA offshore,
-              med OPC DA til OPC UA, eksplisitte brannmur-conduits og verifiserbar sikkerhetsarkitektur.
-            </p>
-            <div class="hero-actions">
-              <a class="btn primary" href="topologi.html">Utforsk topologien</a>
-              <a class="btn ghost" href="tester.html">Se testresultater</a>
-            </div>
-          </div>
-
-          <aside class="signal-panel" aria-label="Prosjektstatus">
-            <div class="signal-row">
-              <div><strong>OPC UA-conduit</strong><span>TCP/46040 og TCP/46041</span></div>
-              <span class="status-dot"></span>
-            </div>
-            <div class="signal-row">
-              <div><strong>ASA segmentering</strong><span>Stateful retur, implicit deny</span></div>
-              <span class="status-dot blue"></span>
-            </div>
-            <div class="signal-row">
-              <div><strong>Planlagte soner</strong><span>FIELD, AP-INFRA og EWS modellert</span></div>
-              <span class="status-dot amber"></span>
-            </div>
-            <div class="signal-row">
-              <div><strong>Dokumentasjon</strong><span>Rapport, vedlegg og testgrunnlag</span></div>
-              <span class="status-dot"></span>
-            </div>
-          </aside>
-        </div>
-
-        <div class="metric-strip" aria-label="Nøkkeltall">
-          <div class="metric"><strong data-count="19">0</strong><span>verifikasjons- og FAT-tester</span></div>
-          <div class="metric"><strong>8</strong><span>logiske soner i designet</span></div>
-          <div class="metric"><strong>2</strong><span>dedikerte OPC UA-retninger</span></div>
-          <div class="metric"><strong>1</strong><span>Cisco ASA som sonegrense</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell section-head">
-        <div>
-          <div class="eyebrow">Ny struktur</div>
-          <h2 class="section-title">Fra lang scroll til ryddig prosjektrom</h2>
-          <p class="section-text">
-            Innholdet er delt i fokuserte sider, slik at sensor, veileder eller medstudent raskt kan hoppe
-            mellom arkitektur, topologi, testresultater og refleksjon.
-          </p>
-        </div>
-      </div>
-      <div class="shell grid four">
-        <a class="feature-card" href="arkitektur.html">
-          <div>
-            <h3>Arkitektur</h3>
-            <p>Purdue, IEC 62443, soner, conduits og sikkerhetsvalg.</p>
-          </div>
-          <div class="tag-row"><span class="tag blue">Purdue</span><span class="tag teal">IEC 62443</span></div>
-        </a>
-        <a class="feature-card" href="topologi.html">
-          <div>
-            <h3>Topologi</h3>
-            <p>Interaktiv AURORA/NORØNNA-visualisering med OPC UA-modus.</p>
-          </div>
-          <div class="tag-row"><span class="tag amber">OPC UA</span><span class="tag coral">ASA</span></div>
-        </a>
-        <a class="feature-card" href="tester.html">
-          <div>
-            <h3>Tester</h3>
-            <p>Filtrerbar oversikt over hva som ble bygget, blokkert og verifisert.</p>
-          </div>
-          <div class="tag-row"><span class="tag green">FAT</span><span class="tag violet">Verifikasjon</span></div>
-        </a>
-        <a class="feature-card" href="innsikt.html">
-          <div>
-            <h3>Innsikt</h3>
-            <p>Designvalg, risiko og levende scenarioer samlet i en mer faglig refleksjonsflate.</p>
-          </div>
-          <div class="tag-row"><span class="tag coral">Risiko</span><span class="tag teal">Refleksjon</span></div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell grid two">
-        <div>
-          <div class="eyebrow">Systembilde</div>
-          <h2 class="section-title">To sites, én kontrollert dataflyt</h2>
-          <p class="section-text">
-            Sluttløsningen viser app01 i OPC-UA-Zone på VLAN 45 og app02 i NORØNNA-GW på VLAN 70.
-            Kun de definerte OPC UA-sesjonene krysser brannmuren.
-          </p>
-          <div class="section-actions">
-            <a class="btn" href="topologi.html">Åpne full visualisering</a>
-            <a class="btn ghost" href="arkitektur.html">Se arkitektur</a>
-          </div>
-        </div>
-        <div class="mini-topology" aria-label="Miniatyr av AURORA og NORØNNA-topologi">
-          <div class="mini-node aurora"><strong>AURORA</strong><span>app01 · VLAN 45 · 10.0.45.10</span></div>
-          <div class="mini-node fw"><strong>ASA 5506-X</strong><span>ACL · stateful retur · implicit deny</span></div>
-          <div class="mini-node noronna"><strong>NORØNNA</strong><span>app02 · VLAN 70 · 10.0.70.11</span></div>
-          <div class="mini-node oob"><strong>OOB-MGMT</strong><span>VLAN 99 · management-plane</span></div>
-          <div class="mini-node it"><strong>IT/WAN</strong><span>RDP kun til Jump Host</span></div>
-          <span class="mini-link one"></span>
-          <span class="mini-link two"></span>
-          <span class="mini-link three"></span>
-          <span class="packet"></span>
-          <span class="packet two"></span>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="shell">Project AURORA · Bacheloroppgave i cyberfysisk nettverksteknologi · HVL</div>
-  </footer>
-
-  <script src="assets/aurora.js?v=20260620a"></script>
 </body>
 </html>
