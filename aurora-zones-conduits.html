@@ -1,200 +1,24 @@
 <!DOCTYPE html>
-<html lang="nb">
+<html lang="no">
 <head>
-<meta charset="UTF-8">
-<title>AURORA · Zones & Conduits (rev-04)</title>
-<script>try{if(localStorage.getItem('aurora-theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}</script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f6f8fc;--panel:#ffffff;--ink:#0b1220;--mute:#566378;--teal:#0d9e9c;--amber:#c47d00;--red:#c9374f;--blue:#2d6fd4;--green:#16a34a;--purple:#7c3aed;--border:#d8dee8;}
-html.dark{--bg:#050810;--panel:#0b1220;--ink:#e6edf7;--mute:#8a97ac;--teal:#3ddbd9;--amber:#ffb454;--red:#ff5e7a;--blue:#6aa6ff;--green:#4ade80;--purple:#c084fc;--border:#1b2637;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;padding:40px 20px}
-.wrap{max-width:1400px;margin:0 auto}
-h1{font-size:2em;margin-bottom:8px}
-.sub{color:var(--mute);margin-bottom:30px;font-family:'IBM Plex Mono',monospace;font-size:0.9em}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;font-family:'IBM Plex Mono',monospace;font-size:0.8em}
-.legend span{padding:4px 10px;border-radius:4px;border:1px solid var(--border)}
-.diagram{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:30px;overflow-x:auto}
-svg{width:100%;min-width:1200px;height:auto}
-.zone{fill:var(--panel);stroke:var(--border);stroke-width:2}
-.zone-label{fill:var(--ink);font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px}
-.zone-sub{fill:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:10px}
-.conduit{stroke:var(--teal);stroke-width:2;fill:none;marker-end:url(#arr)}
-.conduit.mgmt{stroke:var(--purple);stroke-dasharray:4 3}
-.conduit.ot{stroke:var(--amber)}
-.conduit.ad{stroke:var(--blue)}
-.conduit-label{fill:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:10px}
-.asa{fill:#fff3db;stroke:var(--amber);stroke-width:2}
-html.dark .asa{fill:#2d1b00}
-.back{position:fixed;top:20px;left:20px;color:var(--teal);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:0.9em}
-table{width:100%;border-collapse:collapse;margin-top:30px;font-family:'IBM Plex Mono',monospace;font-size:0.85em}
-th,td{padding:10px;text-align:left;border-bottom:1px solid var(--border)}
-th{color:var(--teal);background:var(--panel)}
-h2{margin:40px 0 12px;font-size:1.3em}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=arkitektur.html">
+  <link rel="canonical" href="arkitektur.html">
+  <title>Sender videre | Project AURORA</title>
+  <script>location.replace("arkitektur.html");</script>
+  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
 </head>
 <body>
-<a href="index.html" class="back">← Tilbake</a>
-<div class="wrap">
-<h1>🔐 Zones & Conduits — IEC 62443 (rev-04)</h1>
-<div class="sub">Prosjekt AURORA · ACL-basert segmentering med Cisco ASA 5506-X</div>
-
-<div class="legend">
-<span style="color:var(--teal)">━ OT/Data</span>
-<span style="color:var(--amber)">━ Field/Process</span>
-<span style="color:var(--blue)">━ AD/Auth</span>
-<span style="color:var(--purple)">╌ Management</span>
-</div>
-
-<div class="diagram">
-<svg viewBox="0 0 1300 820" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
-</marker>
-</defs>
-
-<!-- ASA central -->
-<rect class="asa" x="560" y="360" width="180" height="100" rx="8"/>
-<text class="zone-label" x="650" y="395" text-anchor="middle" fill="#ffb454">🔥 Cisco ASA 5506-X</text>
-<text class="zone-sub" x="650" y="415" text-anchor="middle">Zone Enforcement Point</text>
-<text class="zone-sub" x="650" y="432" text-anchor="middle">ACL + Stateful Inspection</text>
-<text class="zone-sub" x="650" y="449" text-anchor="middle">9 VLAN subinterfaces</text>
-
-<!-- FIELD (VLAN 10) -->
-<rect class="zone" x="40" y="40" width="220" height="110" rx="8" stroke="#ff5e7a"/>
-<text class="zone-label" x="150" y="65" text-anchor="middle" fill="#ff5e7a">⚙️ FIELD Zone</text>
-<text class="zone-sub" x="150" y="82" text-anchor="middle">VLAN 10 · 10.0.10.0/24</text>
-<text class="zone-sub" x="150" y="98" text-anchor="middle">Sensorer · PLC · RTU</text>
-<text class="zone-sub" x="150" y="114" text-anchor="middle">Purdue L0–L1</text>
-<text class="zone-sub" x="150" y="132" text-anchor="middle" fill="#ff5e7a">SL-T 3</text>
-
-<!-- AP-INFRA (VLAN 20) -->
-<rect class="zone" x="40" y="180" width="220" height="90" rx="8"/>
-<text class="zone-label" x="150" y="205" text-anchor="middle">📡 AP-INFRA</text>
-<text class="zone-sub" x="150" y="222" text-anchor="middle">VLAN 20 · 10.0.20.0/24</text>
-<text class="zone-sub" x="150" y="238" text-anchor="middle">Access Points · 802.1X</text>
-<text class="zone-sub" x="150" y="254" text-anchor="middle">Mgmt plane kun</text>
-
-<!-- SERVER (VLAN 40) -->
-<rect class="zone" x="40" y="300" width="220" height="110" rx="8" stroke="#6aa6ff"/>
-<text class="zone-label" x="150" y="325" text-anchor="middle" fill="#6aa6ff">🔐 SERVER Zone</text>
-<text class="zone-sub" x="150" y="342" text-anchor="middle">VLAN 40 · 10.0.40.0/24</text>
-<text class="zone-sub" x="150" y="358" text-anchor="middle">DC · RADIUS · WSUS</text>
-<text class="zone-sub" x="150" y="374" text-anchor="middle">Historian (10.0.40.40)</text>
-<text class="zone-sub" x="150" y="392" text-anchor="middle">Purdue L3</text>
-
-<!-- OPC-UA-ZONE (VLAN 45) -->
-<rect class="zone" x="40" y="440" width="220" height="110" rx="8" stroke="#3ddbd9" stroke-width="3"/>
-<text class="zone-label" x="150" y="465" text-anchor="middle" fill="#3ddbd9">🔄 OPC-UA-Zone</text>
-<text class="zone-sub" x="150" y="482" text-anchor="middle">VLAN 45 · 10.0.45.0/24</text>
-<text class="zone-sub" x="150" y="498" text-anchor="middle">app01 — UaWrapper</text>
-<text class="zone-sub" x="150" y="514" text-anchor="middle">10.0.45.10</text>
-<text class="zone-sub" x="150" y="532" text-anchor="middle" fill="#3ddbd9">Protokoll-bro OPC DA→UA</text>
-
-<!-- EWS (VLAN 50) -->
-<rect class="zone" x="40" y="580" width="220" height="100" rx="8"/>
-<text class="zone-label" x="150" y="605" text-anchor="middle">🖥️ EWS Zone</text>
-<text class="zone-sub" x="150" y="622" text-anchor="middle">VLAN 50 · 10.0.50.0/24</text>
-<text class="zone-sub" x="150" y="638" text-anchor="middle">Engineering Workstation</text>
-<text class="zone-sub" x="150" y="654" text-anchor="middle">Purdue L3</text>
-
-<!-- IDMZ (VLAN 60) -->
-<rect class="zone" x="1040" y="40" width="220" height="130" rx="8" stroke="#ffd700"/>
-<text class="zone-label" x="1150" y="65" text-anchor="middle" fill="#ffd700">🟡 IDMZ</text>
-<text class="zone-sub" x="1150" y="82" text-anchor="middle">VLAN 60 · 10.0.60.0/24</text>
-<text class="zone-sub" x="1150" y="98" text-anchor="middle">Jump Host (10.0.60.2)</text>
-<text class="zone-sub" x="1150" y="114" text-anchor="middle">Historian (10.0.60.10)</text>
-<text class="zone-sub" x="1150" y="130" text-anchor="middle">Data-broker</text>
-<text class="zone-sub" x="1150" y="150" text-anchor="middle" fill="#ffd700">Purdue L3.5 Barriere</text>
-
-<!-- NORONNA (VLAN 70) -->
-<rect class="zone" x="1040" y="200" width="220" height="120" rx="8" stroke="#c084fc"/>
-<text class="zone-label" x="1150" y="225" text-anchor="middle" fill="#c084fc">🏗️ NORØNNA</text>
-<text class="zone-sub" x="1150" y="242" text-anchor="middle">VLAN 70 · 10.0.70.0/24</text>
-<text class="zone-sub" x="1150" y="258" text-anchor="middle">app02 — Cogent DataHub</text>
-<text class="zone-sub" x="1150" y="274" text-anchor="middle">OPC DA Server (10.0.70.11)</text>
-<text class="zone-sub" x="1150" y="292" text-anchor="middle">sec-level 20 (untrusted)</text>
-<text class="zone-sub" x="1150" y="310" text-anchor="middle">Simulert offshore site</text>
-
-<!-- IT-WAN (VLAN 100) -->
-<rect class="zone" x="1040" y="350" width="220" height="100" rx="8"/>
-<text class="zone-label" x="1150" y="375" text-anchor="middle">🌐 IT-WAN</text>
-<text class="zone-sub" x="1150" y="392" text-anchor="middle">VLAN 100 · 10.0.100.0/24</text>
-<text class="zone-sub" x="1150" y="408" text-anchor="middle">Enterprise uplink</text>
-<text class="zone-sub" x="1150" y="424" text-anchor="middle">Purdue L4–L5</text>
-
-<!-- OOB-MGMT (VLAN 99) -->
-<rect class="zone" x="1040" y="480" width="220" height="100" rx="8" stroke="#c084fc" stroke-dasharray="4 3"/>
-<text class="zone-label" x="1150" y="505" text-anchor="middle" fill="#c084fc">⚫ OOB-MGMT</text>
-<text class="zone-sub" x="1150" y="522" text-anchor="middle">VLAN 99 · 10.0.99.0/24</text>
-<text class="zone-sub" x="1150" y="538" text-anchor="middle">Out-of-band admin</text>
-<text class="zone-sub" x="1150" y="554" text-anchor="middle">Console-server</text>
-
-<!-- Conduits LEFT → ASA -->
-<path class="conduit ot" d="M260,95 Q420,95 560,380"/>
-<text class="conduit-label" x="360" y="150">C1: MQTT 1883 → Historian</text>
-
-<path class="conduit mgmt" d="M260,225 Q420,225 560,390"/>
-<text class="conduit-label" x="370" y="260">C2: SNMP/SSH (fra MGMT)</text>
-
-<path class="conduit ad" d="M260,355 L560,400"/>
-<text class="conduit-label" x="310" y="385">C3: Kerberos/LDAP/DNS</text>
-
-<path class="conduit" d="M260,495 L560,410"/>
-<text class="conduit-label" x="310" y="470">C4: OPC UA 4840 (SignAndEncrypt)</text>
-
-<path class="conduit" d="M260,625 Q420,625 560,445"/>
-<text class="conduit-label" x="310" y="585">C5: RDP/SSH + AD + 4840</text>
-
-<!-- Conduits ASA → RIGHT -->
-<path class="conduit" d="M740,380 Q880,105 1040,105"/>
-<text class="conduit-label" x="820" y="200">C6: RDP/SSH/HTTPS → Jump Host</text>
-
-<path class="conduit" d="M740,395 Q880,260 1040,260"/>
-<text class="conduit-label" x="820" y="320">C7: OPC UA 4840 → app01</text>
-
-<path class="conduit ad" d="M740,415 Q880,405 1040,400"/>
-<text class="conduit-label" x="820" y="390">C8: RDP → Jump Host (fra WAN)</text>
-
-<path class="conduit mgmt" d="M740,440 Q880,520 1040,530"/>
-<text class="conduit-label" x="820" y="500">C9: Admin-only (isolert)</text>
-
-<!-- Internal conduit: IDMZ ↔ SERVER -->
-<path class="conduit ad" d="M1040,170 Q650,300 260,360"/>
-<text class="conduit-label" x="600" y="240">C10: Historian replikering (MQTT/HTTPS)</text>
-
-</svg>
-</div>
-
-<h2>📋 Conduits — Tillatte trafikkflyt (rev-04)</h2>
-<table>
-<tr><th>ID</th><th>Fra sone</th><th>Til sone</th><th>Protokoll/Port</th><th>Formål</th><th>IEC 62443 SR</th></tr>
-<tr><td>C1</td><td>FIELD</td><td>SERVER (Historian)</td><td>MQTT 1883</td><td>Sensor-telemetri</td><td>SR 5.1, 5.2</td></tr>
-<tr><td>C2</td><td>OOB-MGMT</td><td>AP-INFRA / alle</td><td>SSH/SNMP</td><td>Device management</td><td>SR 1.1, 6.1</td></tr>
-<tr><td>C3</td><td>OPC-UA-Zone</td><td>SERVER (DC)</td><td>Kerberos/LDAP/DNS/NTP/SMB</td><td>AD-autentisering av app01</td><td>SR 1.1, 1.2</td></tr>
-<tr><td>C4</td><td>NORØNNA</td><td>OPC-UA-Zone (app01)</td><td>OPC UA TCP 4840</td><td>DA→UA konvertering (SignAndEncrypt)</td><td>SR 3.1, 4.1</td></tr>
-<tr><td>C5</td><td>EWS</td><td>SERVER + OPC-UA-Zone + IDMZ</td><td>RDP/SSH/4840/AD</td><td>Engineering admin</td><td>SR 2.1</td></tr>
-<tr><td>C6</td><td>IDMZ (Jump Host)</td><td>Alle interne soner</td><td>RDP/SSH/HTTPS</td><td>Eneste inn-punkt fra WAN</td><td>SR 5.1, 5.2</td></tr>
-<tr><td>C7</td><td>IDMZ</td><td>OPC-UA-Zone (app01)</td><td>OPC UA 4840</td><td>Historian henter UA-data</td><td>SR 3.1, 4.1</td></tr>
-<tr><td>C8</td><td>IT-WAN</td><td>IDMZ (Jump Host)</td><td>RDP 3389</td><td>Remote admin-tilgang</td><td>SR 1.1, 2.1</td></tr>
-<tr><td>C9</td><td>ASA</td><td>OOB-MGMT</td><td>SSH/HTTPS (kun admin)</td><td>Firewall management</td><td>SR 6.1, 6.2</td></tr>
-<tr><td>C10</td><td>SERVER Historian</td><td>IDMZ Historian</td><td>MQTT/HTTPS</td><td>Data-broker replikering</td><td>SR 5.2, 7.6</td></tr>
-</table>
-
-<h2>🛡️ IEC 62443 Zone Security Levels (SL-T)</h2>
-<table>
-<tr><th>Sone</th><th>SL-T</th><th>Begrunnelse</th></tr>
-<tr><td>FIELD</td><td>SL 3</td><td>Kritisk prosess, høyeste beskyttelse mot målrettede angrep</td></tr>
-<tr><td>OPC-UA-Zone</td><td>SL 2</td><td>Protokoll-bro, SignAndEncrypt + AD-autentisering</td></tr>
-<tr><td>SERVER</td><td>SL 2</td><td>AD/RADIUS backbone, beskyttet av IDMZ</td></tr>
-<tr><td>IDMZ</td><td>SL 2</td><td>Barriere mellom IT og OT (Purdue L3.5)</td></tr>
-<tr><td>NORØNNA</td><td>SL 1</td><td>Eksternt site, behandlet som untrusted (sec-level 20)</td></tr>
-<tr><td>IT-WAN</td><td>SL 1</td><td>Enterprise-nivå, ingen direkte OT-tilgang</td></tr>
-<tr><td>OOB-MGMT</td><td>SL 3</td><td>Isolert mgmt plane, kun admin-tilgang</td></tr>
-</table>
-
-</div>
+  <main class="section">
+    <div class="shell">
+      <div class="eyebrow">Project AURORA</div>
+      <h1 class="section-title">Zones & conduits er flyttet</h1>
+      <p class="section-text">Denne gamle detaljsiden peker nå til arkitektursiden.</p>
+      <div class="section-actions">
+        <a class="btn primary" href="arkitektur.html">Gå til Arkitektur</a>
+      </div>
+    </div>
+  </main>
 </body>
 </html>

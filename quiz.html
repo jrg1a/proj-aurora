@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260613c">
+  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
 </head>
 <body>
   <nav class="site-nav">
@@ -37,10 +37,10 @@
         <div class="hero-grid">
           <div>
             <div class="eyebrow">Bacheloroppgave · Quiz</div>
-            <h1>Test <span>AURORA</span></h1>
+            <h1>Test <span>OT-sikkerhet</span></h1>
             <p class="lead">
-              Velg en kort konseptquiz for ikke-teknisk bakgrunn, eller en lengre teknisk runde
-              med porter, VLAN, soner og brannmurvalg.
+              Velg en kort awareness-quiz for nybegynnere, eller en lengre fordypningsrunde
+              om vaner, risiko og sikkerhetsvalg i OT-miljøer.
             </p>
             <div class="hero-actions">
               <a class="btn primary" href="#quiz">Start quiz</a>
@@ -50,11 +50,11 @@
 
           <aside class="signal-panel" aria-label="Quizstatus">
             <div class="signal-row">
-              <div><strong>Kort runde</strong><span>5 tilfeldige konseptspørsmål</span></div>
+              <div><strong>Kort runde</strong><span>5 nybegynnervennlige spørsmål</span></div>
               <span class="status-dot"></span>
             </div>
             <div class="signal-row">
-              <div><strong>Teknisk runde</strong><span>10 spørsmål fra en større bank</span></div>
+              <div><strong>Fordypning</strong><span>10 spørsmål fra en større awareness-bank</span></div>
               <span class="status-dot blue"></span>
             </div>
             <div class="signal-row">
@@ -70,7 +70,7 @@
 
         <div class="metric-strip" aria-label="Quiznøkkeltall">
           <div class="metric"><strong>2</strong><span>nivåer for ulike målgrupper</span></div>
-          <div class="metric"><strong>30</strong><span>spørsmål i samlet bank</span></div>
+          <div class="metric"><strong>45</strong><span>spørsmål i samlet bank</span></div>
           <div class="metric"><strong>15</strong><span>spørsmål per full gjennomgang</span></div>
           <div class="metric"><strong>1</strong><span>samme tema på alle sider</span></div>
         </div>
@@ -96,8 +96,8 @@
               <span>5 spørsmål · for ikke-teknisk bakgrunn</span>
             </button>
             <button class="quiz-mode-card" type="button" data-quiz-mode="technical" aria-pressed="false">
-              <strong>Teknisk quiz</strong>
-              <span>10 spørsmål · for teknisk bakgrunn</span>
+              <strong>Fordypningsquiz</strong>
+              <span>10 spørsmål · for deg som vil gå litt dypere</span>
             </button>
           </div>
           <div class="quiz-status-bar">
@@ -115,19 +115,19 @@
           <div class="eyebrow">Hvorfor quiz?</div>
           <h3>Små spørsmål avslører store misforståelser</h3>
           <p class="section-text">
-            Den korte quizen handler om konseptene uten å kreve nettverksbakgrunn.
-            Den tekniske quizen går dypere i VLAN, porter, ASA-regler og verifikasjon.
+            Den korte quizen er laget for å øke awareness uten å kreve teknisk bakgrunn.
+            Fordypningsquizen går dypere i typiske OT-risikoer, rutiner og sikkerhetsprinsipper.
           </p>
-          <div class="quiz-route" aria-label="Quiztema i AURORA-dataflyten">
-            <span>AURORA</span>
-            <span>ASA</span>
-            <span>NORØNNA</span>
+          <div class="quiz-route" aria-label="Quiztema for OT-sikkerhet">
+            <span>Mennesker</span>
+            <span>Prosess</span>
+            <span>Teknologi</span>
           </div>
           <div class="tag-row">
-            <span class="tag amber">TCP/46040</span>
-            <span class="tag amber">TCP/46041</span>
-            <span class="tag blue">VLAN 45</span>
-            <span class="tag violet">VLAN 99</span>
+            <span class="tag amber">USB</span>
+            <span class="tag blue">MFA</span>
+            <span class="tag teal">Segmentering</span>
+            <span class="tag violet">Backup</span>
           </div>
         </aside>
       </div>
@@ -137,6 +137,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Quiz</div>
   </footer>
-  <script src="assets/aurora.js?v=20260613c"></script>
+  <script src="assets/aurora.js?v=20260620a"></script>
 </body>
 </html>

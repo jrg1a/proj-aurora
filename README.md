@@ -141,7 +141,7 @@ Prosjektet har en moderne flerside showcase-nettside som dekker:
 | 🗺️ **Topologi** | Interaktiv AURORA/NORØNNA SVG med drift-, OPC UA-, segmenterings- og planlagt-modus |
 | 📊 **Tester** | Filtrerbart testdashboard for OPC UA, segmentering og management |
 | 💡 **Innsikt** | Designvalg, risiko og levende scenarioer |
-| 🧠 **Quiz** | Kort kontroll av porter, VLAN og OOB-forståelse |
+| 🧠 **Quiz** | OT-sikkerhetsawareness med kort og fordypende tilfeldig quiz |
 | 📎 **Rapport** | Ressurser, vedlegg, legacy-diagrammer og konklusjon |
 
 ---
@@ -182,8 +182,8 @@ Prosjektet har en moderne flerside showcase-nettside som dekker:
 ├── 📄 rapport.html                     # Rapportressurser og legacy-lenker
 ├── 📁 assets/                          # Felles CSS og JavaScript
 ├── 📄 aurora-expo.html                 # Speilet forside for eldre lenker
-├── 📄 aurora-nettverksarkitektur.html  # Supplerende standalone arkitekturdiagram
-├── 📄 dataflow-diagram.html            # Dataflytdiagram med protokoller/porter
+├── 📄 aurora-nettverksarkitektur.html  # Redirect til ny topologiside for gamle lenker
+├── 📄 dataflow-diagram.html            # Redirect til ny topologiside for gamle lenker
 ├── 📄 brannfakler.html                 # Redirect til ny innsiktsside
 ├── 📄 LICENSE                          # MIT-lisens
 └── 📄 README.md                        # Denne filen

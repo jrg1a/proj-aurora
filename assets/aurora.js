@@ -302,76 +302,124 @@
         size: 5,
         questions: [
           {
-            q: 'Hva er hovedideen bak nettverkssegmenteringen i AURORA?',
-            a: ['Å dele systemet i soner med kontrollerte overganger', 'Å gjøre alle systemer tilgjengelige fra IT/WAN', 'Å samle all trafikk i ett enklere nett'],
+            q: 'Hva er OT i en enkel forklaring?',
+            a: ['Systemer som overvåker eller styrer fysiske prosesser', 'Kun vanlige kontor-PC-er og e-post', 'En type skylagring for bilder'],
             correct: 0,
-            note: 'Segmenteringen gjør at hver sone får tydelig funksjon, risiko og eksplisitte tillatte flyter.'
+            note: 'OT handler om teknologi som påvirker den fysiske verden, for eksempel produksjon, energi, vann eller transport.'
           },
           {
-            q: 'Hva simulerer AURORA og NORØNNA i prosjektet?',
-            a: ['To separate sites som utveksler prosessdata', 'To like servere i samme subnett', 'En ren skyløsning uten OT-nett'],
+            q: 'Hvorfor er OT-sikkerhet viktig for folk som ikke jobber teknisk?',
+            a: ['Fordi feil og angrep kan påvirke drift, sikkerhet og fysiske prosesser', 'Fordi det bare handler om raskere internett', 'Fordi det kun gjelder utviklere'],
             correct: 0,
-            note: 'AURORA representerer landanlegg, mens NORØNNA representerer offshore-site i laben.'
+            note: 'OT-sikkerhet handler ikke bare om data. Det kan også handle om trygg drift og konsekvenser ute i virkeligheten.'
           },
           {
-            q: 'Hva er OPC UA brukt til i løsningen?',
-            a: ['Standardisert utveksling av industridata', 'Vanlig webdesign for nettsiden', 'Backup av GitHub-repoet'],
+            q: 'Hva bør du gjøre hvis du finner en ukjent USB-minnepinne på jobb?',
+            a: ['Ikke koble den til, og meld fra til riktig kontaktpunkt', 'Teste den raskt på nærmeste PC', 'Gi den videre til noen andre uten å si noe'],
             correct: 0,
-            note: 'OPC UA brukes som kontrollert industriprotokoll mellom AURORA og NORØNNA.'
+            note: 'Ukjente USB-enheter kan inneholde skadevare eller være laget for å lure brukere.'
           },
           {
-            q: 'Hvorfor har prosjektet en egen OOB-MGMT-sone?',
-            a: ['For å holde administrasjon adskilt fra produksjonstrafikk', 'For å sende all OPC UA-trafikk raskere', 'For å erstatte brannmuren'],
+            q: 'Hva er phishing?',
+            a: ['Forsøk på å lure deg til å klikke, logge inn eller dele informasjon', 'En metode for å kjøle ned serverrom', 'En godkjent måte å dele passord på'],
             correct: 0,
-            note: 'OOB-MGMT er et separat management-plane for blant annet ASA, ESXi, iDRAC og switch.'
+            note: 'Phishing kan være starten på større hendelser, også i miljøer som støtter OT-drift.'
           },
           {
-            q: 'Hva er rollen til Cisco ASA i topologien?',
-            a: ['Å håndheve sonegrenser og ACL-regler', 'Å lagre historiske prosessdata', 'Å kjøre UaWrapper-programvaren'],
+            q: 'Hvorfor er sterke passord og MFA viktig?',
+            a: ['Det gjør det vanskeligere å misbruke kontoer', 'Det gjør maskiner raskere', 'Det erstatter behovet for all annen sikkerhet'],
             correct: 0,
-            note: 'ASA fungerer som brannmur og slipper kun trafikk som er definert i reglene.'
+            note: 'MFA gir et ekstra hinder dersom et passord blir gjettet, lekket eller stjålet.'
           },
           {
-            q: 'Hva betyr det at noen soner er planlagt, men ikke fysisk sluttverifisert?',
-            a: ['De er med i designet, men ble ikke fullt bygget og testet i laben', 'De er feil og skal slettes', 'De er hemmelige produksjonssoner'],
+            q: 'Hva bør du gjøre hvis et system oppfører seg uvanlig?',
+            a: ['Melde fra tidlig i stedet for å ignorere det', 'Skru av alt uten å si fra', 'Prøve tilfeldige innstillinger til det virker'],
             correct: 0,
-            note: 'FIELD, AP-INFRA og EWS er viktige for designbildet, men markeres tydelig som ikke fysisk sluttverifisert.'
+            note: 'Tidlig varsling kan gjøre at små problemer stoppes før de blir store hendelser.'
           },
           {
-            q: 'Hva er en Jump Host i denne arkitekturen?',
-            a: ['Et kontrollert mellomledd for administrativ tilgang', 'En ekstra OPC UA-server i feltsonen', 'En åpen snarvei fra IT til alle OT-servere'],
+            q: 'Hvorfor bør private dingser ikke kobles ukritisk til OT- eller driftsnett?',
+            a: ['De kan introdusere ukjent risiko og skadevare', 'De gjør alltid nettverket sikrere', 'Det har ingen betydning hvor utstyret kobles til'],
             correct: 0,
-            note: 'Jump Host ligger i IDMZ og gir en mer kontrollert administrasjonsvei enn direkte OT-tilgang.'
+            note: 'Ukjent utstyr kan bryte kontrollen på hva som finnes i miljøet.'
           },
           {
-            q: 'Hvorfor brukes tag-whitelisting i OPC UA-delen?',
-            a: ['For å eksponere bare nødvendige datapunkter', 'For å gjøre alle OPC DA-tags offentlige', 'For å slå av autentisering'],
+            q: 'Hva betyr nettverkssegmentering på et grunnleggende nivå?',
+            a: ['Å dele nettverket i områder slik at ikke alt står åpent mot alt', 'Å koble alle systemer til samme trådløse nett', 'Å fjerne alle brannmurer for enklere drift'],
             correct: 0,
-            note: 'Whitelisting reduserer eksponert funksjonalitet og støtter prinsippet om minst mulig tilgang.'
+            note: 'Segmentering begrenser hvor langt et problem kan spre seg.'
           },
           {
-            q: 'Hva betyr implicit deny som sikkerhetsprinsipp?',
-            a: ['Trafikk blokkeres som standard hvis den ikke er eksplisitt tillatt', 'All trafikk er tillatt til noen sier stopp', 'Bare trådløs trafikk blokkeres'],
+            q: 'Hvorfor er backup viktig i OT-miljøer?',
+            a: ['For å kunne komme tilbake i drift etter feil eller angrep', 'For å slippe å dokumentere systemene', 'For å gjøre passord unødvendig'],
             correct: 0,
-            note: 'Implicit deny gjør at nye flyter må begrunnes og åpnes aktivt.'
+            note: 'Backup er først verdifull når den faktisk kan brukes til gjenoppretting.'
           },
           {
-            q: 'Hva viser testdelen av nettsiden?',
-            a: ['Hva som ble bygget, blokkert og verifisert', 'Kun lenker til eksterne nyheter', 'En tilfeldig liste uten kobling til arkitekturen'],
+            q: 'Hva betyr minste privilegium?',
+            a: ['At brukere og systemer bare får tilgangen de trenger', 'At alle får administratorrettigheter for enkelhet', 'At passord deles i teamet'],
             correct: 0,
-            note: 'Testoversikten knytter arkitekturen til konkrete verifikasjoner og avgrensninger.'
+            note: 'Mindre tilgang betyr mindre skade hvis en konto eller maskin blir kompromittert.'
           },
           {
-            q: 'Hvorfor er app01 og app02 plassert i ulike soner?',
-            a: ['For å simulere kontrollert dataflyt mellom to sites', 'For å slippe brannmurregler helt', 'For at begge skal dele samme IP-adresse'],
+            q: 'Hva bør skje før en ekstern leverandør får fjernaksess?',
+            a: ['Tilgangen bør være godkjent, tidsbegrenset og sporbar', 'Tilgangen bør deles på e-post til alle', 'Leverandøren bør få permanent full tilgang'],
             correct: 0,
-            note: 'app01 ligger i AURORA sin OPC-UA-Zone, mens app02 ligger i NORØNNA-GW.'
+            note: 'Leverandørtilgang er nyttig, men må styres fordi den kan bli en vei inn i kritiske miljøer.'
           },
           {
-            q: 'Hva er poenget med defense in depth i et OT-nett?',
-            a: ['Flere lag skal begrense konsekvensen av feil eller angrep', 'Ett sterkt passord erstatter segmentering', 'Alle systemer settes på internett for oversikt'],
+            q: 'Hvorfor er fysisk adgang en del av cybersikkerheten?',
+            a: ['Fysisk tilgang kan gi mulighet til å koble til, endre eller ødelegge utstyr', 'Fysisk adgang har aldri noe med data å gjøre', 'Det gjelder bare vanlige kontorbygg'],
             correct: 0,
-            note: 'Flere kontroller gir mindre skadeflate hvis én mekanisme svikter.'
+            note: 'I OT kan en kabel, port eller lokal skjerm være like viktig som en innlogging.'
+          },
+          {
+            q: 'Hva er en trygg reaksjon hvis noen ber deg dele passord raskt?',
+            a: ['Ikke del passord, og bruk godkjente rutiner for tilgang', 'Del passordet hvis personen virker travel', 'Skriv passordet på en lapp ved skjermen'],
+            correct: 0,
+            note: 'Passord skal være personlige. Deling gjør sporbarhet og ansvar uklart.'
+          },
+          {
+            q: 'Hvorfor er det nyttig å vite hvilke systemer man har?',
+            a: ['Man kan ikke beskytte eller oppdatere noe man ikke kjenner til', 'Det er bare nyttig for innkjøp', 'Det gjør sikkerhetstesting unødvendig'],
+            correct: 0,
+            note: 'Oversikt over utstyr, programvare og eiere er grunnmuren i god sikkerhet.'
+          },
+          {
+            q: 'Hva betyr tilgjengelighet i OT?',
+            a: ['At viktige systemer virker når driften trenger dem', 'At alle på internett kan nå systemet', 'At data alltid publiseres offentlig'],
+            correct: 0,
+            note: 'I OT kan nedetid gi store konsekvenser for produksjon, sikkerhet og økonomi.'
+          },
+          {
+            q: 'Hvorfor bør endringer i OT planlegges?',
+            a: ['Små endringer kan få store konsekvenser for drift og sikkerhet', 'Planlegging er bare nødvendig i kontornett', 'Det er alltid tryggest å endre direkte i produksjon'],
+            correct: 0,
+            note: 'Planlagte endringer gjør det lettere å teste, rulle tilbake og forstå hva som skjedde.'
+          },
+          {
+            q: 'Hva er et godt første steg hvis du er usikker på en sikkerhetssituasjon?',
+            a: ['Spørre eller melde fra gjennom riktig kanal', 'Gjette og håpe det går bra', 'Legge ut detaljer offentlig for å få raske svar'],
+            correct: 0,
+            note: 'Awareness handler også om å vite når man skal stoppe opp og spørre.'
+          },
+          {
+            q: 'Hvorfor bør man låse skjermen når man går fra arbeidsplassen?',
+            a: ['For å hindre at andre bruker kontoen din', 'For å spare strøm på nettverket', 'For å gjøre maskinen vanskeligere å oppdatere'],
+            correct: 0,
+            note: 'En ulåst skjerm kan gi tilgang til systemer du har ansvar for.'
+          },
+          {
+            q: 'Hva er en vanlig grunn til å holde IT og OT delvis adskilt?',
+            a: ['OT har andre krav til stabilitet, sikkerhet og konsekvens', 'OT trenger aldri nettverk', 'IT og OT bør alltid ha samme regler uten vurdering'],
+            correct: 0,
+            note: 'OT må ofte beskyttes på en måte som tar hensyn til drift og fysiske prosesser.'
+          },
+          {
+            q: 'Hva bør være målet med sikkerhetsopplæring?',
+            a: ['Å gjøre det lettere å oppdage og rapportere risiko i hverdagen', 'Å legge all skyld på enkeltpersoner', 'Å erstatte tekniske sikkerhetstiltak'],
+            correct: 0,
+            note: 'God awareness gjør folk tryggere på hva de skal gjøre, ikke bare hva de ikke skal gjøre.'
           }
         ]
       },
@@ -379,112 +427,154 @@
         size: 10,
         questions: [
           {
-            q: 'Hvilken port bruker NORØNNA-initiert OPC UA mot AURORA i sluttløsningen?',
-            a: ['TCP/46040', 'TCP/4840', 'TCP/3389'],
+            q: 'Hva betyr defense in depth i OT-sikkerhet?',
+            a: ['Flere lag med tiltak skal begrense skade hvis ett lag svikter', 'Ett sterkt passord erstatter alle andre tiltak', 'Alle systemer plasseres i samme nett for enklere drift'],
             correct: 0,
-            note: 'NORØNNA leser AURORA-tags via app01 på TCP/46040.'
+            note: 'Defense in depth kombinerer mennesker, prosesser og teknologi i flere beskyttende lag.'
           },
           {
-            q: 'Hvilken port brukes for AURORA-initiert retning tilbake mot NORØNNA?',
-            a: ['TCP/46041', 'TCP/443', 'TCP/8530'],
+            q: 'Hvorfor prioriteres ofte tilgjengelighet og sikker drift høyt i OT?',
+            a: ['Fordi stopp eller feil kan påvirke fysiske prosesser og HMS', 'Fordi konfidensialitet aldri betyr noe i OT', 'Fordi OT-systemer alltid kan restartes uten risiko'],
             correct: 0,
-            note: 'Returretningen er modellert som egen tillatt sesjon på TCP/46041.'
+            note: 'OT handler ofte om kontinuitet og trygg kontroll av fysiske prosesser.'
           },
           {
-            q: 'Hvor ligger 3p-hvl-app01 i den rettede topologien?',
-            a: ['OPC-UA-Zone, VLAN 45, 10.0.45.10', 'OT-SERVER, VLAN 40, 10.0.40.50', 'IDMZ, VLAN 60, 10.0.60.2'],
+            q: 'Hva er poenget med soner og conduits?',
+            a: ['Å gruppere systemer etter funksjon/risiko og styre flyt mellom dem', 'Å gjøre all kommunikasjon fri mellom alle systemer', 'Å fjerne behovet for tilgangsstyring'],
             correct: 0,
-            note: 'app01 er flyttet ut av server-sonen og inn i dedikert OPC-UA-Zone.'
+            note: 'Soner og conduits gjør sikkerhetsmodellen tydeligere og mer testbar.'
           },
           {
-            q: 'Hvor ligger 3p-hvl-app02?',
-            a: ['NORØNNA-GW, VLAN 70, 10.0.70.11', 'FIELD, VLAN 10, 10.0.10.11', 'OOB-MGMT, VLAN 99, 10.0.99.11'],
+            q: 'Hva er en god praksis for fjernaksess til OT?',
+            a: ['Godkjenning, MFA, tidsbegrensing, logging og kontrollert mellomledd', 'Permanent delt administratorbruker', 'Direkte tilgang fra internett til alle systemer'],
             correct: 0,
-            note: 'app02 representerer NORØNNA-siden og kjører Cogent DataHub / UaExpert.'
+            note: 'Fjernaksess er en vanlig angrepsvei og bør være stramt kontrollert.'
           },
           {
-            q: 'Hvilket VLAN er OOB-MGMT?',
-            a: ['VLAN 99', 'VLAN 60', 'VLAN 45'],
+            q: 'Hvorfor kan patching i OT kreve mer planlegging enn i vanlige IT-miljøer?',
+            a: ['Fordi kompatibilitet, oppetid og prosessrisiko må vurderes først', 'Fordi OT-systemer aldri trenger sikkerhetsoppdateringer', 'Fordi patching alltid bør gjøres uten testing'],
             correct: 0,
-            note: 'OOB-MGMT er et separat management-plane på VLAN 99.'
+            note: 'Når patching må vente, bør risikoen reduseres med kompenserende tiltak.'
           },
           {
-            q: 'Hvilket subnett beskriver IDMZ-sonen?',
-            a: ['10.0.60.0/24', '10.0.45.0/24', '10.0.99.0/24'],
+            q: 'Hva er kompenserende tiltak?',
+            a: ['Andre kontroller som reduserer risiko når idealtiltak ikke kan brukes med en gang', 'Å ignorere risiko fordi systemet er gammelt', 'Å fjerne all logging for å spare ressurser'],
             correct: 0,
-            note: 'IDMZ ligger på VLAN 60 og brukes til Jump Host og brokerfunksjoner.'
+            note: 'Eksempler kan være segmentering, strengere tilgang, overvåking eller midlertidige prosedyrer.'
           },
           {
-            q: 'Hvilken administrativ flyt fra IT/WAN er tillatt i designet?',
-            a: ['RDP/3389 til Jump Host i IDMZ', 'Direkte SMB til OT-SERVER', 'OPC UA direkte til FIELD'],
+            q: 'Hva er verdien av passiv nettverksovervåking i OT?',
+            a: ['Man kan oppdage avvik uten å forstyrre sårbare systemer unødvendig', 'Den endrer automatisk alle kontrollere', 'Den gjør backup overflødig'],
             correct: 0,
-            note: 'IT/WAN skal inn via Jump Host, ikke direkte til interne OT-soner.'
+            note: 'Passiv overvåking passer ofte bedre enn aggressive skann i miljøer der stabilitet er kritisk.'
           },
           {
-            q: 'Hvilke tjenester hører hjemme i OT-SERVER-sonen?',
-            a: ['DC/RADIUS, AD-MGMT, WSUS og Historian', 'Kun app02 og UaExpert', 'Kun iDRAC og ESXi-management'],
+            q: 'Hva bør en hendelsesrespons i OT alltid ta hensyn til?',
+            a: ['Sikker drift og fysisk konsekvens før man gjør tekniske tiltak', 'Å slette alle logger så raskt som mulig', 'Å koble fra tilfeldige systemer uten koordinering'],
             correct: 0,
-            note: 'OT-SERVER er støttesonen for domenetjenester, patching og historikk.'
+            note: 'I OT må respons koordineres med drift, sikkerhet og de som kjenner prosessen.'
           },
           {
-            q: 'Hva betyr stateful retur i ASA-konteksten?',
-            a: ['Svartrafikk til en tillatt sesjon spores og kan returnere', 'Brannmuren lagrer full prosesshistorikk', 'Returtrafikk må alltid åpnes med alle porter'],
+            q: 'Hva kjennetegner en god backupstrategi for OT?',
+            a: ['Testet gjenoppretting, beskyttede kopier og dokumentert ansvar', 'Kun én kopi på samme maskin', 'Backup som aldri prøves før en krise'],
             correct: 0,
-            note: 'Stateful inspeksjon gjør at svar på tillatte forbindelser kan håndteres uten å åpne alt.'
+            note: 'Backup er en beredskap, ikke bare en fil som ligger et sted.'
           },
           {
-            q: 'Hva er konsekvensen av implicit deny på ASA-reglene?',
-            a: ['Udefinert trafikk stoppes av standardregelen', 'Alle interne VLAN får automatisk full tilgang', 'Bare OPC UA-trafikk stoppes'],
+            q: 'Hvorfor er logging og sporbarhet viktig?',
+            a: ['Det gjør det mulig å oppdage, forstå og dokumentere hendelser', 'Det erstatter behovet for tilgangskontroll', 'Det gjør systemene automatisk immune'],
             correct: 0,
-            note: 'Kun eksplisitte permit-regler skal slippe trafikk gjennom sonegrensen.'
+            note: 'Uten sporbarhet blir det vanskelig å vite hva som skjedde, når det skjedde og hvem som var involvert.'
           },
           {
-            q: 'Hvorfor ligger app01 i OPC-UA-Zone i stedet for OT-SERVER?',
-            a: ['For å gi OPC UA-conduiten egen sone og egne ACL-er', 'For å gjøre den del av OOB-MGMT', 'For å fjerne behovet for VLAN'],
+            q: 'Hva er applikasjonskontroll eller allowlisting?',
+            a: ['Bare godkjente programmer får kjøre', 'Alle nedlastede programmer får kjøre automatisk', 'Programmer bytter passord for brukeren'],
             correct: 0,
-            note: 'Egen sone gjør transittfunksjonen tydeligere og enklere å kontrollere.'
+            note: 'Allowlisting kan være nyttig på stabile OT-maskiner med kjent funksjon.'
           },
           {
-            q: 'Hva skal OOB-MGMT ikke brukes til?',
-            a: ['Produksjons- eller OPC UA-transit', 'Management av ASA og switch', 'Tilgang til ESXi/iDRAC for drift'],
+            q: 'Hva betyr hardening?',
+            a: ['Å redusere angrepsflate ved å fjerne eller sikre unødvendige funksjoner', 'Å gjøre passord kortere', 'Å åpne flere tjenester for enkel feilsøking'],
             correct: 0,
-            note: 'OOB skal støtte administrasjon, ikke bli en alternativ produksjonsvei.'
+            note: 'Hardening kan handle om tjenester, kontoer, standardpassord, konfigurasjon og tilgang.'
           },
           {
-            q: 'Hvilke soner er modellert som planlagt kapasitet, men ikke fysisk sluttverifisert?',
-            a: ['FIELD, AP-INFRA og EWS', 'OPC-UA-Zone og NORØNNA-GW', 'OOB-MGMT og ASA'],
+            q: 'Hvorfor er standardpassord spesielt farlig i OT?',
+            a: ['De er ofte kjent, gjenbrukt og kan gi rask tilgang til kritisk utstyr', 'De er alltid sterkere enn egne passord', 'De blokkerer all fjernaksess automatisk'],
             correct: 0,
-            note: 'Disse sonene er beholdt i arkitekturen, men merket som planlagt / ikke fullt sluttverifisert.'
+            note: 'Standardpassord bør fjernes eller endres gjennom kontrollerte rutiner.'
           },
           {
-            q: 'Hva er hensikten med tag-whitelisting i UaWrapper-oppsettet?',
-            a: ['Å publisere kun relevante OPC DA-tags som OPC UA', 'Å åpne alle tags for enklere debugging', 'Å flytte alle tags til OOB-MGMT'],
+            q: 'Hva er et godt tegn på mulig avvik i et OT-nett?',
+            a: ['Ukjent utstyr eller nye uventede forbindelser', 'At alle systemer gjør akkurat det de pleier', 'At dokumentasjonen stemmer med virkeligheten'],
             correct: 0,
-            note: 'Tag-whitelisting begrenser eksponeringen fra OPC DA-kilden.'
+            note: 'Avvik fra normaltilstand er ofte verdt å undersøke, særlig i stabile OT-miljøer.'
           },
           {
-            q: 'Hvilken ASA-tilkobling brukes som trunk for AURORA-VLAN-ene i topologien?',
-            a: ['G1/2 trunk', 'G1/3 OOB', 'G1/4.70 NORØNNA'],
+            q: 'Hvorfor bør leverandørtilgang revideres jevnlig?',
+            a: ['Gamle eller unødvendige tilganger kan bli stående som risiko', 'Leverandører trenger alltid permanent tilgang', 'Revisjon gjør logging unødvendig'],
             correct: 0,
-            note: 'AURORA-siden er vist med ASA G1/2 som trunk for VLAN 10/20/40/45/50/60.'
+            note: 'Tilganger bør følge behov, ansvar og tidsrom, ikke bare historikk.'
           },
           {
-            q: 'Hvilken ASA-tilkobling er knyttet til NORØNNA-siden?',
-            a: ['G1/4.70', 'G1/2 trunk', 'G1/3 OOB'],
+            q: 'Hva er en tabletop-øvelse?',
+            a: ['En gjennomgang av et tenkt scenario for å øve roller og beslutninger', 'En fysisk test av skrivebordets styrke', 'En måte å slette gamle hendelsesplaner på'],
             correct: 0,
-            note: 'NORØNNA-GW er vist som ekstern site-grense på ASA G1/4.70.'
+            note: 'Øvelser gjør det lettere å handle rolig når noe faktisk skjer.'
           },
           {
-            q: 'Hvilken ASA-tilkobling er dedikert til OOB-MGMT?',
-            a: ['G1/3', 'G1/4.70', 'G1/2 trunk'],
+            q: 'Hvorfor er dokumentasjon en sikkerhetskontroll?',
+            a: ['Den gjør det mulig å forstå systemet raskt under drift og hendelser', 'Den erstatter tekniske barrierer fullstendig', 'Den bør bare finnes i hodet til én person'],
             correct: 0,
-            note: 'OOB-MGMT er knyttet til en egen dedikert ASA-port.'
+            note: 'God dokumentasjon reduserer feil, misforståelser og avhengighet av enkeltpersoner.'
           },
           {
-            q: 'Hvorfor er de to OPC UA-retningene skilt med egne porter?',
-            a: ['For å beskrive to eksplisitte sesjonsretninger mellom sitene', 'For å omgå ACL-ene på ASA', 'For å blande OOB og produksjonstrafikk'],
+            q: 'Hva er risikoen med gamle OT-protokoller?',
+            a: ['De kan mangle moderne autentisering, kryptering eller integritetskontroll', 'De er alltid sikrere enn nye protokoller', 'De kan ikke observeres i nettverkstrafikk'],
             correct: 0,
-            note: 'Portene 46040 og 46041 gjør retningene tydelige i brannmurregler og tester.'
+            note: 'Eldre protokoller kan fortsatt være nødvendige, men bør beskyttes med arkitektur og kontroller.'
+          },
+          {
+            q: 'Hva er egress-kontroll?',
+            a: ['Å styre hvilken trafikk som får gå ut fra et område eller system', 'Å gi alle systemer fri vei til internett', 'Å slå av all overvåking'],
+            correct: 0,
+            note: 'Utgående trafikk kan være like viktig å kontrollere som inngående trafikk.'
+          },
+          {
+            q: 'Hvorfor bør kritiske kontoer gjennomgås jevnlig?',
+            a: ['For å fjerne gamle rettigheter og oppdage uheldige privilegier', 'For å gjøre alle kontoer til administratorer', 'For å slippe MFA'],
+            correct: 0,
+            note: 'Tilgang som var riktig før, kan bli feil når roller, systemer eller leverandører endres.'
+          },
+          {
+            q: 'Hva er en sikker baseline?',
+            a: ['En kjent, dokumentert og godkjent standardkonfigurasjon', 'Et tilfeldig skjermbilde av systemet', 'En liste over passord som alle kan bruke'],
+            correct: 0,
+            note: 'Baseline gjør det lettere å se avvik og bygge nye systemer likt.'
+          },
+          {
+            q: 'Hva bør man gjøre før man kobler inn en ny laptop i et OT-miljø?',
+            a: ['Sikre at den er godkjent, oppdatert og håndtert etter rutine', 'Koble den rett inn for å spare tid', 'Bruke privat maskin hvis den er raskere'],
+            correct: 0,
+            note: 'Nye endepunkter kan introdusere sårbarheter, skadevare eller uønsket trafikk.'
+          },
+          {
+            q: 'Hvorfor er rollefordeling viktig ved en hendelse?',
+            a: ['Folk vet hvem som tar beslutninger, hvem som kommuniserer og hvem som gjør tekniske tiltak', 'Alle gjør alt samtidig uten koordinering', 'Ingen trenger å loggføre hva som skjer'],
+            correct: 0,
+            note: 'Klare roller reduserer kaos og feil under tidspress.'
+          },
+          {
+            q: 'Hva er forskjellen på safety og security i OT?',
+            a: ['Safety handler om å unngå skade; security handler om å hindre uautorisert påvirkning', 'De betyr alltid nøyaktig det samme', 'Security gjelder bare kontor-PC-er'],
+            correct: 0,
+            note: 'I OT henger safety og security tett sammen fordi cyberhendelser kan påvirke fysisk sikkerhet.'
+          },
+          {
+            q: 'Hvorfor bør sikkerhet bygges inn i rutiner, ikke bare teknologi?',
+            a: ['Mennesker og beslutninger avgjør ofte om tiltakene faktisk virker', 'Teknologi løser alltid alt alene', 'Rutiner gjør tekniske tiltak unødvendige'],
+            correct: 0,
+            note: 'Awareness, ansvar og gode arbeidsmåter er en sentral del av OT-sikkerhet.'
           }
         ]
       }
@@ -530,10 +620,10 @@
       const total = questions.length;
       const ratio = score / total;
       const feedback = ratio >= 0.8
-        ? 'Solid kontroll på prosjektet.'
+        ? 'Sterkt OT-sikkerhetsblikk.'
         : ratio >= 0.5
-          ? 'God start, men se gjerne topologien én gang til.'
-          : 'Ta en rolig runde gjennom arkitektur- og topologisiden, så sitter dette bedre.';
+          ? 'God start. Ta gjerne en ny runde og legg merke til hvorfor svarene betyr noe i drift.'
+          : 'Ta en rolig awareness-runde med fokus på USB, passord, fjernaksess, backup og rapportering.';
 
       qEl.textContent = 'Ferdig';
       optionsEl.textContent = '';

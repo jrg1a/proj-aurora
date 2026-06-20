@@ -1,218 +1,24 @@
 <!DOCTYPE html>
-<html lang="nb">
+<html lang="no">
 <head>
-<meta charset="UTF-8">
-<title>AURORA · Dataflyt (rev-04)</title>
-<script>try{if(localStorage.getItem('aurora-theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}</script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f6f8fc;--panel:#ffffff;--ink:#0b1220;--mute:#566378;--teal:#0d9e9c;--amber:#c47d00;--red:#c9374f;--blue:#2d6fd4;--green:#16a34a;--purple:#7c3aed;--border:#d8dee8;}
-html.dark{--bg:#050810;--panel:#0b1220;--ink:#e6edf7;--mute:#8a97ac;--teal:#3ddbd9;--amber:#ffb454;--red:#ff5e7a;--blue:#6aa6ff;--green:#4ade80;--purple:#c084fc;--border:#1b2637;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;padding:40px 20px}
-.wrap{max-width:1500px;margin:0 auto}
-h1{font-size:2em;margin-bottom:8px}
-.sub{color:var(--mute);margin-bottom:30px;font-family:'IBM Plex Mono',monospace;font-size:0.9em}
-.diagram{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:30px;overflow-x:auto}
-svg{width:100%;min-width:1400px;height:auto}
-.host{fill:var(--bg);stroke:var(--teal);stroke-width:1.5}
-.host-lbl{fill:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600}
-.host-ip{fill:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:9px}
-.flow{fill:none;stroke-width:2;marker-end:url(#arr)}
-.f1{stroke:var(--amber)}.f2{stroke:var(--teal)}.f3{stroke:var(--blue)}.f4{stroke:var(--purple)}.f5{stroke:var(--green)}.f6{stroke:var(--red)}
-.flow-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--ink)}
-.zone-box{fill:none;stroke:var(--border);stroke-width:1;stroke-dasharray:3 3}
-.zone-title{fill:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600}
-.asa-box{fill:#fff3db;stroke:#c47d00}
-html.dark .asa-box{fill:#2d1b00;stroke:#ffb454}
-.back{position:fixed;top:20px;left:20px;color:var(--teal);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:0.9em}
-.legend{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0;font-family:'IBM Plex Mono',monospace;font-size:0.8em}
-.legend span{padding:4px 10px;border-radius:4px;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;margin-top:30px;font-family:'IBM Plex Mono',monospace;font-size:0.8em}
-th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
-th{color:var(--teal)}
-h2{margin:40px 0 12px;font-size:1.3em}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=topologi.html">
+  <link rel="canonical" href="topologi.html">
+  <title>Sender videre | Project AURORA</title>
+  <script>location.replace("topologi.html");</script>
+  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
 </head>
 <body>
-<a href="index.html" class="back">← Tilbake</a>
-<div class="wrap">
-<h1>📊 Dataflyt-topologi — rev-04</h1>
-<div class="sub">Prosjekt AURORA · Faktiske host-til-host kommunikasjonsveier med protokoller og porter</div>
-
-<div class="legend">
-<span style="color:var(--amber)">━ MQTT (OT telemetri)</span>
-<span style="color:var(--teal)">━ OPC UA 4840 (SignAndEncrypt)</span>
-<span style="color:var(--blue)">━ AD / Kerberos / DNS</span>
-<span style="color:var(--purple)">━ RDP / SSH (admin)</span>
-<span style="color:var(--green)">━ HTTPS / replikering</span>
-<span style="color:var(--red)">━ SNMP / mgmt</span>
-</div>
-
-<div class="diagram">
-<svg viewBox="0 0 1500 900" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
-</marker>
-</defs>
-
-<!-- Zone containers -->
-<rect class="zone-box" x="20" y="40" width="220" height="180"/>
-<text class="zone-title" x="30" y="60">FIELD · VLAN 10</text>
-
-<rect class="zone-box" x="20" y="250" width="220" height="160"/>
-<text class="zone-title" x="30" y="270">SERVER · VLAN 40</text>
-
-<rect class="zone-box" x="20" y="440" width="220" height="140"/>
-<text class="zone-title" x="30" y="460">OPC-UA-Zone · VLAN 45</text>
-
-<rect class="zone-box" x="20" y="610" width="220" height="140"/>
-<text class="zone-title" x="30" y="630">EWS · VLAN 50</text>
-
-<rect class="zone-box" x="1260" y="40" width="220" height="200"/>
-<text class="zone-title" x="1270" y="60">IDMZ · VLAN 60</text>
-
-<rect class="zone-box" x="1260" y="270" width="220" height="150"/>
-<text class="zone-title" x="1270" y="290">NORØNNA · VLAN 70</text>
-
-<rect class="zone-box" x="1260" y="450" width="220" height="130"/>
-<text class="zone-title" x="1270" y="470">IT-WAN · VLAN 100</text>
-
-<rect class="zone-box" x="1260" y="610" width="220" height="130"/>
-<text class="zone-title" x="1270" y="630">OOB-MGMT · VLAN 99</text>
-
-<!-- ASA -->
-<rect x="650" y="400" width="200" height="100" rx="8" fill="#fff3db" stroke="#c47d00" stroke-width="2" class="asa-box"/>
-<text x="750" y="435" text-anchor="middle" fill="#ffb454" class="host-lbl" style="font-size:14px">🔥 Cisco ASA 5506-X</text>
-<text x="750" y="455" text-anchor="middle" class="host-ip">Stateful inspection</text>
-<text x="750" y="472" text-anchor="middle" class="host-ip">ACL rev-04</text>
-<text x="750" y="489" text-anchor="middle" class="host-ip">9 subinterfaces</text>
-
-<!-- Hosts LEFT -->
-<!-- FIELD -->
-<rect class="host" x="40" y="80" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="130" y="100" text-anchor="middle">⚙️ Sensor A</text>
-<text class="host-ip" x="130" y="116" text-anchor="middle">10.0.10.10</text>
-
-<rect class="host" x="40" y="150" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="130" y="170" text-anchor="middle">⚙️ PLC / RTU</text>
-<text class="host-ip" x="130" y="186" text-anchor="middle">10.0.10.20</text>
-
-<!-- SERVER -->
-<rect class="host" x="40" y="285" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="130" y="305" text-anchor="middle">🔐 DC / RADIUS</text>
-<text class="host-ip" x="130" y="321" text-anchor="middle">10.0.40.10</text>
-
-<rect class="host" x="40" y="345" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="130" y="365" text-anchor="middle">🗄️ Historian</text>
-<text class="host-ip" x="130" y="381" text-anchor="middle">10.0.40.40</text>
-
-<!-- OPC UA Zone -->
-<rect class="host" x="40" y="475" width="180" height="70" rx="4" stroke="#3ddbd9" stroke-width="2"/>
-<text class="host-lbl" x="130" y="498" text-anchor="middle" fill="#3ddbd9">🔄 app01 — UaWrapper</text>
-<text class="host-ip" x="130" y="514" text-anchor="middle">10.0.45.10</text>
-<text class="host-ip" x="130" y="530" text-anchor="middle">OPC DA → OPC UA</text>
-
-<!-- EWS -->
-<rect class="host" x="40" y="650" width="180" height="60" rx="4"/>
-<text class="host-lbl" x="130" y="670" text-anchor="middle">🖥️ EWS</text>
-<text class="host-ip" x="130" y="686" text-anchor="middle">10.0.50.10</text>
-<text class="host-ip" x="130" y="702" text-anchor="middle">Engineering WS</text>
-
-<!-- Hosts RIGHT -->
-<!-- IDMZ -->
-<rect class="host" x="1280" y="80" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="1370" y="100" text-anchor="middle">💻 Jump Host</text>
-<text class="host-ip" x="1370" y="116" text-anchor="middle">10.0.60.2</text>
-
-<rect class="host" x="1280" y="150" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="1370" y="170" text-anchor="middle">🗄️ IDMZ Historian</text>
-<text class="host-ip" x="1370" y="186" text-anchor="middle">10.0.60.10</text>
-
-<!-- NORONNA -->
-<rect class="host" x="1280" y="310" width="180" height="70" rx="4" stroke="#c084fc" stroke-width="2"/>
-<text class="host-lbl" x="1370" y="333" text-anchor="middle" fill="#c084fc">🏗️ app02 — Cogent</text>
-<text class="host-ip" x="1370" y="349" text-anchor="middle">10.0.70.11</text>
-<text class="host-ip" x="1370" y="365" text-anchor="middle">OPC DA Server</text>
-
-<!-- IT-WAN -->
-<rect class="host" x="1280" y="490" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="1370" y="510" text-anchor="middle">🌐 Admin PC</text>
-<text class="host-ip" x="1370" y="526" text-anchor="middle">10.0.100.50</text>
-
-<!-- MGMT -->
-<rect class="host" x="1280" y="650" width="180" height="50" rx="4"/>
-<text class="host-lbl" x="1370" y="670" text-anchor="middle">⚫ Console-server</text>
-<text class="host-ip" x="1370" y="686" text-anchor="middle">10.0.99.99</text>
-
-<!-- FLOWS through ASA -->
-<!-- F1: Sensor → Historian (MQTT) -->
-<path class="flow f1" d="M220,105 Q400,105 650,420"/>
-<text class="flow-lbl" x="230" y="100">① MQTT 1883</text>
-<path class="flow f1" d="M850,420 Q900,380 220,355"/>
-<text class="flow-lbl" x="400" y="310">→ Historian 10.0.40.40</text>
-
-<!-- F2: NORONNA → app01 (OPC UA) -->
-<path class="flow f2" d="M1280,340 Q1000,400 850,440"/>
-<text class="flow-lbl" x="1000" y="360">② OPC UA 4840 (SignAndEncrypt)</text>
-<path class="flow f2" d="M650,450 Q500,480 220,500"/>
-<text class="flow-lbl" x="400" y="475">→ app01 UaWrapper</text>
-
-<!-- F3: app01 → DC (AD) -->
-<path class="flow f3" d="M220,510 Q450,500 650,460"/>
-<text class="flow-lbl" x="300" y="495">③ Kerberos/LDAP/DNS/NTP/SMB</text>
-<path class="flow f3" d="M850,460 Q900,400 220,315"/>
-<text class="flow-lbl" x="450" y="390">→ DC 10.0.40.10</text>
-
-<!-- F4: IT-WAN → Jump Host (RDP) -->
-<path class="flow f4" d="M1280,510 Q1000,470 850,470"/>
-<text class="flow-lbl" x="1050" y="490">④ RDP 3389</text>
-<path class="flow f4" d="M650,470 Q900,300 1280,105"/>
-<text class="flow-lbl" x="900" y="280">→ Jump Host</text>
-
-<!-- F5: Jump Host → app01 (RDP/SSH/4840) -->
-<path class="flow f4" d="M1280,110 Q950,200 850,430"/>
-<text class="flow-lbl" x="1000" y="190">⑤ Jump Host → OT (RDP/SSH/4840)</text>
-<path class="flow f4" d="M650,430 Q400,450 220,520"/>
-<text class="flow-lbl" x="400" y="555">→ app01</text>
-
-<!-- F6: EWS → SERVER + OPC-UA + IDMZ -->
-<path class="flow f4" d="M220,675 Q450,550 650,475"/>
-<text class="flow-lbl" x="300" y="640">⑥ EWS → admin (RDP/SSH/AD/4840)</text>
-
-<!-- F7: IDMZ Historian ← SERVER Historian (replikering) -->
-<path class="flow f5" d="M220,370 Q500,300 650,440"/>
-<text class="flow-lbl" x="280" y="340">⑦ HTTPS/MQTT replikering</text>
-<path class="flow f5" d="M850,440 Q1050,250 1280,175"/>
-<text class="flow-lbl" x="980" y="260">→ IDMZ Historian</text>
-
-<!-- F8: MGMT → ASA -->
-<path class="flow f6" d="M1280,675 Q1050,600 850,495"/>
-<text class="flow-lbl" x="1000" y="640">⑧ SSH/HTTPS (admin ASA)</text>
-
-</svg>
-</div>
-
-<h2>📋 Dataflyt-matrise (rev-04)</h2>
-<table>
-<tr><th>#</th><th>Kilde</th><th>Destinasjon</th><th>Protokoll</th><th>Port</th><th>Retning</th><th>Beskyttelse</th></tr>
-<tr><td>①</td><td>Sensor 10.0.10.10</td><td>Historian 10.0.40.40</td><td>MQTT</td><td>TCP 1883</td><td>FIELD → SERVER</td><td>VLAN + ASA ACL (FIELD_IN)</td></tr>
-<tr><td>②</td><td>app02 10.0.70.11</td><td>app01 10.0.45.10</td><td>OPC UA</td><td>TCP 4840</td><td>NORØNNA → OPC-UA-Zone</td><td>SignAndEncrypt + X.509 + tag-filter</td></tr>
-<tr><td>③</td><td>app01 10.0.45.10</td><td>DC 10.0.40.10</td><td>Kerberos/LDAP/DNS/NTP/SMB/GC</td><td>88/389/53/123/445/3268</td><td>OPC-UA-Zone → SERVER</td><td>OPC_UA_ZONE_IN ACL</td></tr>
-<tr><td>④</td><td>Admin 10.0.100.50</td><td>Jump Host 10.0.60.2</td><td>RDP</td><td>TCP 3389</td><td>IT-WAN → IDMZ</td><td>ITWAN_IN ACL + MFA (planlagt)</td></tr>
-<tr><td>⑤</td><td>Jump Host 10.0.60.2</td><td>app01 / EWS / DC</td><td>RDP/SSH/OPC UA</td><td>3389/22/4840</td><td>IDMZ → interne soner</td><td>IDMZ_IN ACL, eneste inn-punkt</td></tr>
-<tr><td>⑥</td><td>EWS 10.0.50.10</td><td>SERVER + OPC-UA + IDMZ</td><td>RDP/SSH/AD/OPC UA</td><td>3389/22/88/389/4840</td><td>EWS → flere soner</td><td>EWS_IN ACL</td></tr>
-<tr><td>⑦</td><td>Historian 10.0.40.40</td><td>IDMZ Historian 10.0.60.10</td><td>HTTPS/MQTT</td><td>443/1883</td><td>SERVER → IDMZ</td><td>SERVER_IN ACL, data-broker</td></tr>
-<tr><td>⑧</td><td>Console-server 10.0.99.99</td><td>ASA mgmt-plane</td><td>SSH/HTTPS</td><td>22/443</td><td>OOB-MGMT → ASA</td><td>Isolert VLAN, kun admin</td></tr>
-</table>
-
-<h2>🔒 Implisitt blokkert (default-deny)</h2>
-<p style="color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:0.85em;margin-top:10px">
-ASA rev-04 har <strong>default deny</strong> på alle interfaces. All trafikk som ikke er eksplisitt tillatt i tabellen over, blir droppet og logget. Spesielt blokkert:
-IT-WAN → OT direkte · NORØNNA → SERVER direkte · FIELD → IDMZ · enhver sone → OOB-MGMT (unntatt admin) · OPC DA (DCOM) gjennom ASA.
-</p>
-
-</div>
+  <main class="section">
+    <div class="shell">
+      <div class="eyebrow">Project AURORA</div>
+      <h1 class="section-title">Dataflyten er flyttet</h1>
+      <p class="section-text">Denne gamle dataflytsiden peker nå til den nye topologisiden.</p>
+      <div class="section-actions">
+        <a class="btn primary" href="topologi.html">Gå til Topologi</a>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
