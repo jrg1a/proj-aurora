@@ -467,6 +467,85 @@ h3 {
   transform: translateY(-2px);
 }
 
+.intro-story {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 42%, transparent), transparent 42%),
+    transparent;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.story-card {
+  min-height: 280px;
+  padding: 24px 22px;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.story-card .kicker {
+  margin-bottom: 18px;
+}
+
+.story-card p:not(.kicker) {
+  margin: 14px 0 0;
+  color: var(--muted);
+}
+
+.standards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.standards-row span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  color: var(--muted);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.lab-section {
+  padding-top: 74px;
+}
+
+.lab-feature {
+  align-items: center;
+}
+
+.topology-figure {
+  margin: 0;
+}
+
+.topology-figure img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.topology-figure figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
@@ -1040,7 +1119,8 @@ tr:last-child td {
   }
 
   .grid.four,
-  .grid.three {
+  .grid.three,
+  .story-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1123,8 +1203,20 @@ tr:last-child td {
 
   .grid.two,
   .grid.three,
-  .grid.four {
+  .grid.four,
+  .story-grid {
     grid-template-columns: 1fr;
+  }
+
+  .story-card {
+    min-height: auto;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .topology-figure figcaption {
+    font-size: 10px;
+    line-height: 1.5;
   }
 
   .metric-grid {

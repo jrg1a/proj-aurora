@@ -8,7 +8,7 @@
     if (location.pathname.endsWith('/proj-aurora/')) location.replace('index.html' + location.search + location.hash);
     try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}
   </script>
-  <link rel="stylesheet" href="assets/editorial.css?v=20260620d">
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620f">
 </head>
 <body>
   <header class="topbar">
@@ -38,12 +38,13 @@
             <p class="kicker">Bacheloroppgave 2026 · Cyberfysisk nettverksteknologi</p>
             <h1>Project <span class="italic">Aurora</span></h1>
             <p class="lead">
-              Sikker nettverksarkitektur for industrielle kontrollsystemer, bygget etter IEC 62443
-              og Purdue-modellen med dual-site OPC UA-simulering mellom AURORA og NORØNNA.
+              OT-sikkerhet handler om å beskytte systemene som holder industri, energi, vann,
+              transport og bygg i drift. AURORA viser hvordan en moderne IT/OT-grense kan bygges,
+              forklares og testes i praksis.
             </p>
             <div class="hero-actions">
-              <a class="btn primary" href="arkitektur.html">Utforsk arkitekturen</a>
-              <a class="btn" href="quiz.html?v=20260620c">Ta OT-awareness quiz</a>
+              <a class="btn primary" href="#problemstilling">Hvorfor OT-sikkerhet?</a>
+              <a class="btn" href="#labarkitektur">Se labarkitekturen</a>
             </div>
           </div>
 
@@ -60,11 +61,63 @@
         </div>
 
         <div class="metric-grid" aria-label="Prosjektnøkkeltall">
-          <div class="metric"><strong>2</strong><span>simulerte sites</span></div>
-          <div class="metric"><strong>9</strong><span>logiske VLAN-soner</span></div>
-          <div class="metric"><strong>23</strong><span>testpunkter dokumentert</span></div>
-          <div class="metric"><strong>1</strong><span>kontrollert OPC UA-conduit</span></div>
+          <div class="metric"><strong>OT</strong><span>driftsteknologi med fysisk konsekvens</span></div>
+          <div class="metric"><strong>4.0</strong><span>industri kobles tettere mot IT</span></div>
+          <div class="metric"><strong>IEC</strong><span>62443 som sikkerhetsrammeverk</span></div>
+          <div class="metric"><strong>OPC</strong><span>UA som kontrollert dataflyt</span></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section intro-story" id="problemstilling">
+      <div class="shell section-head">
+        <div>
+          <p class="kicker">Problemstillingen</p>
+          <h2 class="home-section-title">Når driftssystemer kobles tettere på IT, flytter risikoen seg.</h2>
+        </div>
+        <p class="section-text">
+          Industri 4.0, IIoT, fjernsupport og mer datadeling gjør OT-miljøer mer nyttige, men også mer eksponerte.
+          Litteraturen vi bygger på peker på samme kjerneproblem: kommunikasjon må være kontrollert, dokumentert
+          og risikobasert når digitale systemer påvirker fysiske prosesser.
+        </p>
+      </div>
+
+      <div class="shell story-grid">
+        <article class="story-card">
+          <p class="kicker">Hva er OT?</p>
+          <h3>Teknologien som styrer den fysiske verden.</h3>
+          <p>
+            Operational Technology er systemer som overvåker og styrer prosesser som produksjon,
+            kraft, vann, maritime installasjoner og byggautomasjon. Der IT ofte beskytter data,
+            må OT også beskytte stabil drift, sikkerhet og tilgjengelighet.
+          </p>
+        </article>
+        <article class="story-card">
+          <p class="kicker">Hvorfor nå?</p>
+          <h3>Gamle skiller mellom kontor og drift blir svakere.</h3>
+          <p>
+            Moderne drift trenger data på tvers av soner, sites og leverandører. Det gir bedre innsikt,
+            men også nye angrepsflater: fjernaksess, trådløse nett, industrielle protokoller og systemer
+            som opprinnelig ikke var laget for åpne nettverk.
+          </p>
+        </article>
+        <article class="story-card">
+          <p class="kicker">Hva viser AURORA?</p>
+          <h3>En testbar arkitektur, ikke bare et prinsipp.</h3>
+          <p>
+            Prosjektet bygger en segmentert lab med soner, conduits, brannmurregler, management-plane
+            og OPC UA-dataflyt mellom AURORA og NORØNNA. Målet er å gjøre sikkerhetsvalgene synlige,
+            etterprøvbare og relevante for realistiske OT-scenarioer.
+          </p>
+        </article>
+      </div>
+
+      <div class="shell standards-row" aria-label="Faglig grunnlag">
+        <span>IEC 62443</span>
+        <span>NIST SP 800-82</span>
+        <span>Purdue-modellen</span>
+        <span>MITRE ATT&amp;CK for ICS</span>
+        <span>IEC 62541 OPC UA</span>
       </div>
     </section>
 
@@ -109,6 +162,33 @@
           </div>
           <div class="tag-row"><span class="tag accent">Awareness</span><span class="tag blue">OT</span></div>
         </a>
+      </div>
+    </section>
+
+    <section class="section lab-section" id="labarkitektur">
+      <div class="shell split-band lab-feature">
+        <div>
+          <p class="kicker">Fra rapport til lab</p>
+          <h2 class="home-section-title">Arkitekturen viser hvor risikoen skal stoppes.</h2>
+          <p class="section-text">
+            Diagrammet viser hvordan AURORA-laben deler miljøet i soner: FIELD, AP-INFRA,
+            IDMZ, OPC-UA-Zone, NORØNNA-GW, EWS, OT-SERVER og OOB-MGMT. Cisco ASA og vSwitch
+            blir kontrollpunktene som avgjør hvilke forbindelser som faktisk får passere.
+          </p>
+          <p class="section-text">
+            Dette er kjernen i prosjektet: gjøre Industri 4.0-kommunikasjon mulig uten å la
+            alt snakke med alt.
+          </p>
+          <div class="section-actions">
+            <a class="btn accent" href="topologi.html">Åpne interaktiv topologi</a>
+            <a class="btn" href="arkitektur.html">Les arkitekturvalg</a>
+          </div>
+        </div>
+
+        <figure class="topology-figure">
+          <img src="assets/aurora-lab-topology.png" alt="Nettverksdiagram for AURORA-laben med VLAN-soner, Cisco ASA, ESXi, virtuelle maskiner og NORØNNA-GW">
+          <figcaption>Logisk labtopologi med soner, VLAN, brannmurgrense og dedikerte dataflyter.</figcaption>
+        </figure>
       </div>
     </section>
 
