@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
+  <script>
+    if (location.pathname.endsWith('/proj-aurora/')) {
+      location.replace('index.html' + location.search + location.hash);
+    }
+  </script>
   <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
 </head>
 <body>

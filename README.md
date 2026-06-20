@@ -12,7 +12,7 @@
 
 *Bacheloroppgave · Elektroingeniør – Cyberfysisk Nettverksteknologi · HVL 2026*
 
-[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/) · [🗺️ Topologi](https://jrg1a.github.io/proj-aurora/topologi.html) · [📊 Tester](https://jrg1a.github.io/proj-aurora/tester.html)
+[🌐 Se EXPO-nettsiden](https://jrg1a.github.io/proj-aurora/index.html) · [🗺️ Topologi](https://jrg1a.github.io/proj-aurora/topologi.html) · [📊 Tester](https://jrg1a.github.io/proj-aurora/tester.html)
 
 </div>
 
