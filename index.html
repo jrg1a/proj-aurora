@@ -8,7 +8,7 @@
     if (location.pathname.endsWith('/proj-aurora/')) location.replace('index.html' + location.search + location.hash);
     try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}
   </script>
-  <link rel="stylesheet" href="assets/editorial.css?v=20260620c">
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620d">
 </head>
 <body>
   <header class="topbar">
@@ -72,7 +72,7 @@
       <div class="shell section-head">
         <div>
           <p class="kicker">Prosjektrom</p>
-          <h2>Et ryddigere nettsted, delt etter hvordan sensor faktisk leser.</h2>
+          <h2 class="home-section-title">Start med helheten, gå videre i detaljene.</h2>
         </div>
         <p class="section-text">
           Forsiden gir helheten. De andre sidene går dypere i arkitektur, topologi, tester,
@@ -116,7 +116,7 @@
       <div class="shell split-band">
         <div>
           <p class="kicker">Hovedideen</p>
-          <h2>Ikke bare et diagram. En arkitektur som kan forklares, testes og forsvares.</h2>
+          <h2 class="home-section-title">Slik henger laben sammen i praksis.</h2>
           <p class="section-text">
             AURORA viser hvordan OT-nettverk kan bygges med tydelige soner, eksplisitte brannmurregler,
             kontrollert fjernaksess og applikasjonslagsbegrensning gjennom OPC UA og tag-whitelisting.

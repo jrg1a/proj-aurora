@@ -258,6 +258,12 @@ h2 {
   font-size: clamp(42px, 6vw, 78px);
 }
 
+.home-section-title {
+  max-width: 780px;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.04;
+}
+
 h3 {
   font-size: 22px;
   font-weight: 600;
