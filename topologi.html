@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Topologi | Project AURORA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620b">
 </head>
 <body>
-  <nav class="site-nav">
-    <div class="shell nav-inner">
-      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+  <header class="topbar">
+    <nav class="shell nav" aria-label="Hovednavigasjon">
+      <a class="nav-brand" href="index.html"><span class="brand-mark"></span>Project AURORA</a>
       <div class="nav-links" data-nav-links>
         <a href="index.html">Oversikt</a>
         <a href="arkitektur.html">Arkitektur</a>
@@ -27,27 +24,30 @@
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
         <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <main>
     <header class="page-hero">
-      <canvas class="ambient-canvas" data-network-canvas></canvas>
       <div class="shell">
-        <div class="eyebrow">Interaktiv topologi</div>
-        <h1>AURORA ↔ NORØNNA</h1>
+        <p class="kicker">Interaktiv topologi</p>
+        <h1>AURORA ↔ NORØNNA.</h1>
         <p class="lead">
-          Rettet dual-site-lab med app01 i VLAN 45, app02 i VLAN 70 og Cisco ASA 5506-X som eksplisitt sonegrense.
+          Rettet dual-site-lab med app01 i VLAN 45, app02 i VLAN 70 og Cisco ASA 5506-X
+          som eksplisitt sonegrense mellom sites.
         </p>
       </div>
     </header>
 
     <section class="section compact">
-      <div class="shell topology-shell" data-topology data-mode="drift">
-        <div class="topology-toolbar">
+      <div class="shell diagram-shell" data-topology data-topology-mode="drift">
+        <div class="diagram-toolbar">
           <div>
-            <div class="eyebrow" style="margin-bottom:6px;">Sluttløsning</div>
-            <strong>Fysisk lab, logiske soner og OPC UA-conduit</strong>
+            <p class="kicker" style="margin-bottom: 6px;">Sluttløsning</p>
+            <strong data-topology-title>Driftsvisning</strong>
+            <p class="section-text" data-topology-body style="margin-top: 6px;">
+              Realisert dual-site-lab med ASA som sonegrense, app01 i OPC-UA-Zone og app02 i NORØNNA-GW.
+            </p>
           </div>
           <div class="mode-group" role="group" aria-label="Topologimodus">
             <button class="chip is-active" type="button" data-topology-mode="drift" aria-pressed="true">Drift</button>
@@ -57,110 +57,109 @@
           </div>
         </div>
 
-        <div class="topology-inspector" aria-live="polite">
-          <h2 data-topology-title>Driftsvisning</h2>
-          <p data-topology-body>Realisert lab med app01 i OPC-UA-Zone, app02 i NORONNA-GW og ASA som sonegrense.</p>
-          <div class="tag-row" data-topology-tags></div>
-        </div>
-
-        <div class="topology-scroll">
-          <svg class="topology-svg" viewBox="0 0 1100 650" role="img" aria-labelledby="topology-title topology-desc" xmlns="http://www.w3.org/2000/svg">
+        <div class="diagram-stage">
+          <svg class="topology-svg" viewBox="0 0 1120 670" role="img" aria-labelledby="topology-title topology-desc" xmlns="http://www.w3.org/2000/svg">
             <title id="topology-title">Project AURORA topologi</title>
             <desc id="topology-desc">AURORA landanlegg, Cisco ASA, NORØNNA offshore og tillatte OPC UA-retninger.</desc>
             <defs>
-              <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <marker id="t-arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
               </marker>
-              <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <marker id="t-arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
               </marker>
-              <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <marker id="t-arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/>
               </marker>
-              <marker id="arrow-violet" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--violet)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <marker id="t-arrow-violet" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--violet)" stroke-width="1.5" stroke-linecap="round"/>
               </marker>
             </defs>
 
-            <rect class="svg-zone" x="40" y="28" width="1020" height="72" rx="8"/>
-            <text class="svg-title" x="62" y="56">FYSISK LABLAG</text>
-            <text class="svg-meta" x="62" y="76">Dell R440 / ESXi · Cisco SG250-26 · Cisco ASA 5506-X · OOB-noder</text>
+            <rect class="svg-zone topology-realized" x="44" y="30" width="1032" height="72" rx="4"/>
+            <text class="svg-label" x="66" y="60">FYSISK LABLAG</text>
+            <text class="svg-meta" x="66" y="80">Dell R440 / ESXi · Cisco SG250-26 · Cisco ASA 5506-X · OOB-noder</text>
 
-            <rect class="svg-zone aurora" x="40" y="132" width="604" height="430" rx="8"/>
-            <text class="svg-title" x="62" y="160">AURORA · LANDANLEGG</text>
-            <text class="svg-meta" x="62" y="178">ASA G1/2 trunk · VLAN 10 / 20 / 40 / 45 / 50 / 60</text>
+            <rect class="svg-zone blue topology-realized" x="44" y="136" width="620" height="430" rx="4"/>
+            <text class="svg-label" x="66" y="166">AURORA · LANDANLEGG</text>
+            <text class="svg-meta" x="66" y="184">ASA G1/2 trunk · VLAN 10 / 20 / 40 / 45 / 50 / 60</text>
 
-            <rect class="svg-zone planned" x="64" y="204" width="210" height="70" rx="8"/>
-            <text class="svg-title" x="84" y="230">FIELD</text>
-            <text class="svg-meta" x="84" y="248">VLAN 10 · planlagt IIoT</text>
+            <rect class="svg-zone green topology-planned" x="68" y="210" width="210" height="70" rx="4"/>
+            <text class="svg-label" x="88" y="236">FIELD</text>
+            <text class="svg-meta" x="88" y="254">VLAN 10 · planlagt IIoT</text>
 
-            <rect class="svg-zone planned" x="304" y="204" width="316" height="70" rx="8"/>
-            <text class="svg-title" x="324" y="230">AP-INFRA</text>
-            <text class="svg-meta" x="324" y="248">VLAN 20 · planlagt trådløs infrastruktur</text>
+            <rect class="svg-zone green topology-planned" x="306" y="210" width="330" height="70" rx="4"/>
+            <text class="svg-label" x="326" y="236">AP-INFRA</text>
+            <text class="svg-meta" x="326" y="254">VLAN 20 · planlagt trådløs infrastruktur</text>
 
-            <rect class="svg-zone planned" x="64" y="298" width="246" height="76" rx="8"/>
-            <text class="svg-title" x="84" y="324">EWS</text>
-            <text class="svg-meta" x="84" y="343">VLAN 50 · 10.0.50.0/24</text>
+            <rect class="svg-zone violet topology-planned" x="68" y="304" width="250" height="76" rx="4"/>
+            <text class="svg-label" x="88" y="330">EWS</text>
+            <text class="svg-meta" x="88" y="350">VLAN 50 · engineering workstation</text>
 
-            <rect class="svg-zone" x="336" y="298" width="284" height="76" rx="8"/>
-            <text class="svg-title" x="356" y="324">IDMZ</text>
-            <text class="svg-meta" x="356" y="343">VLAN 60 · Jump Host .2 · Broker .10</text>
+            <rect class="svg-zone blue topology-realized" x="344" y="304" width="292" height="76" rx="4"/>
+            <text class="svg-label" x="364" y="330">IDMZ</text>
+            <text class="svg-meta" x="364" y="350">VLAN 60 · Jump Host · broker</text>
 
-            <rect class="svg-zone" x="64" y="400" width="260" height="118" rx="8"/>
-            <text class="svg-title" x="84" y="426">OT-SERVER</text>
-            <text class="svg-meta" x="84" y="445">VLAN 40 · DC · AD-MGMT · WSUS · Historian</text>
+            <rect class="svg-zone violet topology-realized" x="68" y="406" width="270" height="118" rx="4"/>
+            <text class="svg-label" x="88" y="432">OT-SERVER</text>
+            <text class="svg-meta" x="88" y="452">VLAN 40 · DC · AD-MGMT · WSUS · Historian</text>
 
-            <rect class="svg-zone focus-opc" x="354" y="400" width="266" height="118" rx="8"/>
-            <text class="svg-title" x="374" y="426">OPC-UA-ZONE</text>
-            <text class="svg-meta" x="374" y="445">VLAN 45 · 10.0.45.0/24 · SL-T 3</text>
-            <rect class="svg-device key" x="378" y="462" width="218" height="38" rx="6"/>
-            <text class="svg-title" x="396" y="486">3p-hvl-app01 · 10.0.45.10</text>
+            <rect class="svg-zone amber topology-realized" x="366" y="406" width="270" height="118" rx="4"/>
+            <text class="svg-label" x="386" y="432">OPC-UA-ZONE</text>
+            <text class="svg-meta" x="386" y="452">VLAN 45 · 10.0.45.0/24</text>
+            <rect class="svg-node key" x="390" y="468" width="218" height="38" rx="4"/>
+            <text class="svg-label" x="408" y="492">3p-hvl-app01 · 10.0.45.10</text>
 
-            <rect class="svg-zone oob" x="64" y="532" width="556" height="46" rx="8"/>
-            <text class="svg-title" x="84" y="560">OOB-MGMT · VLAN 99</text>
+            <rect class="svg-zone violet topology-realized" x="68" y="538" width="568" height="46" rx="4"/>
+            <text class="svg-label" x="88" y="566">OOB-MGMT · VLAN 99</text>
 
-            <rect class="svg-zone firewall" x="674" y="164" width="86" height="386" rx="8"/>
-            <text class="svg-title" x="718" y="206" text-anchor="middle">ASA</text>
-            <text class="svg-meta" x="718" y="226" text-anchor="middle">5506-X</text>
-            <text class="svg-meta" x="718" y="246" text-anchor="middle">implicit deny</text>
+            <rect class="svg-zone accent topology-realized" x="700" y="164" width="86" height="396" rx="4"/>
+            <text class="svg-label" x="743" y="210" text-anchor="middle">ASA</text>
+            <text class="svg-meta" x="743" y="232" text-anchor="middle">5506-X</text>
+            <text class="svg-meta" x="743" y="254" text-anchor="middle">implicit deny</text>
 
-            <rect class="svg-zone" x="794" y="164" width="266" height="78" rx="8"/>
-            <text class="svg-title" x="814" y="194">IT/WAN</text>
-            <text class="svg-meta" x="814" y="214">VLAN 100 · RDP kun til Jump Host</text>
+            <rect class="svg-zone blue topology-realized" x="820" y="164" width="256" height="80" rx="4"/>
+            <text class="svg-label" x="840" y="196">IT/WAN</text>
+            <text class="svg-meta" x="840" y="216">VLAN 100 · RDP kun til Jump Host</text>
 
-            <rect class="svg-zone noronna focus-opc" x="794" y="294" width="266" height="222" rx="8"/>
-            <text class="svg-title" x="814" y="324">NORØNNA · OFFSHORE</text>
-            <text class="svg-meta" x="814" y="343">ASA G1/4.70 · ekstern site-grense</text>
-            <rect class="svg-device key" x="826" y="384" width="204" height="42" rx="6"/>
-            <text class="svg-title" x="846" y="410">3p-hvl-app02 · 10.0.70.11</text>
-            <rect class="svg-zone planned" x="826" y="452" width="204" height="40" rx="8"/>
-            <text class="svg-meta" x="846" y="477">VLAN 71 · valgfri IMS-utvidelse</text>
+            <rect class="svg-zone amber topology-realized" x="820" y="300" width="256" height="224" rx="4"/>
+            <text class="svg-label" x="840" y="330">NORØNNA · OFFSHORE</text>
+            <text class="svg-meta" x="840" y="350">ASA G1/4.70 · ekstern site-grense</text>
+            <rect class="svg-node key" x="852" y="390" width="196" height="42" rx="4"/>
+            <text class="svg-label" x="872" y="416">3p-hvl-app02 · 10.0.70.11</text>
+            <rect class="svg-zone green topology-planned" x="852" y="458" width="196" height="40" rx="4"/>
+            <text class="svg-meta" x="872" y="483">VLAN 71 · valgfri IMS-utvidelse</text>
 
-            <path id="route-opc-a" class="svg-path opc" d="M826 402 C796 402 784 384 760 384 L674 384 C638 384 626 470 596 470" marker-end="url(#arrow-amber)"/>
-            <path id="route-opc-b" class="svg-path opc" d="M596 488 C628 488 646 450 674 450 L760 450 C790 450 802 420 826 420" marker-end="url(#arrow-amber)"/>
-            <text class="svg-title" x="675" y="360" text-anchor="middle" fill="var(--amber)">OPC UA conduit</text>
-            <text class="svg-meta" x="675" y="376" text-anchor="middle">:46040 NORØNNA → AURORA · :46041 AURORA → NORØNNA</text>
+            <path id="route-opc-a" class="svg-line opc" d="M852 410 C816 410 802 390 786 390 L700 390 C662 390 648 478 608 478" marker-end="url(#t-arrow-amber)"/>
+            <path id="route-opc-b" class="svg-line opc" d="M608 496 C646 496 662 456 700 456 L786 456 C804 456 816 430 852 430" marker-end="url(#t-arrow-amber)"/>
+            <text class="svg-label" x="710" y="366" fill="var(--amber)">OPC UA conduit</text>
+            <text class="svg-meta" x="710" y="382">:46040 NORØNNA → AURORA · :46041 AURORA → NORØNNA</text>
 
-            <path class="svg-path admin" d="M794 202 L760 202 L760 336 L620 336" marker-end="url(#arrow-blue)"/>
-            <path class="svg-path planned" d="M168 274 L168 390 L230 400" marker-end="url(#arrow-teal)"/>
-            <path class="svg-path oob" d="M620 556 C646 556 650 540 674 540" marker-end="url(#arrow-violet)"/>
-
-            <g aria-hidden="true">
-              <circle class="svg-packet" r="4.5">
-                <animateMotion dur="4.3s" repeatCount="indefinite"><mpath href="#route-opc-a"/></animateMotion>
-              </circle>
-              <circle class="svg-packet" r="4.5">
-                <animateMotion dur="4.8s" begin="1s" repeatCount="indefinite"><mpath href="#route-opc-b"/></animateMotion>
-              </circle>
-            </g>
-
-            <g class="svg-hotspot" data-node="app01" tabindex="0" role="button" aria-label="3p-hvl-app01"><rect class="svg-hit" x="378" y="462" width="218" height="38" rx="6"/></g>
-            <g class="svg-hotspot" data-node="app02" tabindex="0" role="button" aria-label="3p-hvl-app02"><rect class="svg-hit" x="826" y="384" width="204" height="42" rx="6"/></g>
-            <g class="svg-hotspot" data-node="asa" tabindex="0" role="button" aria-label="Cisco ASA"><rect class="svg-hit" x="674" y="164" width="86" height="386" rx="8"/></g>
-            <g class="svg-hotspot" data-node="idmz" tabindex="0" role="button" aria-label="IDMZ"><rect class="svg-hit" x="336" y="298" width="284" height="76" rx="8"/></g>
-            <g class="svg-hotspot" data-node="oob" tabindex="0" role="button" aria-label="OOB management"><rect class="svg-hit" x="64" y="532" width="556" height="46" rx="8"/></g>
+            <path class="svg-line admin topology-secondary" d="M820 204 L786 204 L786 342 L636 342" marker-end="url(#t-arrow-blue)"/>
+            <path class="svg-line planned topology-planned" d="M174 280 L174 395 L250 406" marker-end="url(#t-arrow-green)"/>
+            <path class="svg-line oob topology-secondary" d="M636 562 C666 562 674 548 700 548" marker-end="url(#t-arrow-violet)"/>
           </svg>
         </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell grid three">
+        <article class="card">
+          <h3>AURORA</h3>
+          <p>Landanlegget rommer OT-SERVER, IDMZ, OPC-UA-Zone og planlagte feltsoner. app01 er den sentrale OPC UA-servernoden.</p>
+          <div class="tag-row"><span class="tag amber">VLAN 45</span><span class="tag blue">G1/2 trunk</span></div>
+        </article>
+        <article class="card">
+          <h3>NORØNNA</h3>
+          <p>Offshore-siden simulerer et eksternt anlegg der app02 initierer og mottar OPC UA-data over ASA.</p>
+          <div class="tag-row"><span class="tag amber">VLAN 70</span><span class="tag">10.0.70.11</span></div>
+        </article>
+        <article class="card">
+          <h3>ASA-grensen</h3>
+          <p>Brannmuren er arkitekturens kontrollpunkt. Alt som ikke er eksplisitt tillatt, skal stoppes og logges.</p>
+          <div class="tag-row"><span class="tag accent">implicit deny</span><span class="tag green">ACL</span></div>
+        </article>
       </div>
     </section>
   </main>
@@ -168,6 +167,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Topologi</div>
   </footer>
-  <script src="assets/aurora.js?v=20260620a"></script>
+  <script src="assets/editorial.js?v=20260620b"></script>
 </body>
 </html>

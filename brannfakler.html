@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="refresh" content="0; url=innsikt.html">
   <title>Innsikt | Project AURORA</title>
-  <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620b">
 </head>
 <body>
-  <main class="section">
+  <main class="page-hero">
     <div class="shell">
-      <div class="eyebrow">Project AURORA</div>
-      <h1 class="section-title">Brannfakler er erstattet</h1>
-      <p class="section-text">Den gamle siden er byttet ut med en ryddigere innsiktsside om designvalg, risiko og læring.</p>
-      <div class="section-actions">
-        <a class="btn primary" href="innsikt.html">Gå til Innsikt</a>
+      <p class="kicker">Project AURORA</p>
+      <h1>Brannfakler er flyttet.</h1>
+      <p class="lead">Den gamle siden er erstattet av en ryddigere innsiktsside om risiko, designvalg og læring.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="innsikt.html">Gå til innsikt</a>
       </div>
     </div>
   </main>

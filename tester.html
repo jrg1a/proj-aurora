@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tester | Project AURORA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620b">
 </head>
 <body>
-  <nav class="site-nav">
-    <div class="shell nav-inner">
-      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+  <header class="topbar">
+    <nav class="shell nav" aria-label="Hovednavigasjon">
+      <a class="nav-brand" href="index.html"><span class="brand-mark"></span>Project AURORA</a>
       <div class="nav-links" data-nav-links>
         <a href="index.html">Oversikt</a>
         <a href="arkitektur.html">Arkitektur</a>
@@ -27,101 +24,104 @@
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
         <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <main>
     <header class="page-hero">
-      <canvas class="ambient-canvas" data-network-canvas></canvas>
       <div class="shell">
-        <div class="eyebrow">Verifikasjon</div>
-        <h1>Fra design til bevis</h1>
+        <p class="kicker">Verifikasjon</p>
+        <h1>Testene gjør designet etterprøvbart.</h1>
         <p class="lead">
-          Testene viser at arkitekturen ikke bare er et diagram: OPC UA flyter der den skal,
-          blokkeringer skjer der de skal, og administrasjon holdes på kontrollerte flater.
+          Prosjektet knytter arkitekturvalg til konkrete testpunkter: dataflyt, segmentering,
+          fjernaksess, OOB-MGMT, RADIUS og OPC UA med tag-whitelisting.
         </p>
       </div>
     </header>
 
-    <section class="section compact">
+    <section class="section" data-tests>
       <div class="shell section-head">
         <div>
-          <div class="eyebrow">FAT og verifikasjon</div>
-          <h2 class="section-title">Testoversikt</h2>
-          <p class="section-text">Filtrer på kategori for å se hva som ble validert i laben.</p>
+          <p class="kicker">Testoversikt</p>
+          <h2>Filtrer etter hva som ble verifisert.</h2>
         </div>
         <div class="filter-group" role="group" aria-label="Filtrer tester">
           <button class="chip is-active" type="button" data-test-filter="all" aria-pressed="true">Alle</button>
           <button class="chip" type="button" data-test-filter="opc" aria-pressed="false">OPC UA</button>
           <button class="chip" type="button" data-test-filter="seg" aria-pressed="false">Segmentering</button>
-          <button class="chip" type="button" data-test-filter="mgmt" aria-pressed="false">Management</button>
+          <button class="chip" type="button" data-test-filter="access" aria-pressed="false">Tilgang</button>
         </div>
       </div>
 
       <div class="shell grid three">
-        <article class="test-card is-visible" data-test-card="opc">
-          <h3>T-01 · OPC DA til OPC UA</h3>
-          <p>UaWrapper eksponerer whiteliste-de OPC DA-tags som OPC UA fra app01.</p>
-          <div class="tag-row"><span class="tag amber">app01</span><span class="tag">TCP/46040</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="opc">
+          <h3>T-01 · OPC UA conduit</h3>
+          <p>NORØNNA-GW til app01 over TCP/46040 gjennom ASA.</p>
+          <div class="tag-row"><span class="tag green">Pass*</span><span class="tag amber">SR 5.1/5.2</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="opc">
-          <h3>T-07 · NORØNNA leser AURORA</h3>
-          <p>app02 kobler til app01 gjennom ASA og mottar prosessverdier i UaExpert.</p>
-          <div class="tag-row"><span class="tag amber">10.0.70.11 → 10.0.45.10</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="access">
+          <h3>T-02 · Jump Host</h3>
+          <p>IT/WAN får kun administrativ vei via Jump Host, ikke direkte til OT-soner.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag blue">RDP</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="opc">
-          <h3>T-08 · AURORA-retning</h3>
-          <p>AURORA initierer egen sesjon mot NORØNNA på separat port.</p>
-          <div class="tag-row"><span class="tag amber">TCP/46041</span><span class="tag">stateful retur</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="seg">
+          <h3>T-03 · VLAN-isolering</h3>
+          <p>L2/L3-grenser mellom soner ble testet mot forventet trafikkmodell.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag accent">implicit deny</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="seg">
-          <h3>T-09 · Uønsket trafikk</h3>
-          <p>Forsøk utenfor definerte conduits blokkeres av ASA-reglene.</p>
-          <div class="tag-row"><span class="tag coral">implicit deny</span><span class="tag">ACL</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="seg">
+          <h3>T-04 · OOB-MGMT</h3>
+          <p>Management-plane holdes separat fra produksjonstransit og vanlig dataflyt.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag violet">VLAN 99</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="seg">
-          <h3>T-10 · Midlertidige regler fjernet</h3>
-          <p>Test-/ICMP-unntak ryddes bort i sluttkonfigurasjonen.</p>
-          <div class="tag-row"><span class="tag coral">hardening</span><span class="tag">ASA</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="opc">
+          <h3>T-07 · OPC UA over ASA</h3>
+          <p>OPC UA-tilkobling over definert conduit fungerer som forventet.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag amber">TCP/46040</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="mgmt">
-          <h3>T-13 · RADIUS/NPS</h3>
-          <p>Sentralisert autentisering mot ASA via intern AD-infrastruktur.</p>
-          <div class="tag-row"><span class="tag blue">NPS</span><span class="tag">AAA</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="opc">
+          <h3>T-09 · Tag-whitelisting</h3>
+          <p>UaWrapper eksponerer bare et kontrollert utvalg tags videre.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag accent">SR 7.7</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="mgmt">
-          <h3>OOB · Management-plane</h3>
-          <p>OOB-WS når ASA, ESXi, iDRAC og switch uten å bli produksjonstransit.</p>
-          <div class="tag-row"><span class="tag violet">VLAN 99</span><span class="tag">isolert</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="access">
+          <h3>T-13 · AAA mot ASA</h3>
+          <p>Sentralisert autentisering via AD/NPS for administrativ tilgang.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag blue">RADIUS</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="seg">
-          <h3>Planlagte soner</h3>
-          <p>FIELD, AP-INFRA og EWS er dokumentert som design, men ikke fysisk sluttverifisert.</p>
-          <div class="tag-row"><span class="tag teal">VLAN 10/20/50</span><span class="tag amber">ikke testet</span></div>
-          <span class="test-status">Dokumentert</span>
+        <article class="card test-card" data-test-card="access">
+          <h3>T-16 · To-trinns fjernaksess</h3>
+          <p>Fjernaksess går via Jump Host som kontrollert mellomledd.</p>
+          <div class="tag-row"><span class="tag green">Pass</span><span class="tag blue">IDMZ</span></div>
         </article>
-        <article class="test-card is-visible" data-test-card="opc">
-          <h3>Tag-whitelisting</h3>
-          <p>Kun et utvalg relevante tags eksponeres mot NORØNNA fra UaWrapper.</p>
-          <div class="tag-row"><span class="tag amber">SR 7.7</span><span class="tag">least functionality</span></div>
-          <span class="test-status">Verifisert</span>
+        <article class="card test-card" data-test-card="seg">
+          <h3>T-20 · FIELD segmentering</h3>
+          <p>FIELD-sonen er modellert, men ikke fysisk sluttverifisert innenfor prosjektets rammer.</p>
+          <div class="tag-row"><span class="tag amber">N/A</span><span class="tag green">planlagt</span></div>
         </article>
       </div>
     </section>
 
     <section class="section">
-      <div class="shell timeline">
-        <div class="timeline-item"><small>Bygg</small><div><strong>VM-er, VLAN og ASA-grensesnitt</strong><span>Labgrunnlaget etableres på Dell R440, SG250 og ASA 5506-X.</span></div><span class="tag blue">infra</span></div>
-        <div class="timeline-item"><small>Data</small><div><strong>OPC DA simuleres lokalt</strong><span>Matrikon og ABB OPC Connect Server gir datagrunnlag for UaWrapper.</span></div><span class="tag amber">opc</span></div>
-        <div class="timeline-item"><small>Conduit</small><div><strong>OPC UA over ASA</strong><span>Kun portene 46040 og 46041 får krysse site-grensen.</span></div><span class="tag coral">acl</span></div>
-        <div class="timeline-item"><small>Bevis</small><div><strong>Uønsket trafikk blokkeres</strong><span>Sluttregler bekrefter at midlertidige unntak ikke blir igjen.</span></div><span class="tag teal">verify</span></div>
+      <div class="shell table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Test</th>
+              <th>Krav / fokus</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>T-01</td><td>NORØNNA-GW → OPC UA conduit</td><td>SR 5.1, SR 5.2</td><td>Pass*</td></tr>
+            <tr><td>T-07</td><td>OPC UA-tilkobling over ASA</td><td>SR 5.2, SR 3.1</td><td>Pass</td></tr>
+            <tr><td>T-09</td><td>Tag-whitelisting</td><td>SR 7.7</td><td>Pass</td></tr>
+            <tr><td>T-13</td><td>Sentralisert AAA mot ASA</td><td>SR 1.1, SR 1.3, SR 1.5</td><td>Pass</td></tr>
+            <tr><td>T-18</td><td>WSUS-konfigurasjon og klientpeking</td><td>IEC 62443-2-3</td><td>Pass</td></tr>
+            <tr><td>T-20</td><td>FIELD → OT-SERVER segmentering</td><td>SR 5.1, SR 5.2</td><td>N/A</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
@@ -129,6 +129,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Tester</div>
   </footer>
-  <script src="assets/aurora.js?v=20260620a"></script>
+  <script src="assets/editorial.js?v=20260620b"></script>
 </body>
 </html>

@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arkitektur | Project AURORA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>try{document.documentElement.classList.toggle("light",localStorage.getItem("aurora-theme")==="light");}catch(e){}</script>
-  <link rel="stylesheet" href="assets/aurora.css?v=20260620a">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
+  <link rel="stylesheet" href="assets/editorial.css?v=20260620b">
 </head>
 <body>
-  <nav class="site-nav">
-    <div class="shell nav-inner">
-      <a class="brand" href="index.html"><span class="brand-mark"></span>AURORA</a>
+  <header class="topbar">
+    <nav class="shell nav" aria-label="Hovednavigasjon">
+      <a class="nav-brand" href="index.html"><span class="brand-mark"></span>Project AURORA</a>
       <div class="nav-links" data-nav-links>
         <a href="index.html">Oversikt</a>
         <a href="arkitektur.html">Arkitektur</a>
@@ -27,98 +24,141 @@
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Bytt tema">◐</button>
         <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Meny" aria-expanded="false">☰</button>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <main>
     <header class="page-hero">
-      <canvas class="ambient-canvas" data-network-canvas></canvas>
       <div class="shell">
-        <div class="eyebrow">Arkitektur</div>
-        <h1>Segmentering som faktisk kan testes</h1>
+        <p class="kicker">Arkitektur</p>
+        <h1>Segmentering som faktisk kan testes.</h1>
         <p class="lead">
           AURORA er bygget rundt soner og conduits: tydelige nettverksgrenser, begrensede protokoller,
-          og en lab der designvalg kan verifiseres med konkrete tester.
+          og testbare sikkerhetsvalg for et realistisk OT-miljø.
         </p>
       </div>
     </header>
 
-    <section class="section">
-      <div class="shell section-head">
-        <div>
-          <div class="eyebrow">Purdue-modell</div>
-          <h2 class="section-title">Fra enterprise til felt</h2>
-          <p class="section-text">
-            Modellen er brukt som struktur for å plassere systemer etter funksjon og risiko, ikke som en rigid fasit.
-          </p>
+    <section class="section compact">
+      <div class="shell diagram-shell" data-architecture data-arch-mode="normal">
+        <div class="diagram-toolbar">
+          <div>
+            <p class="kicker" style="margin-bottom: 6px;">Levende arkitektur</p>
+            <strong>Soner, ACL og OPC UA-dataflyt</strong>
+          </div>
+          <div class="mode-group" role="group" aria-label="Velg arkitekturmodus">
+            <button class="chip is-active" type="button" data-arch-mode="normal" aria-pressed="true">Normal dataflyt</button>
+            <button class="chip" type="button" data-arch-mode="attack" aria-pressed="false">Blokkerte angrep</button>
+            <button class="chip" type="button" data-arch-mode="opc" aria-pressed="false">OPC UA-detalj</button>
+          </div>
         </div>
-      </div>
-      <div class="shell purdue-stack">
-        <div class="purdue-level"><code>L5/L4</code><strong>Enterprise / IT-WAN</strong><span>Kun administrativ vei til Jump Host i IDMZ.</span></div>
-        <div class="purdue-divider">Kontrollert overgang via ASA og IDMZ</div>
-        <div class="purdue-level"><code>L3.5</code><strong>IDMZ</strong><span>Jump Host, broker og kontrollerte mellomledd.</span></div>
-        <div class="purdue-level"><code>L3</code><strong>OT operations</strong><span>SERVER, OPC-UA-Zone, EWS og støttetjenester.</span></div>
-        <div class="purdue-level"><code>L2-L0</code><strong>Control / field</strong><span>FIELD og AP-INFRA er modellert, men ikke fysisk verifisert.</span></div>
+
+        <div class="diagram-stage">
+          <svg class="architecture-svg" viewBox="0 0 900 500" role="img" aria-labelledby="arch-title arch-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="arch-title">Project AURORA arkitekturdiagram</title>
+            <desc id="arch-desc">Sonebasert OT-arkitektur med Cisco ASA, IDMZ, OPC-UA-Zone og feltsoner.</desc>
+            <defs>
+              <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+              <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+              <marker id="arrow-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+
+            <rect class="svg-zone blue arch-secondary" x="55" y="24" width="790" height="64" rx="4"/>
+            <text class="svg-label" x="72" y="51">EKSTERN · WAN</text>
+            <text class="svg-meta" x="72" y="69">VLAN 100 · NORØNNA-GW · IT/Internett</text>
+
+            <rect class="svg-zone accent" x="55" y="108" width="790" height="42" rx="4"/>
+            <text class="svg-label" x="450" y="134" text-anchor="middle">CISCO ASA 5506-X · ACL · VLAN-subinterfaces · implicit deny</text>
+
+            <rect class="svg-zone blue arch-secondary" x="55" y="174" width="790" height="58" rx="4"/>
+            <text class="svg-label" x="72" y="200">IDMZ</text>
+            <text class="svg-meta" x="72" y="217">Jump Host · brokerfunksjoner · kontrollert overgang</text>
+
+            <rect class="svg-zone violet arch-secondary" x="55" y="252" width="790" height="58" rx="4"/>
+            <text class="svg-label" x="72" y="278">IT / OT-SERVER</text>
+            <text class="svg-meta" x="72" y="295">DC · RADIUS · AD-MGMT · WSUS · OT-Historian</text>
+
+            <rect class="svg-zone amber arch-normal" x="55" y="330" width="790" height="58" rx="4"/>
+            <text class="svg-label" x="72" y="356">OPC-UA-ZONE</text>
+            <text class="svg-meta" x="72" y="373">app01 · UaWrapper · OPC UA-server :46040</text>
+
+            <rect class="svg-zone green arch-secondary" x="55" y="408" width="790" height="58" rx="4"/>
+            <text class="svg-label" x="72" y="434">FIELD / AP-INFRA</text>
+            <text class="svg-meta" x="72" y="451">IIoT-sensorer · 802.1X · planlagt feltkommunikasjon</text>
+
+            <rect class="svg-node key arch-normal" x="112" y="40" width="190" height="32" rx="3"/>
+            <text class="svg-label" x="126" y="61">NORØNNA-GW</text>
+            <rect class="svg-node arch-secondary" x="332" y="40" width="150" height="32" rx="3"/>
+            <text class="svg-label" x="346" y="61">IT / Internett</text>
+            <rect class="svg-node arch-secondary" x="112" y="188" width="150" height="32" rx="3"/>
+            <text class="svg-label" x="126" y="209">Jump Host</text>
+            <rect class="svg-node arch-secondary" x="292" y="188" width="170" height="32" rx="3"/>
+            <text class="svg-label" x="306" y="209">IDMZ Historian</text>
+            <rect class="svg-node arch-secondary" x="112" y="266" width="145" height="32" rx="3"/>
+            <text class="svg-label" x="126" y="287">DC · RADIUS</text>
+            <rect class="svg-node arch-secondary" x="284" y="266" width="110" height="32" rx="3"/>
+            <text class="svg-label" x="298" y="287">WSUS</text>
+            <rect class="svg-node arch-secondary" x="420" y="266" width="140" height="32" rx="3"/>
+            <text class="svg-label" x="434" y="287">OT-Historian</text>
+            <rect class="svg-node key arch-normal" x="112" y="344" width="230" height="32" rx="3"/>
+            <text class="svg-label" x="126" y="365">app01 · UaWrapper</text>
+            <rect class="svg-node arch-secondary" x="112" y="422" width="170" height="32" rx="3"/>
+            <text class="svg-label" x="126" y="443">IIoT-sensorer</text>
+            <rect class="svg-node arch-secondary" x="312" y="422" width="150" height="32" rx="3"/>
+            <text class="svg-label" x="326" y="443">AP-INFRA</text>
+
+            <path class="svg-line opc arch-normal" d="M207 72 C207 120 207 210 207 344" marker-end="url(#arrow-amber)"/>
+            <text class="svg-meta arch-normal" x="220" y="166">TCP/46040</text>
+            <path class="svg-line opc arch-normal arch-opc" d="M182 344 C182 278 182 132 182 72" marker-end="url(#arrow-amber)"/>
+            <text class="svg-meta arch-opc" x="86" y="166">TCP/46041</text>
+            <path class="svg-line admin arch-secondary" d="M700 204 C700 128 600 128 482 56" marker-end="url(#arrow-blue)"/>
+            <text class="svg-meta arch-secondary" x="710" y="170">RDP / administrasjon</text>
+
+            <path class="svg-line attack arch-attack" d="M650 56 C650 86 650 102 650 108" marker-end="url(#arrow-accent)"/>
+            <circle class="arch-attack" cx="650" cy="129" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+            <text class="svg-label arch-attack" x="650" y="134" text-anchor="middle" fill="var(--accent)">X</text>
+            <text class="svg-meta arch-attack" x="668" y="134">DENY · implicit</text>
+            <path class="svg-line attack arch-attack" d="M760 206 C760 255 760 296 760 346"/>
+            <text class="svg-meta arch-attack" x="770" y="278">lateral bevegelse blokkert</text>
+          </svg>
+        </div>
+        <p class="diagram-caption" data-arch-caption>
+          Normal dataflyt: OPC UA passerer gjennom ASA som eksplisitt conduit, mens Jump Host gir kontrollert administrativ vei.
+        </p>
       </div>
     </section>
 
     <section class="section">
       <div class="shell section-head">
         <div>
-          <div class="eyebrow">Zones & conduits</div>
-          <h2 class="section-title">Hver flyt må fortjene å finnes</h2>
-          <p class="section-text">
-            Sluttkonfigurasjonen bruker implicit deny som normaltilstand. Det som skal virke, må beskrives eksplisitt.
-          </p>
+          <p class="kicker">Purdue og IEC 62443</p>
+          <h2>Arkitekturen er mer en kontrollmodell enn et pent bilde.</h2>
         </div>
+        <p class="section-text">
+          Purdue-modellen gir nivåtenkning. IEC 62443 gir språk for soner, conduits, sikkerhetskrav og dokumenterbar verifikasjon.
+        </p>
       </div>
       <div class="shell grid three">
         <article class="card">
-          <h3>OPC-UA-Zone</h3>
-          <p>Dedikert AURORA-sone for app01 og UaWrapper. Skiller OPC UA-conduiten fra OT-SERVER.</p>
-          <div class="tag-row"><span class="tag amber">VLAN 45</span><span class="tag">10.0.45.10</span></div>
+          <h3>Soner</h3>
+          <p>Systemer grupperes etter funksjon, risiko og konsekvens: IDMZ, OT-SERVER, OPC-UA-Zone, OOB-MGMT og planlagte feltsoner.</p>
+          <div class="tag-row"><span class="tag blue">SR 5.1</span><span class="tag green">Purdue</span></div>
         </article>
         <article class="card">
-          <h3>NORØNNA-GW</h3>
-          <p>Offshore-siden i simuleringen. app02 mottar og initierer kontrollerte OPC UA-sesjoner.</p>
-          <div class="tag-row"><span class="tag amber">VLAN 70</span><span class="tag">10.0.70.11</span></div>
+          <h3>Conduits</h3>
+          <p>Kun eksplisitte dataflyter skal krysse sonegrenser. OPC UA-conduiten er prosjektets viktigste eksempel.</p>
+          <div class="tag-row"><span class="tag amber">TCP/46040</span><span class="tag amber">TCP/46041</span></div>
         </article>
         <article class="card">
-          <h3>OOB-MGMT</h3>
-          <p>Management-plane for ASA, ESXi, iDRAC og switch. Holdes utenfor produksjonstransit.</p>
-          <div class="tag-row"><span class="tag violet">VLAN 99</span><span class="tag">isolert</span></div>
-        </article>
-        <article class="card">
-          <h3>IDMZ</h3>
-          <p>Mellomsone for Jump Host og brokerfunksjoner mellom IT/WAN og OT.</p>
-          <div class="tag-row"><span class="tag blue">VLAN 60</span><span class="tag">RDP/3389</span></div>
-        </article>
-        <article class="card">
-          <h3>OT-SERVER</h3>
-          <p>DC/RADIUS, AD-MGMT, WSUS og Historian ligger i serverlaget, adskilt fra app01.</p>
-          <div class="tag-row"><span class="tag coral">VLAN 40</span><span class="tag">støttesystemer</span></div>
-        </article>
-        <article class="card">
-          <h3>Planlagte soner</h3>
-          <p>FIELD, AP-INFRA og EWS er del av designet, men markeres som ikke fysisk sluttverifisert.</p>
-          <div class="tag-row"><span class="tag teal">VLAN 10/20/50</span><span class="tag">planlagt</span></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell grid three">
-        <article class="insight-card">
-          <h3>Minimering</h3>
-          <p>Kun nødvendige porter åpnes. OPC UA flyttes ut i en tydelig conduit fremfor å gjemmes i server-sonen.</p>
-        </article>
-        <article class="insight-card">
-          <h3>Verifiserbarhet</h3>
-          <p>Arkitekturen er koblet til teststeg, slik at sikkerhetskrav ikke bare blir diagrammer.</p>
-        </article>
-        <article class="insight-card">
-          <h3>Utvidbarhet</h3>
-          <p>Redundante noder og IMS-server kan legges til uten å endre hovedideen i soneinndelingen.</p>
+          <h3>Least functionality</h3>
+          <p>UaWrapper eksponerer bare nødvendige tags. Nettverkstiltak kombineres med applikasjonslagskontroll.</p>
+          <div class="tag-row"><span class="tag accent">SR 7.7</span><span class="tag violet">whitelist</span></div>
         </article>
       </div>
     </section>
@@ -127,6 +167,6 @@
   <footer class="site-footer">
     <div class="shell">Project AURORA · Arkitektur</div>
   </footer>
-  <script src="assets/aurora.js?v=20260620a"></script>
+  <script src="assets/editorial.js?v=20260620b"></script>
 </body>
 </html>
