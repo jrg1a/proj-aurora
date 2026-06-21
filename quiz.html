@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz | Project AURORA</title>
   <script>try { document.documentElement.dataset.theme = localStorage.getItem('aurora-theme') || 'light'; } catch (error) {}</script>
-  <link rel="stylesheet" href="assets/editorial.css?v=20260620f">
+  <link rel="stylesheet" href="assets/editorial.css?v=20260621a">
 </head>
 <body>
   <header class="topbar">
@@ -17,7 +17,7 @@
         <a href="topologi.html">Topologi</a>
         <a href="tester.html">Tester</a>
         <a href="innsikt.html">Innsikt</a>
-        <a href="quiz.html?v=20260620c">Quiz</a>
+        <a href="quiz.html">Quiz</a>
         <a href="rapport.html">Rapport</a>
       </div>
       <div class="nav-actions">
@@ -28,61 +28,64 @@
   </header>
 
   <main>
-    <header class="page-hero">
-      <div class="shell">
+    <section class="section">
+      <div class="shell quiz-wrap" data-quiz-app>
         <p class="kicker">OT-awareness</p>
-        <h1>Quizzen skal starte samtalen.</h1>
-        <p class="lead">
-          Ikke en test i AURORA-konfigurasjon, men en trygg awareness-quiz om OT-sikkerhet:
-          USB, phishing, fjernaksess, passord, backup, segmentering og rapportering.
+        <h1 class="quiz-title">En rolig sjekk av <span class="italic">sikkerhetsvanene dine</span></h1>
+        <p class="section-text">
+          Ingen test i AURORA-konfigurasjon — bare en trygg awareness-quiz om OT-sikkerhet:
+          USB, phishing, fjernaksess, passord, backup og segmentering. Ett spørsmål om gangen.
         </p>
-      </div>
-    </header>
 
-    <section class="section compact">
-      <div class="shell quiz-layout" data-quiz>
-        <article class="quiz-card">
-          <div class="quiz-mode-grid" role="group" aria-label="Velg quiztype">
-            <button class="quiz-mode is-active" type="button" data-quiz-mode="short" aria-pressed="true">
-              <strong>Kort quiz</strong>
-              <span>6 spørsmål · nybegynnervennlig OT-awareness</span>
-            </button>
-            <button class="quiz-mode" type="button" data-quiz-mode="deep" aria-pressed="false">
-              <strong>Dypere quiz</strong>
-              <span>12 spørsmål · mer kontekst og flere vurderinger</span>
-            </button>
-          </div>
+        <div class="quiz-segment" role="group" aria-label="Velg quiztype">
+          <button class="quiz-seg-btn is-active" type="button" data-quiz-mode="short" aria-pressed="true">
+            <strong>Kort</strong>
+            <span>6 spørsmål</span>
+          </button>
+          <button class="quiz-seg-btn" type="button" data-quiz-mode="deep" aria-pressed="false">
+            <strong>Dypere</strong>
+            <span>12 spørsmål</span>
+          </button>
+        </div>
 
-          <div class="quiz-progress">
-            <span>Spørsmål <strong data-quiz-progress>1 / 6</strong></span>
-            <span>Score <strong data-quiz-score>0/6</strong></span>
-          </div>
+        <div class="quiz-meta">
+          <span data-quiz-progress>Spørsmål 1 / 6</span>
+          <span>Riktige <strong data-quiz-score>0 / 6</strong></span>
+        </div>
+        <div class="quiz-bar"><span data-quiz-bar></span></div>
 
-          <h2 class="quiz-question" data-quiz-question aria-live="polite">Laster spørsmål...</h2>
+        <div class="quiz-panel" data-quiz-card>
+          <h2 class="quiz-question" data-quiz-question aria-live="polite">Laster spørsmål …</h2>
           <div class="quiz-options" data-quiz-options></div>
-          <p class="quiz-note" data-quiz-note aria-live="polite"></p>
-          <div class="quiz-actions">
-            <button class="btn" type="button" data-quiz-restart>Ny tilfeldig runde</button>
-            <a class="btn primary" href="innsikt.html">Les innsikt</a>
+          <div class="quiz-feedback" data-quiz-feedback>
+            <div class="quiz-why">
+              <span class="quiz-why-label">HVORFOR</span>
+              <p data-quiz-note></p>
+            </div>
+            <button class="btn primary" type="button" data-quiz-next>Neste spørsmål →</button>
           </div>
-        </article>
+        </div>
 
-        <aside class="quiz-context">
-          <div class="quiz-score-ring" data-quiz-ring>0/6</div>
-          <p class="kicker">Hvorfor den finnes</p>
-          <h3>Awareness skal være konkret, ikke skremmende.</h3>
-          <p>
-            Den korte runden passer for ikke-tekniske målgrupper. Den dypere runden passer for folk som vil
-            forstå litt mer om hvordan vaner, tilgang og arkitektur påvirker OT-risiko.
-          </p>
-          <div class="tag-row">
-            <span class="tag accent">USB</span>
-            <span class="tag blue">MFA</span>
-            <span class="tag amber">OPC UA</span>
-            <span class="tag green">Backup</span>
-            <span class="tag violet">Rapportering</span>
+        <div class="quiz-panel quiz-result" data-quiz-result>
+          <div class="quiz-result-kicker">Runden er ferdig</div>
+          <div class="quiz-result-score" data-quiz-result-score>0 / 6</div>
+          <div class="quiz-result-ratio" data-quiz-result-ratio>RIKTIGE SVAR · 0%</div>
+          <p data-quiz-result-feedback></p>
+          <div class="quiz-result-actions">
+            <button class="btn primary" type="button" data-quiz-restart>↻ Ny tilfeldig runde</button>
+            <a class="btn" href="innsikt.html">Les innsikt →</a>
           </div>
-        </aside>
+        </div>
+
+        <div class="quiz-topics">
+          <span class="label">Tema:</span>
+          <span class="tag">USB</span>
+          <span class="tag">Phishing</span>
+          <span class="tag">Fjernaksess</span>
+          <span class="tag">Passord</span>
+          <span class="tag">Backup</span>
+          <span class="tag">Segmentering</span>
+        </div>
       </div>
     </section>
   </main>
@@ -91,5 +94,6 @@
     <div class="shell">Project AURORA · Quiz</div>
   </footer>
   <script src="assets/editorial.js?v=20260620c"></script>
+  <script src="assets/quiz.js?v=20260621a"></script>
 </body>
 </html>
